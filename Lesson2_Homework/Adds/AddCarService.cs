@@ -7,16 +7,16 @@ using System.Linq;
 
 namespace Lesson2_Homework
 {
-    public class AddCar_Service : IAdd_And_List<Car_Service>
+    public class AddCarService : IAddAndList<CarService>
     {
-        private List_Of_Services los;
+        private ListOfServices los;
 
-        public AddCar_Service()
+        public AddCarService()
         {
-            los = new List_Of_Services();
+            los = new ListOfServices();
         }
 
-        public Car_Service Add(Car_Service CS)
+        public CarService Add(CarService CS)
         {
             
             Console.WriteLine("Enter the name of your Car Service:");
@@ -40,10 +40,10 @@ namespace Lesson2_Homework
             return CS;
         }
 
-        public void _AddInList(Car_Service CS)
+        public void AddInList(CarService CS)
         {
-            var add = new List_Of_Car_Services();
-            add._AddList(CS);
+            var add = new ListOfCarServices();
+            add.AddList(CS);
         }
     }
 }

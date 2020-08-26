@@ -22,25 +22,25 @@ namespace Lesson2_Homework
                 switch (choice)
                 {
                     case "1":
-                        Work_order wo = new Work_order();
-                        AddWork_order awo = new AddWork_order();
+                        WorkOrder wo = new WorkOrder();
+                        AddWorkOrder awo = new AddWorkOrder();
                         awo.Add(wo);
-                        awo.Cost_Of_Order(wo);
+                        awo.CostOfOrder(wo);
                         break;
                     case "2":
-                        Car_Service cs = new Car_Service();
-                        AddCar_Service addCar_Service = new AddCar_Service();
+                        CarService cs = new CarService();
+                        AddCarService addCar_Service = new AddCarService();
                         addCar_Service.Add(cs);
-                        addCar_Service._AddInList(cs);
+                        addCar_Service.AddInList(cs);
                         break;
                     case "3":
                         Service serv = new Service();
                         AddService addService = new AddService();
                         addService.Add(serv);
-                        addService._AddInList(serv);
+                        addService.AddInList(serv);
                         break;
                     case "4":
-                        List_Of_Car_Services locs = new List_Of_Car_Services();
+                        ListOfCarServices locs = new ListOfCarServices();
                         locs.ShowList();
                         break;
                     default:

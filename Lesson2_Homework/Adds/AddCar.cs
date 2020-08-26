@@ -12,16 +12,25 @@ namespace Lesson2_Homework.Adds
         public Car Add(Car car)
         {
             Console.WriteLine("Enter your car model: \n");
-            car.Model = Console.ReadLine(); ;
-
-            Console.WriteLine("Enter your engine type: \n");
-            car.Engine = Console.ReadLine(); ;
+            car.Model = Console.ReadLine(); ;          
 
             Console.WriteLine("Enter the VIN of your car: \n");
             car.VIN = Console.ReadLine(); ;
 
+            Console.WriteLine("Enter the technical description of your machine by its components: \n");
+
             Console.WriteLine("Enter your car transmission: \n");
-            car.Transmission = Console.ReadLine(); ;
+            string transmission = Console.ReadLine(); 
+
+            Console.WriteLine("Enter your engine type: \n");
+            string engine = Console.ReadLine();
+
+            foreach (var component in car.Knots)
+            {
+                component.Transmission = transmission;
+                component.Engine = engine;
+            }
+
             return car;
         }
     }

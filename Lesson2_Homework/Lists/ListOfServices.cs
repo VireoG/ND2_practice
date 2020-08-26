@@ -7,16 +7,16 @@ using Lesson2_Homework.Model;
 
 namespace Lesson2_Homework
 {
-    public class List_Of_Services : ILists<Service>
+    public class ListOfServices : ILists<Service>
     {           
-        public List_Of_Services()
+        public ListOfServices()
         {
             servicelist = new List<Service>();
         }
 
         public List<Service> servicelist { get; set; }
 
-        public List<Service> _AddList(Service service)
+        public List<Service> AddList(Service service)
         {            
             servicelist.Add(service);
             

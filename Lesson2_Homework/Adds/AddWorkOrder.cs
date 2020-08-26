@@ -8,23 +8,23 @@ using System.Linq;
 
 namespace Lesson2_Homework
 {
-    public class AddWork_order : IWork_order<Work_order>
+    public class AddWorkOrder : IWorkOrder<WorkOrder>
     {
-        private List_Of_Services los;
+        private ListOfServices los;
         private Validator validator;
-        public AddWork_order()
+        public AddWorkOrder()
         {
-            los = new List_Of_Services();
+            los = new ListOfServices();
             validator = new Validator();
         }
 
-        public Work_order Add(Work_order work_Order)
+        public WorkOrder Add(WorkOrder workOrder)
         {            
             AddClient addClient = new AddClient();
-            addClient.Add(work_Order._Client);
+            addClient.Add(workOrder.Customer);
             
             AddCar addCar = new AddCar();
-            addCar.Add(work_Order._Car);
+            addCar.Add(workOrder.CarInOrder);
 
             Console.WriteLine("\nChoose the services you need from the list, to do this, enter the index of the required service;\nTo end the selection, enter word <exit>.\n");           
             los.ShowList();
@@ -37,18 +37,18 @@ namespace Lesson2_Homework
                 bool success = Int32.TryParse(so, out int s);
 
                 if (success == true)
-                    work_Order._Services.Add(los.servicelist.ElementAt(s));
+                    workOrder.OrderServicesList.Add(los.servicelist.ElementAt(s));
 
             } while (so != "exit");
 
-            return work_Order;
+            return workOrder;
         }  
 
-        public decimal Cost_Of_Order(Work_order work_Order)
+        public decimal CostOfOrder(WorkOrder workOrder)
         {            
-            work_Order.Cost_Of_Order = 0m;
+            workOrder.CostOfOrder = 0m;
 
-            if (!validator.Check(work_Order))
+            if (!validator.Check(workOrder))
             {
                 Console.WriteLine("Check failed, order was rejected.");
             }
@@ -56,16 +56,16 @@ namespace Lesson2_Homework
             {
                 Console.WriteLine("The check was passed, the order was accepted.");
 
-                foreach (var wos in work_Order._Services)
+                foreach (var wos in workOrder.OrderServicesList)
                 {
                     decimal c = wos.Cost;
-                    work_Order.Cost_Of_Order = work_Order.Cost_Of_Order + c;
+                    workOrder.CostOfOrder = workOrder.CostOfOrder + c;
                 }
             }
 
-            Console.WriteLine($"The cost of your order is: {work_Order.Cost_Of_Order}");
+            Console.WriteLine($"The cost of your order is: {workOrder.CostOfOrder}.");
 
-            return work_Order.Cost_Of_Order;
+            return workOrder.CostOfOrder;
         }
     }
 }

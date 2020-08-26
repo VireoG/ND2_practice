@@ -7,25 +7,25 @@ using Lesson2_Homework.Model;
 
 namespace Lesson2_Homework
 {
-    public class List_Of_Car_Services : ILists<Car_Service>
+    public class ListOfCarServices : ILists<CarService>
     {
-        public List_Of_Car_Services()
+        public ListOfCarServices()
         {
-            car_servicelist = new List<Car_Service>();
+            carServiceList = new List<CarService>();
         }
 
-        public List<Car_Service> car_servicelist { get; set; }
+        public List<CarService> carServiceList { get; set; }
 
-        public List<Car_Service> _AddList(Car_Service CSM)
+        public List<CarService> AddList(CarService CSM)
         {
-            car_servicelist.Add(CSM);
+            carServiceList.Add(CSM);
 
-            return car_servicelist;
+            return carServiceList;
         }
 
         public void ShowList()
         {
-            foreach (var cserv in car_servicelist)
+            foreach (var cserv in carServiceList)
             {
                 Console.WriteLine($"Name of Car Service: {cserv.ServiceName}\nService List:");
 

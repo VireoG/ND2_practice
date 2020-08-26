@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Lesson2_Homework.Adds
 {
-    public class AddService : IAdd_And_List<Service>
+    public class AddService : IAddAndList<Service>
     {
         public Service Add(Service service)
         {
@@ -24,10 +24,10 @@ namespace Lesson2_Homework.Adds
             return service;
         }
 
-        public void _AddInList(Service service)
+        public void AddInList(Service service)
         {
-            var add = new List_Of_Services();
-            add._AddList(service);
+            var add = new ListOfServices();
+            add.AddList(service);
         }
     }
 }

@@ -6,10 +6,10 @@ using Lesson2_Homework.Model;
 
 namespace Lesson2_Homework.Interfaces
 {
-    public interface IAdd_And_List<T>
+    public interface IAddAndList<T>
     {
         public T Add(T model);
 
-        public void _AddInList(T model);
+        public void AddInList(T model);
     }
 }

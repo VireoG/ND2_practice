@@ -8,7 +8,7 @@ namespace Lesson2_Homework.Interfaces
 {
     public interface ILists<T> where T : class
     {
-        public List<T> _AddList(T Model);
+        public List<T> AddList(T Model);
 
         public void ShowList();
     }

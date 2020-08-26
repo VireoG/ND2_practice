@@ -6,7 +6,7 @@ using Lesson2_Homework.Adds;
 
 namespace Lesson2_Homework.Model
 {
-    public class Car_Service
+    public class CarService
     {
         public string ServiceName { get; set; }
 

@@ -9,7 +9,7 @@ namespace Lesson2_Homework
 {
     public class Menu
     {
-        public void _Menu()
+        public void StartClass()
         {
 
             Console.WriteLine("Make an order -> enter 1;\nCreate car service -> enter 2;\n" +

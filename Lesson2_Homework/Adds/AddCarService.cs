@@ -33,7 +33,7 @@ namespace Lesson2_Homework
                 bool success = Int32.TryParse(so, out int s);
 
                 if(success == true)
-                CS.Services.Add(los.servicelist.ElementAt(s));
+                CS.Services.Add(los.serviceList.ElementAt(s));
 
             } while (so != "exit");
 

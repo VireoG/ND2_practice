@@ -37,7 +37,7 @@ namespace Lesson2_Homework
                 bool success = Int32.TryParse(so, out int s);
 
                 if (success == true)
-                    workOrder.OrderServicesList.Add(los.servicelist.ElementAt(s));
+                    workOrder.OrderServicesList.Add(los.serviceList.ElementAt(s));
 
             } while (so != "exit");
 

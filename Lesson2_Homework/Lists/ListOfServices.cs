@@ -11,21 +11,21 @@ namespace Lesson2_Homework
     {           
         public ListOfServices()
         {
-            servicelist = new List<Service>();
+            serviceList = new List<Service>();
         }
 
-        public List<Service> servicelist { get; set; }
+        public List<Service> serviceList { get; set; }
 
         public List<Service> AddList(Service service)
         {            
-            servicelist.Add(service);
+            serviceList.Add(service);
             
-            return servicelist;
+            return serviceList;
         }
 
         public void ShowList()
         {           
-            foreach (var serv in servicelist)
+            foreach (var serv in serviceList)
             {
                 Console.WriteLine($"ID: {serv.Index}\nDiscription: {serv.Description}\nCost: {serv.Cost}\n________\n");
             }

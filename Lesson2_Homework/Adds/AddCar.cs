@@ -12,10 +12,10 @@ namespace Lesson2_Homework.Adds
         public Car Add(Car car)
         {
             Console.WriteLine("Enter your car model: \n");
-            car.Model = Console.ReadLine(); ;          
+            car.Model = Console.ReadLine();        
 
             Console.WriteLine("Enter the VIN of your car: \n");
-            car.VIN = Console.ReadLine(); ;
+            car.VIN = Console.ReadLine(); 
 
             Console.WriteLine("Enter the technical description of your machine by its components: \n");
 

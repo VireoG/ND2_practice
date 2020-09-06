@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 using Lesson2_Homework.Interfaces;
-using Lesson2_Homework.Adds;
-using Lesson2_Homework.Model;
 
 namespace Lesson2_Homework
 {
@@ -13,6 +11,6 @@ namespace Lesson2_Homework
 
         public string VIN { get; set; }
 
-        public List<CarInsides> Knots { get; set; }
+        public List<IKnots> Knots { get; set; }
     }
 }

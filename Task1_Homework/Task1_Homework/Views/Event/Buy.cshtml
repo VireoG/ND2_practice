@@ -1,0 +1,87 @@
+﻿@model Task1_Homework.Business.Event
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Buy"];
+    Task1_Homework.HtmlHelper.CustomHtmlHelper htmlHelper = new Task1_Homework.HtmlHelper.CustomHtmlHelper();
+}
+
+<head>
+    <style type="text/css">
+
+        body {
+            background: linear-gradient(to top right, #626262, #bbbbbb);
+            min-height: 100%;
+        }
+
+        .block1 {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.5);
+        }
+
+        .leftimg {
+            border: 3px solid #a94800;
+            float: left;
+            margin-left: 0px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .btn-primary {
+            background-color: #a94800;
+            border-color: white;
+            box-shadow: 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        .block2 {
+            margin-left: auto;
+            margin-right: auto;
+            background-color: white;
+            width: 800px;
+            height: 500px;
+            margin-bottom: 30px;
+        }
+
+        
+    </style>
+</head>
+
+<h1>@Localizer["Event Page"]</h1>
+<div class="block1">
+    <div class="block2">
+    <h3 align="center">@Model.Name</h3>
+    <h6 align="center">@Model.Date @Localizer["on"] @Model.Venue.Name</h6>
+    <div>
+        <img src="~/img/@Model.Banner" width="270" height="420" vspace="50" hspace="30" class="leftimg" />
+        @htmlHelper.CreateDescription(Model.Description)
+    </div>
+</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Localizer["Price"]</th>
+                <th>@Localizer["Seller"]</th>
+                <th>@Localizer["Status"]</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var ticket in Model.Tickets)
+            {
+            <tr>
+                <td>@ticket.Price</td>
+                <td>@ticket.Seller</td>
+                <td>@ticket.Status</td>
+                <td>
+                    @Html.ActionLink("Buy", "Index", "Order", new { id = ticket.Id, UserName = User.Identity.Name }, new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+

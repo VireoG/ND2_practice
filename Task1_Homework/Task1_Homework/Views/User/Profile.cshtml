@@ -1,0 +1,108 @@
+﻿@model Task1_Homework.Business.User
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Profile"];
+
+}
+<head>
+    <style type="text/css">
+
+        body {
+            background: linear-gradient(to top right, #626262, #bbbbbb);
+            min-height: 100%;
+        }
+
+        .block1 {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.5);
+        }
+
+        .block2 {
+            width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            background-color: #a94800;
+            border-radius: 20px/11px;
+            border: 1px gray;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .leftimg {
+            float: left;
+            margin-left: 20px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border: 3px solid #626262;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+        }
+
+        .h11 {
+            color: white;
+        }
+
+        .btn-primary {
+            background-color: #a94800;
+            border-color: white;
+            margin-bottom: 5px;          
+            right: 10px;
+            bottom: 10px;
+            box-shadow: 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        .h66 {
+            font-weight: 600;
+            font-size: 14pt;
+        }
+
+        ul {
+            list-style: none;
+            margin: 0; 
+            padding-left: 0; 
+        }
+    </style>
+</head>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h1>@Localizer["Profile"]</h1>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="Profile">
+                <div> <img src="~/img/@Model.Avatar" width="150" height="220" vspace="50" hspace="30" class="leftimg" /><h6 class="h66">@Model.FirstName @Model.LastName</h6> </div>
+
+                <p> <strong>Role:</strong> @Model.Role</p>
+                <ul>
+                    <li> @Html.ActionLink("My sales requests", "SalesRequests", "Order", new { UserName = User.Identity.Name }, new { @class = "btn btn-primary" })</li>
+                    <li> @Html.ActionLink("Logout", "Logout", "User", new { }, new { @class = "btn btn-primary" })</li>
+                </ul>
+            </form>
+        </div>
+    </div>        
+}
+<div class="block1">
+    <h3 align="center">@Localizer["Your Tickets"]</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Localizer["Event"]</th>
+                <th>@Localizer["Price"]</th>
+                <th>@Localizer["Seller"]</th>
+                <th>@Localizer["Status"]</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var ticket in Model.Tickets)
+            {
+                <tr>
+                    <td>@ticket.EventName</td>
+                    <td>@ticket.Price</td>
+                    <td>@ticket.Seller</td>
+                    <td>@ticket.Status</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

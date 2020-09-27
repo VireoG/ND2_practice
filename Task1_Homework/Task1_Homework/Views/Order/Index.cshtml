@@ -1,0 +1,63 @@
+﻿@model Task1_Homework.Business.Order
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Order"];
+} 
+
+<head>
+    <style type="text/css">
+        body {
+            background: linear-gradient(to top right, #626262, #bbbbbb);
+            min-height: 100%;
+        }
+
+        .block1 {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 6px rgba(0,0,0,0.5);
+        }
+
+        .h33{
+            margin-bottom: 5px;
+            margin-left: 15px;
+            margin-top: 5px;
+        }
+
+        .btn-primary {
+            background-color: #a94800;
+            border-color: white;
+            box-shadow: 0 0 3px rgba(0,0,0,0.5);
+            margin-bottom: 10px;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<h1 align="center"> @Localizer["Create Order"]</h1>
+<div>
+    <div class="block1">
+        <h3 class="h33"><strong>@Model.Ticket.EventName</strong></h3>
+        <h5 class="h33"><strong>@Model.Event.Date @Localizer["on"] @Model.Event.Venue.Name</strong></h5>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>@Localizer["Seller"]:</strong> @Model.Ticket.Seller</td>
+                    </tr>
+                    <tr>
+                        <td><strong>@Localizer["Price"]:</strong> @Model.Ticket.Price</td>
+                    </tr>
+                    <tr>
+                        <td><strong>@Localizer["Buyer"]:</strong> @Model.Buyer</td>
+                    </tr>
+                </tbody>
+            </table>
+            @Html.ActionLink("Sent Request", "BuyRequest", "Order",new { }, new { @class = "btn btn-primary" } )
+        </div>
+    </div>
+</div>

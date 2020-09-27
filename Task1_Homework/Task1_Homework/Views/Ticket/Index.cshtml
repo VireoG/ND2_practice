@@ -1,0 +1,60 @@
+﻿@model TicketsViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Tickets"];
+}
+<head>
+    <style type="text/css">
+        h1 {
+            margin-bottom: 15px;
+        }
+
+        body {
+            background: linear-gradient(to top right, #626262, #bbbbbb);
+            min-height: 100%;
+        }
+
+        .btn-primary {
+            background-color: #a94800;
+            border-color: white;
+            box-shadow: 0 0 3px rgba(0,0,0,0.5);
+        }
+
+        .block1 {
+            background-color: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<div class="block1">
+    <h1 align="center">@Localizer["Tickets List"]</h1>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Localizer["Event"]</th>
+                    <th>@Localizer["Price"]</th>
+                    <th>@Localizer["Seller"]</th>
+                    <th>@Localizer["Status"]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var ticket in Model.Tickets)
+                {
+                    <tr>
+                        <td><strong>@ticket.EventName</strong></td>
+                        <td>@ticket.Price </td>
+                        <td>@ticket.Seller </td>
+                        <td>@ticket.Status </td>
+                        <td>
+                            @Html.ActionLink("Buy", "Index", "Order", new { id = ticket.Id, UserName = User.Identity.Name }, new { @class = "btn btn-primary" })
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

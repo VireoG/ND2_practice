@@ -7,12 +7,17 @@ namespace Task1_Homework.Business.Models
 {
     public class OrderList
     {
-        public List<Order> orders = new List<Order>();
+        private readonly List<Order> orders = new List<Order>();
 
         public Order[] GetOrder()
         {
             return orders.ToArray();
         }
 
+        public Order[] AddOrder(Order order)
+        {
+            orders.Add(order);
+            return orders.ToArray();
+        }
     }
 }

@@ -9,13 +9,11 @@ namespace Task1_Homework.Business
     {
         public string Id { get; set; }
 
-        public Event Event { get; set; }
-
         public Ticket Ticket { get; set; }
 
         public TicketSaleStatus Status { get; set; }    
 
-        public string Buyer { get; set; }
+        public User Buyer { get; set; }
 
         public string TrackNumber { get; set; }
     }

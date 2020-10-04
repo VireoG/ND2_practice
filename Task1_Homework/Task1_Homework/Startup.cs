@@ -37,6 +37,8 @@ namespace Task1_Homework
             services.AddSingleton<TicketList>();
             services.AddSingleton<UserList>();
             services.AddSingleton<OrderList>();
+            services.AddSingleton<VenueList>();
+            services.AddSingleton<CityList>();
 
             services.AddLocalization(opts =>
             {

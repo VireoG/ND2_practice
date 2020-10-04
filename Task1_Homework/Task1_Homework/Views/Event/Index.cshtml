@@ -1,86 +1,30 @@
 ﻿@model EventsViewModel
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
 @{
     ViewData["Title"] = Localizer["Events"];
-    Task1_Homework.HtmlHelper.CustomHtmlHelper htmlHelper = new Task1_Homework.HtmlHelper.CustomHtmlHelper();
+
 }
-<head>
-    <style type="text/css">
 
-        body {
-            background: linear-gradient(to top right, #626262, #bbbbbb);
-            min-height: 100%;
-        }
-
-        .block1 {
-            height: 350px;
-            width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 0px;
-            border-color: gray;
-            border-radius: 5px;
-
-        }
-
-        .block2 {
-            width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            background-color: #a94800;
-            border-radius: 20px/11px;
-            border: 1px gray;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .leftimg {
-            border: 3px solid #a94800;
-            float: left;
-            margin-left: 20px;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-        }
-
-        .h11{
-            color: white;            
-        }
-
-        .btn-primary {
-            background-color: #a94800;
-            border-color: white;
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-            box-shadow: 0 0 3px rgba(0,0,0,0.5);
-        }
-
-        .h66 {
-            position: absolute;
-            right: 120px;
-            bottom: 4px;
-        }
-    </style>
-</head>
-<div class="block2">
+<div class="block2ForEvent">
     <h1 align="center" class="h11">@Localizer["List Of Events"]</h1>
     <div class="container-fluid pt-3">
         <div class="row row-cols-4">
             @foreach (var events in Model.Events)
             {
-                <div class="block1">            
+                <div class="block1ForEvent">            
                         <div class="card text-md-center">
                             <h3 align="center">@events.Name</h3>
                             <div class="card-img">
-                                <img src="~/img/@events.Banner" width="165" height="245" vspace="50" hspace="30" class="leftimg" />@htmlHelper.CreateDescription(events.Description)
+                                <img src="~/img/@events.Banner" width="165" height="245" vspace="50" hspace="30" class="leftimg" />@Html.Raw(events.Description)
                                 <div class="card-body">
-                                    <div><h6 class="h66">@events.Date @Localizer["on"] @events.Venue.Name</h6></div>
+                                    <div><h6 class="h66">@events.Date.ToString("MM/dd/yyyy HH:mm") @Localizer["on"] @events.Venue.Name</h6></div>
 
-                                    @Html.ActionLink("Buy Ticket", "Buy", "Event", new { id = events.Id }, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink("Buy Ticket", "Buy", "Event", new { id = events.Id }, new { @class = "btn btn-primary btnforEvList" })
                                 </div>
                             </div>                  
+                        </div>
                 </div>
-            </div>
             }
         </div>
     </div>

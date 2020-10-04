@@ -6,28 +6,6 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
-    <style type="text/css">
-        .footer {
-            background-color: white;
-            width: 100%;
-            margin: auto;
-            clear: both;
-        }
-
-        .navbar-brand {
-            font: 28pt Lucida Handwriting;
-            font-weight: 600;          
-        }
-
-        .marg{
-            margin-right: 10px;
-        }
-        .tx {
-           
-            font-weight: 800;
-        }
-
-    </style>
     @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 </head>
 <body>
@@ -44,7 +22,7 @@
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <strong><a class="nav-link tx text-dark" asp-area="" asp-controller="Event" asp-action="Index">@Localizer["Events"]</a></strong>
-                        </li>                    
+                        </li>
                         <li class="nav-item">
                             <strong><a class="nav-link tx text-dark" asp-area="" asp-controller="Ticket" asp-action="Index">@Localizer["Tickets"]</a></strong>
                         </li>
@@ -60,9 +38,9 @@
     </div>
 
     <footer class="border-top footer text-muted">
-        <div class="container">
+        <div class=" container">
             &copy; @DateTime.Now.Year <a asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer["Privacy"]</a>
-</div>
+        </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

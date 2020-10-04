@@ -12,7 +12,7 @@ namespace Task1_Homework.Business
 
         public string Name { get; set; }
 
-        public string Date { get; set; }
+        public DateTime Date { get; set; }
 
         public int VenueId { get; set; }
 

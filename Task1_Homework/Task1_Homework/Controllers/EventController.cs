@@ -13,12 +13,13 @@ namespace Task1_Homework.Controllers
     public class EventController : Controller
     {
         private readonly EventList eventList;
-        public readonly TicketList ticketList;
-        public EventController(EventList eventList)
+        private readonly TicketList ticketList;
+        public EventController(EventList eventList, TicketList ticketList)
         { 
-            ticketList = new TicketList();
+            this.ticketList = ticketList;
             this.eventList = eventList;
         }
+
         public IActionResult Index()
         {
             var model = new EventsViewModel
@@ -37,15 +38,13 @@ namespace Task1_Homework.Controllers
             return View("Buy", events);
         }
 
-        public List<Ticket> Confirm(int id)
+        private List<Ticket> Confirm(int id)
         {
-            var selected = from ticket in ticketList.tickets
+            var selected = from ticket in ticketList.GetTicket()
                            where ticket.EventId == id
                            select ticket;
 
             return selected.ToList();
         }
-
-
     }
 }

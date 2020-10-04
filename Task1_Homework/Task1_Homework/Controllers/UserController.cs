@@ -19,11 +19,11 @@ namespace Task1_Homework.Controllers
     public class UserController : Controller
     {
         private readonly UserList userList;
-        public readonly TicketList ticketList;
-        private string Pass { get; set; } 
-        public UserController(UserList userList)
+        private readonly TicketList ticketList;
+
+        public UserController(UserList userList, TicketList ticketList)
         {
-            ticketList = new TicketList();
+            this.ticketList = ticketList;
             this.userList = userList;
         }
 
@@ -92,7 +92,7 @@ namespace Task1_Homework.Controllers
         public IActionResult Profile(User model)
         {
 
-            var selectedUsers = from user in userList.users
+            var selectedUsers = from user in userList.GetUser()
                            where user.FirstName == User.Identity.Name 
                            select user;
 
@@ -107,10 +107,10 @@ namespace Task1_Homework.Controllers
             return View("Profile", model);
         }
 
-        public List<Ticket> UserTickets(User model)
+        private List<Ticket> UserTickets(User model)
         {
-            var selectedTickets = from ticket in ticketList.tickets
-                                  where ticket.Seller == model.FirstName
+            var selectedTickets = from ticket in ticketList.GetTicket()
+                                  where ticket.Seller.FirstName == model.FirstName
                                   select ticket;
 
             return selectedTickets.ToList();

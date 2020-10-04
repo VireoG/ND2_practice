@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Task1_Homework.Business;
 using Task1_Homework.Business.Models;
@@ -11,45 +12,50 @@ namespace Task1_Homework.Controllers
 {
     public class OrderController : Controller
     {
-        private TicketList ticketList;
-        private EventList eventList;
-        public OrderList orderList = new OrderList();
-        public Order order = new Order();
+        private readonly TicketList ticketList;
+        private readonly EventList eventList;
+        private readonly OrderList orderList;
+        private readonly Order order;
+        private readonly UserList userList;
 
-        public OrderController()
+        public OrderController(OrderList orderList,TicketList ticketList, EventList eventList, UserList userList)
         {
-            ticketList = new TicketList();
-            eventList = new EventList();
+            this.orderList = orderList;
+            order = new Order();
+            this.ticketList = ticketList;
+            this.eventList = eventList;
+            this.userList = userList;
         }
 
-        public IActionResult Index([FromRoute] int id, string UserName)
-        {
-            var selectedTicket = from ticket in ticketList.tickets
-                           where ticket.Id == id
-                           select ticket;
+        [Authorize]
+        public IActionResult Index([FromRoute] int id)
+        {        
+            order.Ticket = ticketList.GetTicketById(id);
 
-            order.Ticket = selectedTicket.ElementAt(0);
-            order.Buyer = UserName;
+            foreach (var user in userList.GetUser())
+            {
+                if (user.FirstName == User.Identity.Name)
+                {
+                    order.Buyer = user;
+                }
+            }
 
-            var selectedEvent = from eventt in eventList.events
-                           where eventt.Name == order.Ticket.EventName
-                           select eventt;
+            orderList.AddOrder(order);
 
-            order.Event = selectedEvent.ElementAt(0);
-            orderList.orders.Add(order);
             return View(order);
         }
 
+        [Authorize]
         public IActionResult BuyRequest()
-        {
-            
+        {            
             return View();
         }
 
+        [Authorize]
         public IActionResult SalesRequests()
         {
-             var selected = from orders in orderList.orders
-                            where orders.Ticket.Seller == User.Identity.Name
+            var selected = from orders in orderList.GetOrder()
+                           where orders.Ticket.Seller.FirstName == User.Identity.Name
                            select orders;
 
             var model = new OrderViewModel

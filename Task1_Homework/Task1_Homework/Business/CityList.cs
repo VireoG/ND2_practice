@@ -7,7 +7,7 @@ namespace Task1_Homework.Business
 {
     public class CityList
     {
-        public List<City> cities = new List<City>();
+        private List<City> cities = new List<City>();
         public CityList()
         {
             cities.AddRange(

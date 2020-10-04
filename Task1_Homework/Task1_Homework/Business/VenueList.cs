@@ -7,7 +7,7 @@ namespace Task1_Homework.Business
 {
     public class VenueList
     {
-        public List<Venue> venues = new List<Venue>();
+        private readonly List<Venue> venues = new List<Venue>();
         public VenueList()
         {
             venues.AddRange(
@@ -29,12 +29,12 @@ namespace Task1_Homework.Business
                 });
         }
 
-        public Venue[] GetCity()
+        public Venue[] GetVenue()
         {
             return venues.ToArray();
         }
 
-        public Venue GetCityById(int id)
+        public Venue GetVenueById(int id)
         {
             return venues.FirstOrDefault(c => c.Id == id);
         }

@@ -4,24 +4,6 @@
     ViewData["Title"] = "SalesRequest";
 }
 
-<head>
-    <style type="text/css">
-
-        body {
-            background: linear-gradient(to top right, #626262, #bbbbbb);
-            min-height: 100%;
-        }
-
-        .block1 {
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 0 6px rgba(0,0,0,0.5);
-        }
-
-    
-    </style>
-</head>
-
 <h1>@Localizer["Your requests for sale"]</h1>
 <div class="block1">
 <table class="table">
@@ -32,21 +14,22 @@
             <th>@Localizer["Buyer"]</th>
             <th>@Localizer["Status"]</th>
             <th></th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var order in Model.Orders)
         {
             <tr>
-                <td>@order.Event.Name</td>
+                <td>@order.Ticket.Event.Name</td>
                 <td>@order.Ticket.Price</td>
-                <td>@order.Buyer</td>
+                <td>@order.Buyer.FirstName</td>
                 <td>@order.Status</td>
                 <td>
-                    @Html.ActionLink("Accept", "Index", "Order", new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Accept", "Index", "Home", new { @class = "btn btn-primary" })
                 </td>
                 <td>
-                    @Html.ActionLink("Reject", "Index", "Order", new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Reject", "Index", "Home", new { @class = "btn btn-primary" })
                 </td>
             </tr>
         }

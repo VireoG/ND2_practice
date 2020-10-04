@@ -8,7 +8,7 @@ namespace Task1_Homework.Business
 {
     public class UserList
     {
-        public List<User> users = new List<User>();
+        private readonly List<User> users = new List<User>();
    
         public UserList()
         {

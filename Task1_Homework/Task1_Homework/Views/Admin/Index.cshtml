@@ -1,0 +1,7 @@
+﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Admin Page"];
+}
+
+<h1 class="alert-warning" align="Center">!!!@Localizer["Warning, this is protected area"]!!!</h1>

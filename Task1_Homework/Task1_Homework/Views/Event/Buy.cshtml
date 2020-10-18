@@ -1,0 +1,44 @@
+﻿@model Task1_Homework.Business.Event
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@{
+    ViewData["Title"] = Localizer["Buy"];
+}
+
+<h1>@Localizer["Event Page"]</h1>
+<div class="block1">
+    <div class="block2fBuy">
+    <h3 align="center">@Model.Name</h3>
+    <h6 align="center">@Model.Date @Localizer["on"] @Model.Venue.Name</h6>
+    <div>
+        <img src="~/img/@Model.Banner" width="270" height="420" vspace="50" hspace="30" class="leftimg" />
+        @Html.Raw(Model.Description)
+    </div>
+</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Localizer["Price"]</th>
+                <th>@Localizer["Seller"]</th>
+                <th>@Localizer["Status"]</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var ticket in Model.Tickets)
+            {
+            <tr>
+                <td>@ticket.Price</td>
+                <td>@ticket.Seller.FirstName</td>
+                <td>@ticket.Status</td>
+                <td>
+                    @Html.ActionLink("Buy", "Index", "Order", new { id = ticket.Id, UserName = User.Identity.Name }, new { @class = "btn btn-primary" })
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+

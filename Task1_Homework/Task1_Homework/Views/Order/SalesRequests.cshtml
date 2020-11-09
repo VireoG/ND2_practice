@@ -23,7 +23,7 @@
             <tr>
                 <td>@order.Ticket.Event.Name</td>
                 <td>@order.Ticket.Price</td>
-                <td>@order.Buyer.FirstName</td>
+                <td>@order.Buyer.UserName</td>
                 <td>@order.Status</td>
                 <td>
                     @Html.ActionLink("Accept", "Index", "Home", new { @class = "btn btn-primary" })

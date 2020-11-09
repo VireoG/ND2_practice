@@ -16,6 +16,5 @@ namespace Task1_Homework.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public string ReturnUrl { get; set; }
     }
 }

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Task1_Homework.Business;
+using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Models;
 using Task1_Homework.Models;
 
@@ -12,35 +13,35 @@ namespace Task1_Homework.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly TicketList ticketList;
-        private readonly EventList eventList;
-        private readonly OrderList orderList;
+        private readonly ResaleContext context;
         private readonly Order order;
-        private readonly UserList userList;
+        private readonly TicketService ticketService;
+        private readonly OrderService orderService;
 
-        public OrderController(OrderList orderList,TicketList ticketList, EventList eventList, UserList userList)
+
+
+        public OrderController(ResaleContext context)
         {
-            this.orderList = orderList;
+            orderService = new OrderService(context);
+            ticketService = new TicketService(context);
+            this.context = context;
             order = new Order();
-            this.ticketList = ticketList;
-            this.eventList = eventList;
-            this.userList = userList;
         }
 
         [Authorize]
         public IActionResult Index([FromRoute] int id)
         {        
-            order.Ticket = ticketList.GetTicketById(id);
+            order.Ticket = ticketService.GetTicketById(id).Result;
 
-            foreach (var user in userList.GetUser())
+            foreach (var user in context.Users)
             {
-                if (user.FirstName == User.Identity.Name)
+                if (user.UserName == User.Identity.Name)
                 {
                     order.Buyer = user;
                 }
             }
 
-            orderList.AddOrder(order);
+            orderService.AddOrder(order);
 
             return View(order);
         }
@@ -54,13 +55,13 @@ namespace Task1_Homework.Controllers
         [Authorize]
         public IActionResult SalesRequests()
         {
-            var selected = from orders in orderList.GetOrder()
-                           where orders.Ticket.Seller.FirstName == User.Identity.Name
+            var selected = from orders in context.Orders
+                           where orders.Ticket.Seller.UserName == User.Identity.Name
                            select orders;
 
             var model = new OrderViewModel
             {
-                Orders = orderList.GetOrder()
+                Orders = context.Orders.ToArray()
             };
             
             return View(model);

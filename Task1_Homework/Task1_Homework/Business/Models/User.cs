@@ -1,31 +1,19 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Task1_Homework.Business.Database;
 
 namespace Task1_Homework.Business
 {
-    public class User
+    public class User : IdentityUser
     {
-        public int Id { get; set; }
+        public byte[] Avatar { get; set; }
 
-        public string FirstName { get; set; }
+        public ICollection<Order> Orders { get; set; }
 
-        public string LastName { get; set; }
-
-        public string Password { get; set; }
-
-        public string Avatar { get; set; }
-
-        public string Role { get; set; }
-
-        public string Localization { get; set; }
-
-        public string Adress { get; set; }
-
-        public string PhoneNumber { get; set; }
-
-        public List<Order> Orders { get; set; }
-        public List<Ticket> Tickets { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

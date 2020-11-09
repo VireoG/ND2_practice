@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = Localizer["Events"];
-
 }
 
 <div class="block2ForEvent">
@@ -11,21 +10,27 @@
     <div class="container-fluid pt-3">
         <div class="row row-cols-4">
             @foreach (var events in Model.Events)
-            {
-                <div class="block1ForEvent">            
-                        <div class="card text-md-center">
-                            <h3 align="center">@events.Name</h3>
-                            <div class="card-img">
-                                <img src="~/img/@events.Banner" width="165" height="245" vspace="50" hspace="30" class="leftimg" />@Html.Raw(events.Description)
-                                <div class="card-body">
-                                    <div><h6 class="h66">@events.Date.ToString("MM/dd/yyyy HH:mm") @Localizer["on"] @events.Venue.Name</h6></div>
-
-                                    @Html.ActionLink("Buy Ticket", "Buy", "Event", new { id = events.Id }, new { @class = "btn btn-primary btnforEvList" })
-                                </div>
-                            </div>                  
+             {
+            <div class="block1ForEvent">            
+                <div class="card text-md-center">
+                    <h3 align="center">@events.Name</h3>
+                    <div class="card-img">
+                        <img src="~/img/@events.Banner" width="165" height="245" vspace="50" hspace="30" class="leftimg" />@Html.Raw(events.Description)
+                        <div class="card-body">
+                            <div><h6 class="h66">@events.Date.ToString("MM/dd/yyyy HH:mm") @Localizer["on"] @events.Venue.Name</h6></div>
+                            @Html.ActionLink("Buy Ticket", "Buy", "Event", new { id = events.Id }, new { @class = "btn btn-primary btnforEvList" })
                         </div>
+                    </div>
                 </div>
-            }
+                @if (User.IsInRole("Administrator"))
+                 {
+                    @Html.ActionLink("Edit", "Edit", "Event", new { id = events.Id }, new { @class = "btnft btn btn-primary btnsg2" })
+
+                    @Html.ActionLink("Delete", "Delete", "Event", new { id = events.Id }, new { @class = "btn btn-primary btn-danger btnsg2" })
+
+                 }
+            </div>
+             }
         </div>
     </div>
 </div>

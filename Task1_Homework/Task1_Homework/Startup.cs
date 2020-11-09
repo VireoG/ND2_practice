@@ -4,15 +4,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.Razor;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Localization;
 using Task1_Homework.Business;
+using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Models;
+using Microsoft.AspNetCore.Antiforgery;
 
 namespace Task1_Homework
 {
@@ -28,31 +32,73 @@ namespace Task1_Homework
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddControllersWithViews()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
                 .AddDataAnnotationsLocalization();
-  
-
-            services.AddSingleton<EventList>();
-            services.AddSingleton<TicketList>();
-            services.AddSingleton<UserList>();
-            services.AddSingleton<OrderList>();
-            services.AddSingleton<VenueList>();
-            services.AddSingleton<CityList>();
 
             services.AddLocalization(opts =>
             {
                 opts.ResourcesPath = "Resources";
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-              .AddCookie(opts =>
-              {
-                  opts.LoginPath = "/User/Login";
-                  opts.AccessDeniedPath = "/User/Login";
-                  opts.Cookie.Name = "TicketShopPortalCookie";
-              });
+            services.AddScoped<EventService>();
+            services.AddScoped<CityService>();
+            services.AddScoped<UserService>();
+            services.AddScoped<TicketService>();
+            services.AddScoped<OrderService>();
+            services.AddScoped<VenueService>();
+
+            services.AddDbContext<ResaleContext>(o =>
+            {
+                o.UseSqlServer(Configuration.GetConnectionString("ResaleConnection"))
+                    .EnableSensitiveDataLogging(); 
+            });
+
+            services.AddDefaultIdentity<User>()
+                 .AddRoles<IdentityRole>().AddEntityFrameworkStores<ResaleContext>();
+
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                // Password settings.
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireNonAlphanumeric = true;
+                options.Password.RequireUppercase = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequiredUniqueChars = 1;
+
+                // Lockout settings.
+                options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(5);
+                options.Lockout.MaxFailedAccessAttempts = 5;
+                options.Lockout.AllowedForNewUsers = true;
+
+                // User settings.
+                options.User.AllowedUserNameCharacters =
+                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = false;
+            });
+
+            services.Configure<AntiforgeryOptions>(opts =>
+            {
+                opts.FormFieldName = "StoreSecretInput";
+                opts.HeaderName = "X-CSRF-TOKEN";
+                opts.SuppressXFrameOptionsHeader = false;
+            });
+
+            services.ConfigureApplicationCookie(options =>
+            {
+                // Cookie settings
+                options.Cookie.HttpOnly = true;
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+
+                options.LoginPath = "/Identity/Account/Login";
+                options.AccessDeniedPath = "/Identity/Account/AccessDenied";
+                options.SlidingExpiration = true;
+            });
         }
+    
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -70,7 +116,7 @@ namespace Task1_Homework
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
-            var supportedLocales = new[] { "en-US", "ru" };
+            var supportedLocales = new[] { "en-US", "ru", "zh"};
 
             var localizationOptions = new RequestLocalizationOptions()
                 .SetDefaultCulture(supportedLocales[0])
@@ -86,6 +132,7 @@ namespace Task1_Homework
  
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Event}/{action=Index}/{id?}");

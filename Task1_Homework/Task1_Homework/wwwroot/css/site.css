@@ -14,13 +14,12 @@ a {
 
 .btn-primary {
     color: #fff;
-    background-color: #a94800;
+    background-color: steelblue;
     border-color: white;
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
 .btnforEvList {
-    background-color: #a94800;
     border-color: white;
     position: absolute;
     right: 10px;
@@ -28,8 +27,12 @@ a {
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
+
+.btnft {
+    margin-right: 4px;
+}
+
 .btnforBuy {
-    background-color: #a94800;
     border-color: white;
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
     margin-bottom: 10px;
@@ -110,6 +113,7 @@ somediv {
     font-weight: 600;
 }
 
+
 .marg {
     margin-right: 10px;
 }
@@ -153,10 +157,21 @@ h1 {
     box-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
 
+.btnsg {
+    margin-bottom: 5px;
+}
+
+.btnsg2 {
+    margin-top: 5px;
+}
 .block1 {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 6px rgba(0,0,0,0.5);
+}
+
+.blockback {
+    background-color: white;
 }
 
 .block2 {

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Task1_Homework.Migrations
 {
-    public partial class Identity : Migration
+    public partial class Init : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -39,7 +39,8 @@ namespace Task1_Homework.Migrations
                     TwoFactorEnabled = table.Column<bool>(nullable: false),
                     LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
                     LockoutEnabled = table.Column<bool>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false)
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    Avatar = table.Column<byte[]>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -52,7 +53,8 @@ namespace Task1_Homework.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: true),
+                    Country = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -217,8 +219,6 @@ namespace Task1_Homework.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EventId = table.Column<int>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
-                    SellerId1 = table.Column<int>(nullable: false),
-                    SellerName = table.Column<string>(nullable: true),
                     SellerId = table.Column<string>(nullable: true),
                     Status = table.Column<int>(nullable: false)
                 },

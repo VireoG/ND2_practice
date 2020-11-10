@@ -3,27 +3,41 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Task1_Homework.Business.Models;
 
 namespace Task1_Homework.Business.Database
 {
     public class DataSeeder
     {
         private readonly ResaleContext context;
+        private readonly UserManager<User> userManager;
+        private readonly RoleManager<IdentityRole> roleManager;
 
-        private static readonly List<Event> events = new List<Event>();
+        private readonly List<Event> events = new List<Event>();
 
-        private static readonly List<Venue> venues = new List<Venue>();
+        private readonly List<Venue> venues = new List<Venue>();
 
-        private static readonly List<City> cities = new List<City>();
+        private readonly List<City> cities = new List<City>();
 
-        private static readonly List<Ticket> tickets = new List<Ticket>();
+        private readonly List<Ticket> tickets = new List<Ticket>();
 
-        private static readonly List<Order> orders = new List<Order>();
+        private readonly List<Order> orders = new List<Order>();
 
-        public DataSeeder(ResaleContext context)
+        private readonly List<User> users = new List<User>();
+        
+        public DataSeeder(ResaleContext context, UserManager<User> userManager, RoleManager<IdentityRole> roleManager)
         {
             this.context = context;
+            this.userManager = userManager;
+            this.roleManager = roleManager;
+            
+            users.AddRange(
+                new []
+                {
+                    new User {UserName = "user1", Email = "user1@example.com"},
+                    new User {UserName = "user2", Email = "user2@example.com"},
+                    new User {UserName = "admin", Email = "admin@example.com"},
+                });
+            
             cities.AddRange(
                    new[]
                    {
@@ -94,39 +108,32 @@ namespace Task1_Homework.Business.Database
             tickets.AddRange(
                 new[]
                 {
-                     new Ticket { Event = events[0], Price = 100, SellerName = "user2@mail.ru", Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[1], Price = 110, SellerName= "user2@mail.ru",  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[0], Price = 110, SellerName= "user2@mail.ru", Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[1], Price = 120, SellerName= "user2@mail.ru", Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[7], Price = 120, SellerName= "user2@mail.ru", Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[3], Price = 220, SellerName= "user2@mail.ru", Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[6], Price = 130,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[3], Price = 130,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[4], Price = 180,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[3], Price = 110,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[0], Price = 360,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[4], Price = 180,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[8], Price = 206,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[3], Price = 120,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[4], Price = 160,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[8], Price = 230,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[5], Price = 100,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[6], Price = 610,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[5], Price = 410,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[8], Price = 120,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[8], Price = 120,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[7], Price = 420,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[7], Price = 130,  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[8], Price = 730,  Status = TicketSaleStatus.Sale },
+                     new Ticket { Event = events[0], Price = 100, Seller = users[1], Status = TicketSaleStatus.Sale },
+                     new Ticket { Event = events[1], Price = 110, Seller = users[1],  Status = TicketSaleStatus.Sale },
+                     new Ticket { Event = events[0], Price = 110, Seller = users[1], Status = TicketSaleStatus.Sale },
+                     new Ticket { Event = events[1], Price = 120, Seller = users[1], Status = TicketSaleStatus.Sale },
+                     new Ticket { Event = events[7], Price = 120, Seller = users[1], Status = TicketSaleStatus.Sale },
+                     new Ticket { Event = events[3], Price = 220, Seller = users[1], Status = TicketSaleStatus.Sale },
                 });
-
-
-
         }
 
         public async Task SeedDataAsync()
         {
-            await context.Database.EnsureCreatedAsync();
+            if (await roleManager.FindByNameAsync("Administrator") == null)
+            {
+                await roleManager.CreateAsync(new IdentityRole {Name = "Administrator"});
+                await roleManager.CreateAsync(new IdentityRole {Name = "User"});
+                
+                await userManager.CreateAsync(users[0], "user");
+                await userManager.AddToRoleAsync(users[0], "User");
+                
+                await userManager.CreateAsync(users[1], "user");
+                await userManager.AddToRoleAsync(users[1], "User");
+                
+                await userManager.CreateAsync(users[2], "admin");
+                await userManager.AddToRoleAsync(users[2], "Administrator");
+            }
+            
             if (!context.Events.Any())
             {
                 await context.Events.AddRangeAsync(events);

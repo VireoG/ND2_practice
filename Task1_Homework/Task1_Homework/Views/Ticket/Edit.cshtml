@@ -25,9 +25,9 @@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="SellerId1" class="control-label"></label>
-                <select asp-for="SellerId1" class="form-control" asp-items="@ViewBag.Users"></select>
-                <span asp-validation-for="SellerId1" class="text-danger"></span>
+                <label asp-for="SellerId" class="control-label"></label>
+                <select asp-for="SellerId" class="form-control" asp-items="@ViewBag.Users"></select>
+                <span asp-validation-for="SellerId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" asp-action="Edit" class="btn btn-primary" />

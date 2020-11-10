@@ -10,8 +10,8 @@ using Task1_Homework.Business.Database;
 namespace Task1_Homework.Migrations
 {
     [DbContext(typeof(ResaleContext))]
-    [Migration("20201025200059_Identity")]
-    partial class Identity
+    [Migration("20201110103011_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -163,6 +163,9 @@ namespace Task1_Homework.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Country")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
@@ -244,12 +247,6 @@ namespace Task1_Homework.Migrations
                     b.Property<string>("SellerId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("SellerId1")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SellerName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
@@ -269,6 +266,9 @@ namespace Task1_Homework.Migrations
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
+
+                    b.Property<byte[]>("Avatar")
+                        .HasColumnType("varbinary(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

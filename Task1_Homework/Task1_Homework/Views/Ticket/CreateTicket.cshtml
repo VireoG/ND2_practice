@@ -1,4 +1,4 @@
-﻿@model Task1_Homework.Business.Ticket
+﻿@model TicketCreateViewModel
 
 @{
     ViewData["Title"] = "CreateTicket";
@@ -14,14 +14,10 @@
         <div class="block1 blockback">
             <form asp-action="CreateTicket">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @Html.HiddenFor(m => m.Id)
+                @Html.HiddenFor(m => m.EventId)
                 <div class="form-group">
-                    <label asp-for="Event.Name" class="control-label"><strong>Event</strong></label>
-                    @Model.Event.Name
-                </div>
-                <div class="form-group">
-                    <label asp-for="Seller.UserName" class="control-label"><strong>Seller</strong></label>
-                    @Model.Seller.UserName
+                    <label asp-for="EventName" class="control-label"><strong>Event</strong></label>
+                    @Model.EventName
                 </div>
                 <div class="form-group">
                     <label asp-for="Price" class="control-label"></label>

@@ -54,7 +54,7 @@ namespace Task1_Homework.Controllers
         private List<Ticket> UserTickets(User model)
         {
             var selectedTickets = from ticket in ticketService.GetTickets().Result.ToArray()
-                                  where ticket.SellerName == model.UserName
+                                  where ticket.Seller.UserName == model.UserName
                                   select ticket;
 
             return selectedTickets.ToList();
@@ -66,10 +66,10 @@ namespace Task1_Homework.Controllers
 
             byte[] imageData = null;
            
-            using (var binaryReader = new BinaryReader(pvm.Avatar.OpenReadStream()))
-            {
-                imageData = binaryReader.ReadBytes((int)pvm.Avatar.Length);
-            }
+            // using (var binaryReader = new BinaryReader(pvm.Avatar.OpenReadStream()))
+            // {
+            //     imageData = binaryReader.ReadBytes((int)pvm.Avatar.Length);
+            // }
      
             user.Avatar = imageData;
 

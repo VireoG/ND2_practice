@@ -30,7 +30,7 @@
             {
                 <tr>
                     <td>@ticket.Price</td>
-                    <td>@ticket.SellerName</td>
+                    <td>@ticket.Seller.UserName</td>
                     <td>@ticket.Status</td>
                     <td>
                         @Html.ActionLink("Buy", "Index", "Order", new { id = ticket.Id, UserName = User.Identity.Name }, new { @class = "btn btn-primary" })

@@ -6,8 +6,8 @@ using Task1_Homework.Business;
 
 namespace Task1_Homework.Models
 {
-    public class TicketsViewModel
+    public class VenueViewModel
     {
-        public Ticket[] Tickets { get; set; }
+        public Venue[] Venues { get; set; }
     }
 }

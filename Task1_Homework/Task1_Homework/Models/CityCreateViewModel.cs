@@ -6,15 +6,11 @@ using System.Threading.Tasks;
 
 namespace Task1_Homework.Models
 {
-    public class LoginViewModel
+    public class CityCreateViewModel
     {
         [Required]
-        [Display(Name = "User name")]
-        public string UserName { get; set; }
-
+        public string Name { get; set; }
         [Required]
-        [DataType(DataType.Password)]
-        public string Password { get; set; }
-
+        public string Country { get; set; }
     }
 }

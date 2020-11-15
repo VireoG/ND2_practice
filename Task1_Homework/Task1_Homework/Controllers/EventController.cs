@@ -45,18 +45,13 @@ namespace Task1_Homework.Controllers
         public async Task<IActionResult> Buy([FromRoute] int id)
         {
             var events = eventService.GetEventById(id).Result;
-            events.Tickets = await Confirm(id);
+    
+            var selected = from ticket in await ticketService.GetTickets()
+                           where ticket.EventId == id && ticket.Seller.UserName != User.Identity.Name
+                           select ticket;
+            events.Tickets = selected.ToArray();
 
             return View("Buy", events);
-        }
-
-        private async Task<List<Ticket>> Confirm(int id)
-        {
-            var selected = from ticket in await ticketService.GetTickets()
-                           where ticket.EventId == id
-                           select ticket;
-
-            return selected.ToList();
         }
 
         [Authorize(Roles = "Administrator")]
@@ -81,10 +76,9 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                Event eventt = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
-                return View(eventt);
+                Event eventt = await eventService.GetEventById(id);
+                return PartialView("_Delete", eventt);
             }
-
             return NotFound();
         }
 
@@ -93,11 +87,10 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                var ev = await context.Events.FirstOrDefaultAsync(e => e.Id == id);
+                var ev = await eventService.GetEventById(id);
                 if (ev != null)
                 {
-                    context.Events.Remove(ev);
-                    await context.SaveChangesAsync();
+                    await eventService.Delete(ev);
                     return RedirectToAction("Index");
                 }
             }

@@ -10,11 +10,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Task1_Homework.Business;
 using Task1_Homework.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using Task1_Homework.Business.Models;
 using Microsoft.AspNetCore.Authorization;
 using Task1_Homework.Business.Database;
 using System.IO;
+using Microsoft.AspNetCore.Identity;
 
 namespace Task1_Homework.Controllers
 {
@@ -22,55 +24,45 @@ namespace Task1_Homework.Controllers
     {
         private readonly UserService userService;
         private readonly ResaleContext context;
+        private readonly UserManager<User> userManager;
         private readonly TicketService ticketService;
 
 
-        public UserController(ResaleContext context)
+        public UserController(ResaleContext context, UserManager<User> userManager)
         {
-            userService = new UserService(context);
+            userService = new UserService(context, userManager);
             this.context = context;
+            this.userManager = userManager;
             ticketService = new TicketService(context);
         }
 
         [Authorize]
-        public IActionResult Profile()
-        {                 
-            var selectedUsers = from user in context.Users
-                           where user.UserName == User.Identity.Name
-                           select user;
-
-            User model = selectedUsers.SingleOrDefault();
-
-            model.Tickets = UserTickets(model);
-
-            return View("Profile", model);
-        }
-
-        public IActionResult EditProfile()
+        public async Task<IActionResult> Profile()
         {
-            return View("EditProfile");
-        }
+            var model = await userService.GetUserByIdentityName(User.Identity.Name);
+            model.Tickets = userService.UserTickets(model);
 
-        private List<Ticket> UserTickets(User model)
-        {
-            var selectedTickets = from ticket in ticketService.GetTickets().Result.ToArray()
-                                  where ticket.Seller.UserName == model.UserName
-                                  select ticket;
+            if (model != null)
+            {
+                var uvm = new UserViewModel
+                {
+                    Id = model.Id,
+                    UserName = model.UserName,
+                    Avatar = model.Avatar,
+                    Tickets = model.Tickets
+                };
+                return View("Profile", uvm);
+            }
 
-            return selectedTickets.ToList();
+            return NotFound();
         }
 
         public async Task<IActionResult> ChangeAvatar([FromRoute] string id)
         {
-            var user = userService.GetUserById(id);
+            var user = userService.GetUserById(id).Result;
 
             byte[] imageData = null;
-           
-            // using (var binaryReader = new BinaryReader(pvm.Avatar.OpenReadStream()))
-            // {
-            //     imageData = binaryReader.ReadBytes((int)pvm.Avatar.Length);
-            // }
-     
+          
             user.Avatar = imageData;
 
             await userService.SaveChanges(user);

@@ -5,12 +5,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Task1_Homework.Business.Database;
+using Task1_Homework.Business.Services;
 
 namespace Task1_Homework.Business.Models
 {
-    public class TicketService
+    public class TicketService : ICRUD<Ticket>
     {
-        private readonly List<Ticket> tickets = new List<Ticket>();
         private readonly ResaleContext context;
 
         public TicketService(ResaleContext context)
@@ -23,22 +23,25 @@ namespace Task1_Homework.Business.Models
             var ticket = context.Tickets
                .Include(t => t.Seller)
                .Include(t => t.Event)
-               .ThenInclude(te => te.Venue);
+               .ThenInclude(te => te.Venue)
+               .ThenInclude(tec => tec.City);
+
             return await ticket.ToArrayAsync();
         }
 
-        public async Task<Ticket> GetTicketById(int id)
+        public async Task<Ticket> GetTicketById(int? id)
         {
             var ticket = await GetTicket(id);
             return ticket;
         }
 
-        private async Task<Ticket> GetTicket(int id)
+        private async Task<Ticket> GetTicket(int? id)
         {
             var ticket = await context.Tickets
                 .Include(t => t.Seller)
                 .Include(t => t.Event)
                 .ThenInclude(te => te.Venue)
+                .ThenInclude(tec => tec.City)
                 .SingleOrDefaultAsync(t => t.Id == id);
             return ticket;
         }
@@ -53,6 +56,12 @@ namespace Task1_Homework.Business.Models
         public async Task EditSave(Ticket model)
         {
             context.Tickets.Update(model);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task Delete(Ticket model)
+        {
+            context.Tickets.Remove(model);
             await context.SaveChangesAsync();
         }
     }

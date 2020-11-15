@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Task1_Homework.Business.Models;
 
 namespace Task1_Homework.Business.Database
 {
@@ -41,12 +42,12 @@ namespace Task1_Homework.Business.Database
             cities.AddRange(
                    new[]
                    {
-                       new City { Name = "Minsk" },
-                       new City { Name = "Moscow" },
-                       new City { Name = "London" },
-                       new City { Name = "New-York" },
-                       new City { Name = "Tokyo" },
-                       new City { Name = "Homel" },
+                       new City { Name = "Minsk" , Country = "Belarus"},
+                       new City { Name = "Moscow", Country = "Russia" },
+                       new City { Name = "London", Country = "Great Britain" },
+                       new City { Name = "New-York", Country = "USA" },
+                       new City { Name = "Tokyo", Country = "Japan"},
+                       new City { Name = "Homel", Country = "Belarus" },
                    });
 
             venues.AddRange(
@@ -108,12 +109,12 @@ namespace Task1_Homework.Business.Database
             tickets.AddRange(
                 new[]
                 {
-                     new Ticket { Event = events[0], Price = 100, Seller = users[1], Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[1], Price = 110, Seller = users[1],  Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[0], Price = 110, Seller = users[1], Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[1], Price = 120, Seller = users[1], Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[7], Price = 120, Seller = users[1], Status = TicketSaleStatus.Sale },
-                     new Ticket { Event = events[3], Price = 220, Seller = users[1], Status = TicketSaleStatus.Sale },
+                     new Ticket { Event = events[0], Price = 100, Seller = users[1] },
+                     new Ticket { Event = events[1], Price = 110, Seller = users[1] },
+                     new Ticket { Event = events[0], Price = 110, Seller = users[1] },
+                     new Ticket { Event = events[1], Price = 120, Seller = users[1] },
+                     new Ticket { Event = events[7], Price = 120, Seller = users[1] },
+                     new Ticket { Event = events[3], Price = 220, Seller = users[1] },
                 });
         }
 
@@ -121,19 +122,19 @@ namespace Task1_Homework.Business.Database
         {
             if (await roleManager.FindByNameAsync("Administrator") == null)
             {
-                await roleManager.CreateAsync(new IdentityRole {Name = "Administrator"});
-                await roleManager.CreateAsync(new IdentityRole {Name = "User"});
-                
+                await roleManager.CreateAsync(new IdentityRole { Name = "Administrator" });
+                await roleManager.CreateAsync(new IdentityRole { Name = "User" });
+
                 await userManager.CreateAsync(users[0], "user");
                 await userManager.AddToRoleAsync(users[0], "User");
-                
+
                 await userManager.CreateAsync(users[1], "user");
                 await userManager.AddToRoleAsync(users[1], "User");
-                
+
                 await userManager.CreateAsync(users[2], "admin");
                 await userManager.AddToRoleAsync(users[2], "Administrator");
             }
-            
+
             if (!context.Events.Any())
             {
                 await context.Events.AddRangeAsync(events);

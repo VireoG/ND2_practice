@@ -9,6 +9,7 @@ namespace Task1_Homework.Business
     {
         Sale,
         Confirmation,
-        Sold
+        Sold,
+        Rejected
     }
 }

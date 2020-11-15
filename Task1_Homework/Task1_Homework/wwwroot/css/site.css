@@ -27,6 +27,10 @@ a {
     box-shadow: 0 0 3px rgba(0,0,0,0.5);
 }
 
+.text-right {
+    margin-right: 15px;
+    margin-bottom: 8px;
+}
 
 .btnft {
     margin-right: 4px;
@@ -168,6 +172,11 @@ h1 {
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 6px rgba(0,0,0,0.5);
+}
+
+.blockaccept{
+    margin-left: 20px;
+
 }
 
 .blockback {

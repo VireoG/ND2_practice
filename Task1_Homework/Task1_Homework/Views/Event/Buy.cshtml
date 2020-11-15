@@ -14,14 +14,14 @@
             @Html.Raw(Model.Description)
         </div>
     </div>
+    <div class="text-right">
     @Html.ActionLink("Sell Ticket", "CreateTicket", "Ticket", new { id = Model.Id }, new { @class = "btn btn-primary" })
+    </div>
     <table class="table">
         <thead>
             <tr>
                 <th>@Localizer["Price"]</th>
                 <th>@Localizer["Seller"]</th>
-                <th>@Localizer["Status"]</th>
-                <th></th>
                 <th></th>
             </tr>
         </thead>
@@ -31,12 +31,8 @@
                 <tr>
                     <td>@ticket.Price</td>
                     <td>@ticket.Seller.UserName</td>
-                    <td>@ticket.Status</td>
                     <td>
-                        @Html.ActionLink("Buy", "Index", "Order", new { id = ticket.Id, UserName = User.Identity.Name }, new { @class = "btn btn-primary" })
-                    </td>
-                    <td>
-                        @Html.ActionLink("Edit", "Edit", "Ticket", new { id = ticket.Id, }, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Buy", "Create", "Order", new { id = ticket.Id}, new { @class = "btn btn-primary" })
                     </td>
                 </tr>
             }

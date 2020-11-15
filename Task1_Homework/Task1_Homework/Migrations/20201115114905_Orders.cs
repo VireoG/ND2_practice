@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Task1_Homework.Migrations
 {
-    public partial class Init : Migration
+    public partial class Orders : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -219,8 +219,7 @@ namespace Task1_Homework.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     EventId = table.Column<int>(nullable: false),
                     Price = table.Column<decimal>(nullable: false),
-                    SellerId = table.Column<string>(nullable: true),
-                    Status = table.Column<int>(nullable: false)
+                    SellerId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -245,7 +244,7 @@ namespace Task1_Homework.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    TicketId = table.Column<int>(nullable: true),
+                    TicketId = table.Column<int>(nullable: false),
                     Status = table.Column<int>(nullable: false),
                     BuyerId = table.Column<string>(nullable: true),
                     TrackNumber = table.Column<string>(nullable: true)
@@ -264,7 +263,7 @@ namespace Task1_Homework.Migrations
                         column: x => x.TicketId,
                         principalTable: "Tickets",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(

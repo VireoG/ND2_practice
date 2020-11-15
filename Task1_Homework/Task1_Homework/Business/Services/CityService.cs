@@ -4,10 +4,16 @@ using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using Task1_Homework.Business.Database;
+using Task1_Homework.Business.Services;
+using Task1_Homework.Models;
+using Microsoft.AspNetCore.Html;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Task1_Homework.Business
 {
-    public class CityService
+    public class CityService : ICRUD<City>
+
     {
         private readonly ResaleContext context;
 
@@ -16,14 +22,14 @@ namespace Task1_Homework.Business
             this.context = context;
         }
 
-        public City[] GetCities()
+        public IEnumerable<City> GetCities()
         {
             return context.Cities.ToArray();
         }
 
-        public async Task<City> GetCityById(int id)
+        public async Task<City> GetCityById(int? id)
         {
-            return await context.Cities.SingleOrDefaultAsync(c => c.Id == id);
+            return await context.Cities.FindAsync(id);
         }
 
         public async Task Save(City model)
@@ -31,5 +37,15 @@ namespace Task1_Homework.Business
             await context.Cities.AddAsync(model);
             await context.SaveChangesAsync();
         }
+        public Task Delete(City model)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task EditSave(City model)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

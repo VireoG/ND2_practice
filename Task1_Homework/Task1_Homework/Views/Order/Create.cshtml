@@ -1,0 +1,38 @@
+﻿@model OrderCreateViewModel
+
+@{
+    ViewData["Title"] = "Create Order";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Create Order</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="block1">
+            <form asp-action="Create" asp-controller="Order">
+                @Html.HiddenFor(m => m.TicketId)
+                @Html.HiddenFor(m => m.BuyerId)
+                <div class="form-group">
+                    <label asp-for="EventName" class="control-label"><strong>Event:</strong></label>
+                    @Model.EventName
+                </div>
+                <div class="form-group">
+                    <label asp-for="TicketPrice" class="control-label"><strong>Price:</strong></label>
+                    @Model.TicketPrice
+                </div>
+                <div class="form-group">
+                    <label asp-for="BuyerName" class="control-label"><strong>Buyer:</strong></label>
+                    @Model.BuyerName
+                </div>
+                <input type="submit" value="Sent Order" class="btn btn-primary"/>
+                <a asp-action="Index" asp-controller="Event" class="btn btn-danger">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+

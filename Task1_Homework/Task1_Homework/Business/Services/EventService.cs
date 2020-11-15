@@ -6,10 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Html;
 using Task1_Homework.Business.Database;
 using Microsoft.EntityFrameworkCore;
+using Task1_Homework.Business.Services;
 
 namespace Task1_Homework.Business
 {
-    public class EventService 
+    public class EventService : ICRUD<Event>
     {
         private readonly ResaleContext context;
 
@@ -24,25 +25,17 @@ namespace Task1_Homework.Business
             return ev;
         }
 
-        private async Task<Event> GetEvent(int id)
+        public async Task<IEnumerable<Event>> GetEvents()
         {
-            var ev = await context.Events
+            var ev = context.Events
                 .Include(e => e.Venue)
-                .ThenInclude(eс => eс.City)
-                .SingleOrDefaultAsync(e => e.Id == id);
-            return ev;
+                .ThenInclude(eс => eс.City);
+            return await ev.ToArrayAsync();
         }
 
         public async Task Save(Event model)
         {
             await context.Events.AddAsync(model);
-            await context.SaveChangesAsync();
-        }
-
-        public async Task Delete(int id)
-        {
-            var ev = await context.Events.FindAsync(id);
-            context.Events.Remove(ev);
             await context.SaveChangesAsync();
         }
 
@@ -52,12 +45,10 @@ namespace Task1_Homework.Business
             await context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Event>> GetEvents()
+        public async Task Delete(Event ev)
         {
-            var ev =  context.Events
-                .Include(e => e.Venue)
-                .ThenInclude(eс => eс.City);               
-            return await ev.ToArrayAsync();
+            context.Events.Remove(ev);
+            await context.SaveChangesAsync();
         }
     }
 }

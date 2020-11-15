@@ -26,7 +26,7 @@ namespace Task1_Homework.Controllers
             this.userManager = userManager;
             ticketService = new TicketService(context);
             eventService = new EventService(context);
-            userService = new UserService(context);
+            userService = new UserService(context, userManager);
         }
 
         private async Task<List<Ticket>> GetTicketsListForIdentityUser()
@@ -68,7 +68,7 @@ namespace Task1_Homework.Controllers
                     SellerId = (await userManager.FindByNameAsync(User.Identity.Name)).Id
                 };
                 await ticketService.Save(ticket);
-                return RedirectToAction("Index");
+                return RedirectToAction("Index", "Event");
             }
             
             return RedirectToAction("CreateTicket", model);
@@ -78,10 +78,6 @@ namespace Task1_Homework.Controllers
         [Authorize(Roles = "Administrator")]
         public async Task<IActionResult> Edit(int id)
         {
-            var listE = new SelectList(eventService.GetEvents().Result.ToArray(), "Id", "Name");
-            ViewBag.Events = listE;
-            var listU = new SelectList(context.Users.ToArray(), "Id", "UserName");
-            ViewBag.Users = listU;
             var ticket = await ticketService.GetTicketById(id);
             return View("Edit", ticket);
         }
@@ -92,6 +88,34 @@ namespace Task1_Homework.Controllers
         {
             await ticketService.EditSave(model);
             return RedirectToAction("Index");
+        }
+
+
+        [ActionName("Delete")]
+        public async Task<IActionResult> ConfirmDelete(int? id)
+        {
+            if (id != null)
+            {
+                Ticket ticket = await ticketService.GetTicketById(id);
+                return PartialView("_Delete", ticket);
+            }
+
+            return NotFound();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id != null)
+            {
+                var ticket = await ticketService.GetTicketById(id);
+                if (ticket != null)
+                {
+                    await ticketService.Delete(ticket);
+                    return RedirectToAction("Profile", "User");
+                }
+            }
+            return NotFound();
         }
     }
 }

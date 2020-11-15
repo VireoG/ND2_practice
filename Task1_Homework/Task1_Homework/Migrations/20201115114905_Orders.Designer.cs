@@ -10,14 +10,14 @@ using Task1_Homework.Business.Database;
 namespace Task1_Homework.Migrations
 {
     [DbContext(typeof(ResaleContext))]
-    [Migration("20201110103011_Init")]
-    partial class Init
+    [Migration("20201115114905_Orders")]
+    partial class Orders
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
@@ -203,7 +203,7 @@ namespace Task1_Homework.Migrations
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Task1_Homework.Business.Order", b =>
+            modelBuilder.Entity("Task1_Homework.Business.Models.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -216,7 +216,7 @@ namespace Task1_Homework.Migrations
                     b.Property<int>("Status")
                         .HasColumnType("int");
 
-                    b.Property<int?>("TicketId")
+                    b.Property<int>("TicketId")
                         .HasColumnType("int");
 
                     b.Property<string>("TrackNumber")
@@ -246,9 +246,6 @@ namespace Task1_Homework.Migrations
 
                     b.Property<string>("SellerId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -410,7 +407,7 @@ namespace Task1_Homework.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Task1_Homework.Business.Order", b =>
+            modelBuilder.Entity("Task1_Homework.Business.Models.Order", b =>
                 {
                     b.HasOne("Task1_Homework.Business.User", "Buyer")
                         .WithMany("Orders")
@@ -418,7 +415,9 @@ namespace Task1_Homework.Migrations
 
                     b.HasOne("Task1_Homework.Business.Ticket", "Ticket")
                         .WithMany()
-                        .HasForeignKey("TicketId");
+                        .HasForeignKey("TicketId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Task1_Homework.Business.Ticket", b =>

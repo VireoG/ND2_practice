@@ -14,16 +14,16 @@
                 @Html.HiddenFor(m => m.TicketId)
                 @Html.HiddenFor(m => m.BuyerId)
                 <div class="form-group">
-                    <label asp-for="EventName" class="control-label"><strong>Event:</strong></label>
-                    @Model.EventName
+                    <label class="control-label"><strong>Event:</strong></label>
+                    @ViewData["EventName"]
                 </div>
                 <div class="form-group">
-                    <label asp-for="TicketPrice" class="control-label"><strong>Price:</strong></label>
-                    @Model.TicketPrice
+                    <label class="control-label"><strong>Price:</strong></label>
+                    @ViewData["TicketPrice"]
                 </div>
                 <div class="form-group">
-                    <label asp-for="BuyerName" class="control-label"><strong>Buyer:</strong></label>
-                    @Model.BuyerName
+                    <label class="control-label"><strong>Buyer:</strong></label>
+                    @ViewData["BuyerName"]
                 </div>
                 <input type="submit" value="Sent Order" class="btn btn-primary"/>
                 <a asp-action="Index" asp-controller="Event" class="btn btn-danger">Cancel</a>

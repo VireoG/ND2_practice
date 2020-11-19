@@ -9,12 +9,7 @@ namespace Task1_Homework.Models
 {
     public class OrderCreateViewModel
     {
-        [Required]
-        public string TrackNumber { get; set; }
-        public string EventName { get; set; }
         public int TicketId { get; set; }
-        public decimal TicketPrice { get; set; }
-        public string BuyerName { get; set; }
         public string BuyerId { get; set; }
     }
 }

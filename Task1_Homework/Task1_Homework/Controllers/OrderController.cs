@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Task1_Homework.Business;
 using Task1_Homework.Business.Database;
@@ -15,27 +16,33 @@ namespace Task1_Homework.Controllers
     public class OrderController : Controller
     {
         private readonly ResaleContext context;
+        private readonly UserManager<User> userManager;
         private readonly TicketService ticketService;
         private readonly OrderService orderService;
 
-        public OrderController(ResaleContext context)
+        public OrderController(ResaleContext context, UserManager<User> userManager)
         {
             orderService = new OrderService(context);
             ticketService = new TicketService(context);
             this.context = context;
+            this.userManager = userManager;
         }
 
-        public IActionResult Create([FromRoute] int id)
+        public async Task<IActionResult> Create([FromRoute] int id)
         {
+            var ticket = await ticketService.GetTicketById(id);
+            var buyer = await userManager.FindByNameAsync(User.Identity.Name);
 
             var model = new OrderCreateViewModel
             {
-                TicketId = ticketService.GetTicketById(id).Result.Id,
-                TicketPrice = ticketService.GetTicketById(id).Result.Price,
-                BuyerName = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name).UserName,
-                BuyerId = context.Users.SingleOrDefault(u => u.UserName == User.Identity.Name).Id,
-                EventName = ticketService.GetTicketById(id).Result.Event.Name
+                TicketId = ticket.Id,
+                BuyerId = buyer.Id
             };
+
+            ViewData["EventName"] = ticket.Event.Name;
+            ViewData["TicketPrice"] = ticket.Price;
+            ViewData["BuyerName"] = buyer.UserName;
+
             return View("Create", model);
         }
 

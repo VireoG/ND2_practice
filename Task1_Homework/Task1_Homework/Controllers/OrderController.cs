@@ -28,22 +28,27 @@ namespace Task1_Homework.Controllers
             this.userManager = userManager;
         }
 
-        public async Task<IActionResult> Create([FromRoute] int id)
+        public async Task<IActionResult> Create([FromRoute] int? id)
         {
-            var ticket = await ticketService.GetTicketById(id);
-            var buyer = await userManager.FindByNameAsync(User.Identity.Name);
-
-            var model = new OrderCreateViewModel
+            if (id != null)
             {
-                TicketId = ticket.Id,
-                BuyerId = buyer.Id
-            };
+                var ticket = await ticketService.GetTicketById(id);
+                var buyer = await userManager.FindByNameAsync(User.Identity.Name);
 
-            ViewData["EventName"] = ticket.Event.Name;
-            ViewData["TicketPrice"] = ticket.Price;
-            ViewData["BuyerName"] = buyer.UserName;
+                var model = new OrderCreateViewModel
+                {
+                    TicketId = ticket.Id,
+                    BuyerId = buyer.Id
+                };
 
-            return View("Create", model);
+                ViewData["EventName"] = ticket.Event.Name;
+                ViewData["TicketPrice"] = ticket.Price;
+                ViewData["BuyerName"] = buyer.UserName;
+
+                return View("Create", model);
+            }
+
+            return BadRequest();
         }
 
         [HttpPost]
@@ -53,7 +58,7 @@ namespace Task1_Homework.Controllers
                 var order = new Order
                 {
                     TicketId = model.TicketId,
-                    BuyerId = model.BuyerId,                  
+                    BuyerId = model.BuyerId,                       
                     Status = TicketSaleStatus.Confirmation
                 };
                 await orderService.Save(order);
@@ -69,20 +74,23 @@ namespace Task1_Homework.Controllers
 
         public IActionResult SalesRequests()
         {
-            var selected = from orders in orderService.GetOrders().Result
-                           where orders.Ticket.Seller.UserName == User.Identity.Name
-                           select orders;
+            var orders = orderService.GetSalesRequestsForIdentityUser(User.Identity.Name).Result;
 
-            var model = new OrderViewModel
+            if (orders != null)
             {
-                Orders = selected.ToArray()
-            };
-            
-            return View(model);
+                var model = new OrderViewModel
+                {
+                    Orders = orders.ToArray()
+                };
+
+                return View(model);
+            }
+
+            return NotFound();
         }
 
 
-        public async Task<IActionResult> Accept([FromRoute]int? id)
+        public async Task<IActionResult> Accept([FromRoute] int? id)
         {
             if (id != null)
             {
@@ -101,25 +109,33 @@ namespace Task1_Homework.Controllers
         {
             if (ModelState.IsValid)
             {
-                    model.Status = TicketSaleStatus.Sold;
-                    await orderService.EditSave(model);
-                    return RedirectToAction("SalesRequests");
+                var order = await orderService.GetOrderById(model.Id);
+                var user = await userManager.FindByNameAsync(HttpContext.User.Identity.Name);
+
+                if (order.Ticket.SellerId != user.Id) 
+                    return Forbid();
+
+                await orderService.EditSave(order, model.TrackNumber);
+                return RedirectToAction("SalesRequests");
             }
             return NotFound();
         }
 
         public IActionResult MyOrders()
         {
-            var selected = from orders in orderService.GetOrders().Result
-                           where orders.Buyer.UserName == User.Identity.Name
-                           select orders;
+            var orders = orderService.GetOrdersForIdentityUser(User.Identity.Name).Result;
 
-            var model = new OrderViewModel
+            if (orders != null)
             {
-                Orders = selected.ToArray()
-            };
+                var model = new OrderViewModel
+                {
+                    Orders = orders.ToArray()
+                };
 
-            return View(model);
+                return View(model);
+            }
+
+            return NotFound();
         }
 
         public async Task<IActionResult> Reject([FromRoute]int? id)
@@ -129,6 +145,7 @@ namespace Task1_Homework.Controllers
                 var order = await orderService.GetOrderById(id);
                 order.Status = TicketSaleStatus.Rejected;
                 await orderService.EditSave(order);
+
                 return RedirectToAction("SalesRequests");
             }
 

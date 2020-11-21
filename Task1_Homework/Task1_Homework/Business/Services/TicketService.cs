@@ -35,6 +35,15 @@ namespace Task1_Homework.Business.Models
             return ticket;
         }
 
+        public async Task<IEnumerable<Ticket>> GetTicketsByUserId(string id)
+        {
+            var tickets = from item in await GetTickets()
+                           where item.SellerId == id 
+                           select item;
+
+            return tickets.ToArray();
+        }
+
         private async Task<Ticket> GetTicket(int? id)
         {
             var ticket = await context.Tickets

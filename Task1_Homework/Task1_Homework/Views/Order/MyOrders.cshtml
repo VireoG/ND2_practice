@@ -22,13 +22,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var order in Model.Orders)
+            @foreach (var order in Model.Orders.Reverse())
             {
             <tr>
                 <td>@order.Ticket.Event.Name</td>
                 <td>@order.Ticket.Price</td>
                 @if (order.Status == Task1_Homework.Business.TicketSaleStatus.Sold)
                 {
+                    <td>@order.Status</td>
                     <td>@order.TrackNumber</td>
                 }
                 else if (order.Status == Task1_Homework.Business.TicketSaleStatus.Rejected)

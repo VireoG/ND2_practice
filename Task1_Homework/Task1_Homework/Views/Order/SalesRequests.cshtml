@@ -20,7 +20,7 @@
             <div id="dialogContent" class="modal-dialog"></div>
         </div>
         <tbody>
-            @foreach (var order in Model.Orders)
+            @foreach (var order in Model.Orders.Reverse())
             {
             <tr>
                 <td>@order.Ticket.Event.Name</td>

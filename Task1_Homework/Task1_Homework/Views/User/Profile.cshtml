@@ -24,10 +24,9 @@
                 </p>
                 <ul>
                     <li> @Html.ActionLink("My sales requests", "SalesRequests", "Order", new { }, new { @class = "btn btn-primary btnpad" })</li>
-                    <li class="nav-item">
+                    <li> @Html.ActionLink("My Tickets", "UserTickets", "Ticket", new { }, new { @class = "btn btn-primary btnpad" })</li>
                     <li> @Html.ActionLink("My Orders", "MyOrders", "Order", new { }, new { @class = "btn btn-primary btnpad" })</li>
                     <a class="btn btn-primary btnpad" href="~/Identity/Account/Manage" title="Manage">Edit Profile</a>
-                    </li>
                     <li> @Html.ActionLink("Logout", "Logout", "User", new { }, new { @class = "btn btn-primary btnpad" })</li>
                 </ul>
             </form>

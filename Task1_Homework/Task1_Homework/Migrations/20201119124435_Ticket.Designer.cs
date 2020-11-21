@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Task1_Homework.Business.Database;
 
 namespace Task1_Homework.Migrations
 {
     [DbContext(typeof(ResaleContext))]
-    partial class ResaleContextModelSnapshot : ModelSnapshot
+    [Migration("20201119124435_Ticket")]
+    partial class Ticket
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

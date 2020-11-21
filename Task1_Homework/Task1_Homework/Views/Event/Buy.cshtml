@@ -26,15 +26,19 @@
             </tr>
         </thead>
         <tbody>
+
             @foreach (var ticket in Model.Tickets)
             {
+                @if (ticket.Status == Task1_Homework.Business.TicketSaleStatus.Sale)
+                {
                 <tr>
                     <td>@ticket.Price</td>
                     <td>@ticket.Seller.UserName</td>
                     <td>
-                        @Html.ActionLink("Buy", "Create", "Order", new { id = ticket.Id}, new { @class = "btn btn-primary" })
+                        @Html.ActionLink("Buy", "Create", "Order", new { id = ticket.Id }, new { @class = "btn btn-primary" })
                     </td>
                 </tr>
+                }
             }
         </tbody>
     </table>

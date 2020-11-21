@@ -27,10 +27,9 @@
                     </div>
                     @if (User.IsInRole("Administrator"))
                     {
-                        @Html.ActionLink("Edit", "Edit", "Event", new { id = events.Id }, new { @class = "btnft btn btn-primary btnsg2" })
+                        @Html.ActionLink("Edit", "Edit", "Event", new { id = events.Id }, new { @class = "btnft btn btn-primary btnsg2" }) 
 
-                        @Html.ActionLink("Delete", "Delete", "Event", new { id = events.Id }, new { @class = "btn btn-primary btn-danger btnsg2 compItem" })
-
+                        @Html.ActionLink("Delete", "Delete", "Event", new { id = events.Id }, new { @class = "btn btn-danger btnsg2 compItem" })
                     }
                 </div>
             }

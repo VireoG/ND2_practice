@@ -1,0 +1,58 @@
+﻿@model IEnumerable<Task1_Homework.Business.Ticket>
+
+@{
+    ViewData["Title"] = "Your Tickets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Your Tickets</h1>
+<div class="block1">
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    <label class="control-label">Event</label>
+                </th>
+                <th>
+                    <label class="control-label">Price</label>
+                </th>
+                <th>
+                    <label class="control-label">Status</label>
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Event.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    @if (item.Status == Task1_Homework.Business.TicketSaleStatus.Sold)
+                    {
+                        <td>
+                        </td>
+                    }
+                    else
+                    {
+                        <td>
+                            @Html.ActionLink("Edit", "Edit", "Ticket", new { id = item.Id }, new { @class = "btn btn-primary" }) |
+                            @Html.ActionLink("Delete", "Delete", "Ticket", new { id = item.Id }, new { @class = "btn btn-danger compItem" })
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

@@ -18,5 +18,6 @@ namespace Task1_Homework.Business
         public decimal Price { get; set; }    
         public string SellerId { get; set; }
         public User Seller { get; set; }
+        public TicketSaleStatus Status { get; set; }
     }
 }

@@ -25,15 +25,12 @@ namespace Task1_Homework.Controllers
         private readonly UserService userService;
         private readonly ResaleContext context;
         private readonly UserManager<User> userManager;
-        private readonly TicketService ticketService;
-
 
         public UserController(ResaleContext context, UserManager<User> userManager)
         {
             userService = new UserService(context, userManager);
             this.context = context;
             this.userManager = userManager;
-            ticketService = new TicketService(context);
         }
 
         [Authorize]

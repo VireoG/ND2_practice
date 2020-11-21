@@ -36,14 +36,16 @@ namespace Task1_Homework.Business
             await context.SaveChangesAsync();
         }
 
-        public Task EditSave(Venue model)
+        public async Task EditSave(Venue model)
         {
-            throw new NotImplementedException();
+            context.Venues.Update(model);
+            await context.SaveChangesAsync();
         }
 
-        public Task Delete(Venue model)
+        public async Task Delete(Venue model)
         {
-            throw new NotImplementedException();
+            context.Venues.Remove(model);
+            await context.SaveChangesAsync();
         }
     }
 }

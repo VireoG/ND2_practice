@@ -45,9 +45,9 @@ namespace Task1_Homework.Business
             await context.SaveChangesAsync();
         }
 
-        public async Task Delete(Event ev)
+        public async Task Delete(Event model)
         {
-            context.Events.Remove(ev);
+            context.Events.Remove(model);
             await context.SaveChangesAsync();
         }
     }

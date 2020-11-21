@@ -12,33 +12,20 @@ using Task1_Homework.Models;
 
 namespace Task1_Homework.Controllers
 {
+    [Authorize]
     public class TicketController : Controller
     {
         private readonly ResaleContext context;
         private readonly UserManager<User> userManager;
         private readonly TicketService ticketService;
-        private readonly EventService eventService;
-        private readonly UserService userService;
 
         public TicketController(ResaleContext context, UserManager<User> userManager)
         {
             this.context = context;
             this.userManager = userManager;
             ticketService = new TicketService(context);
-            eventService = new EventService(context);
-            userService = new UserService(context, userManager);
         }
 
-        private async Task<List<Ticket>> GetTicketsListForIdentityUser()
-        {
-            var selected = from item in await ticketService.GetTickets()
-                           where item.Seller.UserName != User.Identity.Name
-                           select item;
-
-            return selected.ToList();
-        }
-
-        [Authorize]
         public async Task<IActionResult> CreateTicket([FromRoute] int id)
         {
             var @event = await context.Events.FindAsync(id);
@@ -55,7 +42,6 @@ namespace Task1_Homework.Controllers
             return View("CreateTicket", model);
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateTicket(TicketCreateViewModel model)
         {
@@ -67,6 +53,8 @@ namespace Task1_Homework.Controllers
                     Price = model.Price,
                     SellerId = (await userManager.FindByNameAsync(User.Identity.Name)).Id
                 };
+
+                ticket.Status = TicketSaleStatus.Sale;
                 await ticketService.Save(ticket);
                 return RedirectToAction("Index", "Event");
             }
@@ -74,20 +62,26 @@ namespace Task1_Homework.Controllers
             return RedirectToAction("CreateTicket", model);
         }
 
-
-        [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            var ticket = await ticketService.GetTicketById(id);
-            return View("Edit", ticket);
+            if (id != null)
+            {
+                var ticket = await ticketService.GetTicketById(id);
+                return View("Edit", ticket);
+            }
+            return NotFound();
         }
 
-        [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> Edit(Ticket model)
         {
-            await ticketService.EditSave(model);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                await ticketService.EditSave(model);
+                return RedirectToAction("Index");
+            }
+
+            return BadRequest();
         }
 
 
@@ -96,7 +90,7 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                Ticket ticket = await ticketService.GetTicketById(id);
+                var ticket = await ticketService.GetTicketById(id);
                 return PartialView("_Delete", ticket);
             }
 
@@ -116,6 +110,13 @@ namespace Task1_Homework.Controllers
                 }
             }
             return NotFound();
+        }
+
+        public async Task<IActionResult> UserTickets()
+        {
+            var user = await userManager.FindByNameAsync(User.Identity.Name);
+            var tickets = ticketService.GetTicketsByUserId(user.Id).Result;
+            return View("UserTickets", tickets);
         }
     }
 }

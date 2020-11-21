@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Task1_Homework.Business;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Models;
+using Task1_Homework.Business.Services.IServices;
 using Task1_Homework.Models;
 
 namespace Task1_Homework.Controllers
@@ -15,17 +16,15 @@ namespace Task1_Homework.Controllers
     [Authorize]
     public class OrderController : Controller
     {
-        private readonly ResaleContext context;
         private readonly UserManager<User> userManager;
-        private readonly TicketService ticketService;
-        private readonly OrderService orderService;
+        private readonly IOrderService orderService;
+        private readonly ITicketService ticketService;
 
-        public OrderController(ResaleContext context, UserManager<User> userManager)
+        public OrderController(UserManager<User> userManager, IOrderService orderService, ITicketService ticketService)
         {
-            orderService = new OrderService(context);
-            ticketService = new TicketService(context);
-            this.context = context;
             this.userManager = userManager;
+            this.orderService = orderService;
+            this.ticketService = ticketService;
         }
 
         public async Task<IActionResult> Create([FromRoute] int? id)

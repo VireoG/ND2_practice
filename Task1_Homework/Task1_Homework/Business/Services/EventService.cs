@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Html;
 using Task1_Homework.Business.Database;
 using Microsoft.EntityFrameworkCore;
 using Task1_Homework.Business.Services;
+using Task1_Homework.Business.Services.IServices;
 
 namespace Task1_Homework.Business
 {
-    public class EventService : ICRUD<Event>
+    public class EventService : IEventService
     {
         private readonly ResaleContext context;
 

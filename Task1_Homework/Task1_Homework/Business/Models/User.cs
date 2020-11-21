@@ -11,7 +11,7 @@ namespace Task1_Homework.Business
 {
     public class User : IdentityUser
     {
-        public byte[] Avatar { get; set; }
+        public string Avatar { get; set; }
 
         public ICollection<Order> Orders { get; set; }
 

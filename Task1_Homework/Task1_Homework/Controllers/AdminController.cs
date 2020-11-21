@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Task1_Homework.Business;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Models;
+using Task1_Homework.Business.Services.IServices;
 using Task1_Homework.Models;
 
 namespace Task1_Homework.Controllers
@@ -16,20 +17,17 @@ namespace Task1_Homework.Controllers
     [Authorize(Roles = "Administrator")]
     public class AdminController : Controller
     {
-        private readonly ResaleContext context;
-        private readonly ILogger<AdminController> logger;
-        private readonly EventService eventService;
-        private readonly VenueService venueService;
-        private readonly CityService cityService;
-        private readonly TicketService ticketService;
-        public AdminController(ResaleContext context, ILogger<AdminController> logger)
+        private readonly ICityService cityService;
+        private readonly IEventService eventService;
+        private readonly ITicketService ticketService;
+        private readonly IVenueService venueService;
+
+        public AdminController(ICityService cityService, IEventService eventService, ITicketService ticketService, IVenueService venueService)
         {
-            ticketService = new TicketService(context);
-            eventService = new EventService(context);
-            cityService = new CityService(context);
-            venueService = new VenueService(context);
-            this.context = context;
-            this.logger = logger;
+            this.cityService = cityService;
+            this.eventService = eventService;
+            this.ticketService = ticketService;
+            this.venueService = venueService;
         }
         public IActionResult Index()
         {
@@ -105,7 +103,7 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                City city = await cityService.GetCityById(id);
+                var city = await cityService.GetCityById(id);
                 return PartialView("City/_DeleteCity", city);
             }
             return NotFound();
@@ -133,7 +131,6 @@ namespace Task1_Homework.Controllers
             {
                 Cities = cityService.GetCities().ToArray()
             };
-
             return View("City/GetCityList", cvm);
         }
 
@@ -216,10 +213,7 @@ namespace Task1_Homework.Controllers
             {
                 Venues = venueService.GetVenues().ToArray()
             };
-
             return View("Venue/GetVenueList" ,vvm);
         }
-
-
     }
 }

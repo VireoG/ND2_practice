@@ -17,6 +17,7 @@ using Task1_Homework.Business;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Models;
 using Microsoft.AspNetCore.Antiforgery;
+using Task1_Homework.Business.Services.IServices;
 
 namespace Task1_Homework
 {
@@ -42,12 +43,12 @@ namespace Task1_Homework
                 opts.ResourcesPath = "Resources";
             });
 
-            services.AddScoped<EventService>();
-            services.AddScoped<CityService>();
-            services.AddScoped<UserService>();
-            services.AddScoped<TicketService>();
-            services.AddScoped<OrderService>();
-            services.AddScoped<VenueService>();
+            services.AddScoped<IEventService, EventService>();
+            services.AddScoped<ICityService, CityService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ITicketService, TicketService>();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IVenueService, VenueService>();
 
             services.AddDbContext<ResaleContext>(o =>
             {

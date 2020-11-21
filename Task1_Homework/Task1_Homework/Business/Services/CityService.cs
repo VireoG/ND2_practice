@@ -8,11 +8,11 @@ using Task1_Homework.Business.Services;
 using Task1_Homework.Models;
 using Microsoft.AspNetCore.Html;
 using Microsoft.EntityFrameworkCore;
-
+using Task1_Homework.Business.Services.IServices;
 
 namespace Task1_Homework.Business
 {
-    public class CityService : ICRUD<City>
+    public class CityService : ICRUD<City>, ICityService
 
     {
         private readonly ResaleContext context;
@@ -37,15 +37,16 @@ namespace Task1_Homework.Business
             await context.Cities.AddAsync(model);
             await context.SaveChangesAsync();
         }
-        public Task Delete(City model)
+        public async Task Delete(City model)
         {
-            throw new NotImplementedException();
+            context.Cities.Update(model);
+            await context.SaveChangesAsync();
         }
 
-        public Task EditSave(City model)
+        public async Task EditSave(City model)
         {
-            throw new NotImplementedException();
+            context.Cities.Remove(model);
+            await context.SaveChangesAsync();
         }
-
     }
 }

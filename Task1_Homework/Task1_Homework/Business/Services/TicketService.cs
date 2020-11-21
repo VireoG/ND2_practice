@@ -6,10 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Services;
+using Task1_Homework.Business.Services.IServices;
 
 namespace Task1_Homework.Business.Models
 {
-    public class TicketService : ICRUD<Ticket>
+    public class TicketService : ITicketService
     {
         private readonly ResaleContext context;
 
@@ -31,21 +32,6 @@ namespace Task1_Homework.Business.Models
 
         public async Task<Ticket> GetTicketById(int? id)
         {
-            var ticket = await GetTicket(id);
-            return ticket;
-        }
-
-        public async Task<IEnumerable<Ticket>> GetTicketsByUserId(string id)
-        {
-            var tickets = from item in await GetTickets()
-                           where item.SellerId == id 
-                           select item;
-
-            return tickets.ToArray();
-        }
-
-        private async Task<Ticket> GetTicket(int? id)
-        {
             var ticket = await context.Tickets
                 .Include(t => t.Seller)
                 .Include(t => t.Event)
@@ -55,6 +41,23 @@ namespace Task1_Homework.Business.Models
             return ticket;
         }
 
+        public async Task<IEnumerable<Ticket>> GetTicketsByUserId(string id)
+        {
+            var selected = from ticket in await GetTickets()
+                           where ticket.SellerId == id 
+                           select ticket;
+
+            return selected.ToArray();
+        }
+
+        public async Task<List<Ticket>> GetTicketsByEventIdForIdentityUser(int? id, string UserName)
+        {
+            var selected = from ticket in await GetTickets()
+                           where ticket.EventId == id && ticket.Seller.UserName != UserName
+                           select ticket;
+
+            return selected.ToList();
+        }
 
         public async Task Save(Ticket model)
         {

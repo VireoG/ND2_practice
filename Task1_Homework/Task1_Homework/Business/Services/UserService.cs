@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using Task1_Homework.Business;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Models;
+using Task1_Homework.Business.Services.IServices;
 
 namespace Task1_Homework.Business
 {
-    public class UserService
+    public class UserService : IUserService
     {
         private readonly ResaleContext context;
         private readonly TicketService ticketService;
@@ -48,19 +49,31 @@ namespace Task1_Homework.Business
             return user;
         }
 
-        public List<Ticket> UserTickets(User model)
+        public async Task<List<Ticket>> UserTickets(User model)
         {
-            var selectedTickets = from ticket in ticketService.GetTickets().Result.ToArray()
+            var selectedTickets = from ticket in await ticketService.GetTickets()
                                   where ticket.Seller.UserName == model.UserName
                                   select ticket;
 
             return selectedTickets.ToList();
         }
 
-        public async Task SaveChanges(User model)
+        public async Task Save(User model)
         {
             context.Users.Update(model);
             await context.SaveChangesAsync();
         }
+
+        public async Task EditSave(User model)
+        {
+            context.Users.Update(model);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task Delete(User model)
+        {
+            context.Users.Remove(model);
+            await context.SaveChangesAsync();
+        }   
     }
 }

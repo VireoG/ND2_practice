@@ -7,10 +7,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Services;
+using Task1_Homework.Business.Services.IServices;
 
 namespace Task1_Homework.Business.Models
 {
-    public class OrderService : ICRUD<Order>
+    public class OrderService : IOrderService
     {
         private readonly ResaleContext context;
 

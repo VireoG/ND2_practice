@@ -13,23 +13,21 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Task1_Homework.Business.Services.IServices;
 
 namespace Task1_Homework.Controllers
 {
     public class EventController : Controller
     {
-        private readonly ResaleContext context;
-        private readonly ILogger<EventController> logger;
-        private readonly EventService eventService;
-        private readonly VenueService venueService;
-        private readonly TicketService ticketService;
-        public EventController(ResaleContext context, ILogger<EventController> logger)
+        private readonly ITicketService ticketService;
+        private readonly IEventService eventService;
+        private readonly IVenueService venueService;
+
+        public EventController(ITicketService ticketService, IEventService eventService, IVenueService venueService)
         {
-            ticketService = new TicketService(context);
-            eventService = new EventService(context);
-            venueService = new VenueService(context);
-            this.context = context;
-            this.logger = logger;
+            this.ticketService = ticketService;
+            this.eventService = eventService;
+            this.venueService = venueService;
         }
 
         public IActionResult Index()
@@ -42,33 +40,46 @@ namespace Task1_Homework.Controllers
             return View(model);
         }
 
-        public async Task<IActionResult> Buy([FromRoute] int id)
+        public async Task<IActionResult> Buy([FromRoute] int? id)
         {
-            var events = eventService.GetEventById(id).Result;
-    
-            var selected = from ticket in await ticketService.GetTickets()
-                           where ticket.EventId == id && ticket.Seller.UserName != User.Identity.Name
-                           select ticket;
-            events.Tickets = selected.ToArray();
+            if (id != null)
+            {
+                var events = await eventService.GetEventById(id);
 
-            return View("Buy", events);
+                var tickets = await ticketService.GetTicketsByEventIdForIdentityUser(id , User.Identity.Name);
+
+                events.Tickets = tickets;
+
+                return View("Buy", events);
+            }
+
+            return NotFound();
         }
 
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Edit(int id)
+        public async Task<IActionResult> Edit(int? id)
         {
-            var list = new SelectList(venueService.GetVenues(), "Id", "Name");
-            ViewBag.Venues = list;
-            var ev = await eventService.GetEventById(id);
-            return View(ev);
+            if (id != null)
+            {
+                var list = new SelectList(venueService.GetVenues(), "Id", "Name");
+                ViewBag.Venues = list;
+                var ev = await eventService.GetEventById(id);
+                return View(ev);
+            }
+            return NotFound();
         }
 
         [Authorize(Roles = "Administrator")]
         [HttpPost]
         public async Task<IActionResult> Edit(Event model)
         {
-            await eventService.EditSave(model);
-            return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                await eventService.EditSave(model);
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Edit");
         }
 
         [ActionName("Delete")]

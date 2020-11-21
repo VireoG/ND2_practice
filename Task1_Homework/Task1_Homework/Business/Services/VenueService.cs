@@ -6,10 +6,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Services;
+using Task1_Homework.Business.Services.IServices;
 
 namespace Task1_Homework.Business
 {
-    public class VenueService : ICRUD<Venue>
+    public class VenueService : IVenueService
     {
         private readonly ResaleContext context;
         public VenueService(ResaleContext context)

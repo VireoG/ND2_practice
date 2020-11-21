@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Task1_Homework.Business;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Models;
+using Task1_Homework.Business.Services.IServices;
 using Task1_Homework.Models;
 
 namespace Task1_Homework.Controllers
@@ -15,31 +16,36 @@ namespace Task1_Homework.Controllers
     [Authorize]
     public class TicketController : Controller
     {
-        private readonly ResaleContext context;
         private readonly UserManager<User> userManager;
-        private readonly TicketService ticketService;
+        private readonly ITicketService ticketService;
+        private readonly IEventService eventService;
 
-        public TicketController(ResaleContext context, UserManager<User> userManager)
+        public TicketController( UserManager<User> userManager, ITicketService ticketService, IEventService eventService)
         {
-            this.context = context;
             this.userManager = userManager;
-            ticketService = new TicketService(context);
+            this.ticketService = ticketService;
+            this.eventService = eventService;
         }
 
-        public async Task<IActionResult> CreateTicket([FromRoute] int id)
+        public async Task<IActionResult> CreateTicket([FromRoute] int? id)
         {
-            var @event = await context.Events.FindAsync(id);
-            if (@event == null)
+            if (id != null)
             {
-                return BadRequest();
+                var @event = await eventService.GetEventById(id);
+
+                if (@event == null)
+                {
+                    return BadRequest();
+                }
+
+                var model = new TicketCreateViewModel
+                {
+                    EventId = @event.Id,
+                    EventName = @event.Name
+                };
+                return View("CreateTicket", model);
             }
-            
-            var model = new TicketCreateViewModel
-            {
-                EventId = @event.Id,
-                EventName = @event.Name
-            };
-            return View("CreateTicket", model);
+            return NotFound();
         }
 
         [HttpPost]
@@ -115,7 +121,7 @@ namespace Task1_Homework.Controllers
         public async Task<IActionResult> UserTickets()
         {
             var user = await userManager.FindByNameAsync(User.Identity.Name);
-            var tickets = ticketService.GetTicketsByUserId(user.Id).Result;
+            var tickets = await ticketService.GetTicketsByUserId(user.Id);
             return View("UserTickets", tickets);
         }
     }

@@ -20,18 +20,18 @@ namespace Task1_Homework.Controllers
         private readonly ITicketService ticketService;
         private readonly IEventService eventService;
 
-        public TicketController( UserManager<User> userManager, ITicketService ticketService, IEventService eventService)
+        public TicketController(UserManager<User> userManager, ITicketService ticketService, IEventService eventService)
         {
             this.userManager = userManager;
             this.ticketService = ticketService;
             this.eventService = eventService;
         }
 
-        public async Task<IActionResult> CreateTicket([FromRoute] int? id)
+        public IActionResult CreateTicket([FromRoute] int? id)
         {
             if (id != null)
             {
-                var @event = await eventService.GetEventById(id);
+                var @event = eventService.GetEventById(id);
 
                 if (@event == null)
                 {
@@ -68,11 +68,11 @@ namespace Task1_Homework.Controllers
             return RedirectToAction("CreateTicket", model);
         }
 
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id != null)
             {
-                var ticket = await ticketService.GetTicketById(id);
+                var ticket = ticketService.GetTicketById(id);
                 return View("Edit", ticket);
             }
             return NotFound();
@@ -92,11 +92,11 @@ namespace Task1_Homework.Controllers
 
 
         [ActionName("Delete")]
-        public async Task<IActionResult> ConfirmDelete(int? id)
+        public IActionResult ConfirmDelete(int? id)
         {
             if (id != null)
             {
-                var ticket = await ticketService.GetTicketById(id);
+                var ticket = ticketService.GetTicketById(id);
                 return PartialView("_Delete", ticket);
             }
 
@@ -108,7 +108,7 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                var ticket = await ticketService.GetTicketById(id);
+                var ticket = ticketService.GetTicketById(id);
                 if (ticket != null)
                 {
                     await ticketService.Delete(ticket);

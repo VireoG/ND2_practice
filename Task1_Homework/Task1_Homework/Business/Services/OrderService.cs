@@ -32,17 +32,9 @@ namespace Task1_Homework.Business.Models
             return await order.ToArrayAsync();
         }
 
-        public async Task<Order> GetOrderById(int? id)
+        public Order GetOrderById(int? id)
         {
-            var order = await context.Orders
-                .Include(o => o.Buyer)
-                .Include(o => o.Ticket)
-                .ThenInclude(ot => ot.Seller)
-                .Include(o => o.Ticket)
-                .ThenInclude(ot => ot.Event)
-                .ThenInclude(ote => ote.Venue)
-                .ThenInclude(otev => otev.City)
-                .SingleOrDefaultAsync(o => o.Id == id);
+            var order = GetOrders().Result.SingleOrDefault(o => o.Id == id);
             return order;
         }
 

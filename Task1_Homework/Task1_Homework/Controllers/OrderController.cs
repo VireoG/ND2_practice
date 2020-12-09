@@ -31,7 +31,7 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                var ticket = await ticketService.GetTicketById(id);
+                var ticket = ticketService.GetTicketById(id);
                 var buyer = await userManager.FindByNameAsync(User.Identity.Name);
 
                 var model = new OrderCreateViewModel
@@ -89,11 +89,11 @@ namespace Task1_Homework.Controllers
         }
 
 
-        public async Task<IActionResult> Accept([FromRoute] int? id)
+        public IActionResult Accept([FromRoute] int? id)
         {
             if (id != null)
             {
-                var order = await orderService.GetOrderById(id);
+                var order = orderService.GetOrderById(id);
 
                 if (order != null)
                 {
@@ -108,7 +108,7 @@ namespace Task1_Homework.Controllers
         {
             if (ModelState.IsValid)
             {
-                var order = await orderService.GetOrderById(model.Id);
+                var order = orderService.GetOrderById(model.Id);
                 var user = await userManager.FindByNameAsync(HttpContext.User.Identity.Name);
 
                 if (order.Ticket.SellerId != user.Id) 
@@ -141,7 +141,7 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                var order = await orderService.GetOrderById(id);
+                var order = orderService.GetOrderById(id);
                 order.Status = TicketSaleStatus.Rejected;
                 await orderService.EditSave(order);
 
@@ -155,7 +155,7 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                await orderService.Delete(await orderService.GetOrderById(id));
+                await orderService.Delete(orderService.GetOrderById(id));
                 return RedirectToAction("MyOrders");
             }
 

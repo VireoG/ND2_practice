@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Services;
@@ -22,12 +22,20 @@ namespace Task1_Homework.Business
         {
             var venue = context.Venues
                    .Include(v => v.City);
-            return venue.ToArray();
+            return venue.ToArrayAsync().Result;
         }
 
-        public async Task<Venue> GetVenueById(int? id)
+        public Venue GetVenueById(int? id)
         {
-            var venue = await context.Venues.FindAsync(id);
+            var venue = GetVenues().SingleOrDefault(v => v.Id == id);
+            return venue;
+        }
+
+        public IEnumerable<Venue> GetVenuesByCity(int? id)
+        {
+            var venue = from item in GetVenues()
+                        where item.City.Id == id
+                        select item;
             return venue;
         }
 

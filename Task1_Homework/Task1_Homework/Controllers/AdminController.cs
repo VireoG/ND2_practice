@@ -36,8 +36,7 @@ namespace Task1_Homework.Controllers
 
         public IActionResult CreateEvent()
         {
-            var list = new SelectList(venueService.GetVenues(), "Id", "Name");
-            ViewBag.Venues = list;
+            ViewBag.Venues = venueService.GetVenues();
             return View("CreateEvent");
         }
 
@@ -124,20 +123,19 @@ namespace Task1_Homework.Controllers
             return NotFound();
         }
 
-
         public IActionResult GetCityList()
         {
             var cvm = new CitiesViewModel
             {
                 Cities = cityService.GetCities().ToArray()
             };
+
             return View("City/GetCityList", cvm);
         }
 
         public IActionResult CreateVenue()
         {
-            var list = new SelectList(cityService.GetCities() , "Id", "Name");
-            ViewBag.Cities = list;
+            ViewBag.Cities = cityService.GetCities();
             return View("Venue/CreateVenue");
         }
 
@@ -161,11 +159,10 @@ namespace Task1_Homework.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> EditVenue(int id)
+        public IActionResult EditVenue(int id)
         {
-            var list = new SelectList(cityService.GetCities(), "Id", "Name");
-            ViewBag.Cities = list;
-            var venue = await venueService.GetVenueById(id);
+            ViewBag.Cities = cityService.GetCities();
+            var venue = venueService.GetVenueById(id);
             return View("Venue/EditVenue",venue);
         }
 
@@ -182,11 +179,11 @@ namespace Task1_Homework.Controllers
         }
 
         [ActionName("DeleteVenue")]
-        public async Task<IActionResult> ConfirmDeleteVenue(int? id)
+        public IActionResult ConfirmDeleteVenue(int? id)
         {
             if (id != null)
             {
-                Venue venue = await venueService.GetVenueById(id);
+                Venue venue = venueService.GetVenueById(id);
                 return PartialView("Venue/_DeleteVenue", venue);
             }
             return NotFound();
@@ -197,7 +194,7 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                var venue = await venueService.GetVenueById(id);
+                var venue = venueService.GetVenueById(id);
                 if (venue != null)
                 {
                     await venueService.Delete(venue);

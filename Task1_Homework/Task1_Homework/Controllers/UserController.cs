@@ -53,7 +53,12 @@ namespace Task1_Homework.Controllers
             return NotFound();
         }
 
-        public async Task<IActionResult> ChangeAvatar([FromRoute] string id)
+        public IActionResult ManageProfile()
+        {
+            return LocalRedirect("/Identity/Account/Manage");
+        }
+
+            public async Task<IActionResult> ChangeAvatar([FromRoute] string id)
         {
             if(id != null)
             {

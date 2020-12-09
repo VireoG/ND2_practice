@@ -1,18 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using Task1_Homework.Business.Database;
-using Task1_Homework.Business.Services;
-using Task1_Homework.Models;
 using Microsoft.AspNetCore.Html;
 using Microsoft.EntityFrameworkCore;
 using Task1_Homework.Business.Services.IServices;
+using System.Linq;
 
 namespace Task1_Homework.Business
 {
-    public class CityService : ICRUD<City>, ICityService
+    public class CityService : ICityService
 
     {
         private readonly ResaleContext context;
@@ -24,7 +20,7 @@ namespace Task1_Homework.Business
 
         public IEnumerable<City> GetCities()
         {
-            return context.Cities.ToArray();
+            return context.Cities.ToArrayAsync().Result;
         }
 
         public async Task<City> GetCityById(int? id)

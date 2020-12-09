@@ -8,6 +8,7 @@ namespace Task1_Homework.Business.Services.IServices
     public interface IVenueService : ICRUD<Venue>
     {
         IEnumerable<Venue> GetVenues();
-        Task<Venue> GetVenueById(int? id);
+        IEnumerable<Venue> GetVenuesByCity(int? id);
+        Venue GetVenueById(int? id);
     }
 }

@@ -22,29 +22,31 @@ namespace Task1_Homework.Controllers
         private readonly ITicketService ticketService;
         private readonly IEventService eventService;
         private readonly IVenueService venueService;
+        private readonly ICityService cityService;
 
-        public EventController(ITicketService ticketService, IEventService eventService, IVenueService venueService)
+        public EventController(ITicketService ticketService, IEventService eventService, IVenueService venueService, ICityService cityService)
         {
             this.ticketService = ticketService;
             this.eventService = eventService;
             this.venueService = venueService;
+            this.cityService = cityService;
         }
 
-        public IActionResult Index()
+         public async Task<IActionResult> Index(int page = 0, int pageSize = 10)
         {
-            var model = new EventsViewModel
+            var ev = new EventsViewModel()
             {
-                Events = eventService.GetEvents().Result.ToArray()
+                Cities = cityService.GetCities().ToArray(),
+                Venues = venueService.GetVenues().ToArray()
             };
-
-            return View(model);
+            return View(ev);
         }
 
         public async Task<IActionResult> Buy([FromRoute] int? id)
         {
             if (id != null)
             {
-                var events = await eventService.GetEventById(id);
+                var events = eventService.GetEventById(id);
 
                 var tickets = await ticketService.GetTicketsByEventIdForIdentityUser(id , User.Identity.Name);
 
@@ -57,13 +59,12 @@ namespace Task1_Homework.Controllers
         }
 
         [Authorize(Roles = "Administrator")]
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id != null)
-            {
-                var list = new SelectList(venueService.GetVenues(), "Id", "Name");
-                ViewBag.Venues = list;
-                var ev = await eventService.GetEventById(id);
+            {     
+                ViewBag.Venues = venueService.GetVenues();
+                var ev = eventService.GetEventById(id);
                 return View(ev);
             }
             return NotFound();
@@ -83,12 +84,12 @@ namespace Task1_Homework.Controllers
         }
 
         [ActionName("Delete")]
-        public async Task<IActionResult> ConfirmDelete(int? id)
+        public IActionResult ConfirmDelete(int? id)
         {
             if (id != null)
             {
-                Event eventt = await eventService.GetEventById(id);
-                return PartialView("_Delete", eventt);
+                var @event = eventService.GetEventById(id);
+                return PartialView("_Delete", @event);
             }
             return NotFound();
         }
@@ -98,7 +99,7 @@ namespace Task1_Homework.Controllers
         {
             if (id != null)
             {
-                var ev = await eventService.GetEventById(id);
+                var ev = eventService.GetEventById(id);
                 if (ev != null)
                 {
                     await eventService.Delete(ev);

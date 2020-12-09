@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Identity;
@@ -18,6 +19,16 @@ using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Models;
 using Microsoft.AspNetCore.Antiforgery;
 using Task1_Homework.Business.Services.IServices;
+using Microsoft.OpenApi.Models;
+using System.Reflection;
+using System.IO;
+using Newtonsoft.Json;
+using Microsoft.Net.Http.Headers;
+using WebApiContrib.Core.Formatter.Csv;
+using Task1_Homework.Filters;
+using AutoMapper;
+using Task1_Homework.Business.Queries;
+using Task1_Homework.Mapper;
 
 namespace Task1_Homework
 {
@@ -36,7 +47,24 @@ namespace Task1_Homework
 
             services.AddControllersWithViews()
                 .AddViewLocalization(LanguageViewLocationExpanderFormat.Suffix)
-                .AddDataAnnotationsLocalization();
+                .AddDataAnnotationsLocalization()
+                .AddNewtonsoftJson(opts =>
+                    opts.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+                );
+         
+            services.AddMvc()
+                .AddXmlDataContractSerializerFormatters()
+                .AddCsvSerializerFormatters()
+                .AddMvcOptions(opts =>
+                {
+                    opts.Filters.Add(typeof(CacheFilterAttribute));
+                    opts.FormatterMappings.SetMediaTypeMappingForFormat("xml",
+                        new MediaTypeHeaderValue("application/xml"));
+                })
+                .AddJsonOptions(opts => opts.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()))
+                .AddRazorRuntimeCompilation();
+
+            services.AddScoped<CacheFilterAttribute>();
 
             services.AddLocalization(opts =>
             {
@@ -97,6 +125,24 @@ namespace Task1_Homework
                 options.AccessDeniedPath = "/Identity/Account/AccessDenied";
                 options.SlidingExpiration = true;
             });
+
+            services.AddSwaggerGen(c =>
+            {
+                var file = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var path = Path.Combine(AppContext.BaseDirectory, file);
+                c.IncludeXmlComments(path);
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
+            });
+
+            services.AddMemoryCache();
+
+            services.Scan(scan => scan
+                .FromAssemblyOf<BaseQuery>()
+                .AddClasses(c => c.AssignableTo(typeof(ISortingProvider<>)))
+                .AsImplementedInterfaces()
+                .WithScopedLifetime());
+
+            services.AddAutoMapper(typeof(MappingProfile));
         }
     
 
@@ -116,6 +162,8 @@ namespace Task1_Homework
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            app.UseSwagger();
+
             var supportedLocales = new[] { "en-US", "ru", "zh"};
 
             var localizationOptions = new RequestLocalizationOptions()
@@ -129,13 +177,19 @@ namespace Task1_Homework
 
             app.UseAuthentication();
             app.UseAuthorization();
- 
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Resale API v1");
+            });
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Event}/{action=Index}/{id?}");
+                endpoints.MapControllers();
             });
         }
     }

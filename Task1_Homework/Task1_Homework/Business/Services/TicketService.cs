@@ -30,14 +30,9 @@ namespace Task1_Homework.Business.Models
             return await ticket.ToArrayAsync();
         }
 
-        public async Task<Ticket> GetTicketById(int? id)
+        public Ticket GetTicketById(int? id)
         {
-            var ticket = await context.Tickets
-                .Include(t => t.Seller)
-                .Include(t => t.Event)
-                .ThenInclude(te => te.Venue)
-                .ThenInclude(tec => tec.City)
-                .SingleOrDefaultAsync(t => t.Id == id);
+            var ticket = GetTickets().Result.SingleOrDefault(t => t.Id == id);
             return ticket;
         }
 
@@ -57,6 +52,13 @@ namespace Task1_Homework.Business.Models
                            select ticket;
 
             return selected.ToList();
+        }
+
+        public IQueryable<Ticket> GetTicketsFilteredByPrice(decimal price)
+        {
+            var tickets = context.Tickets.Where(t => t.Price > price);
+
+            return tickets;
         }
 
         public async Task Save(Ticket model)

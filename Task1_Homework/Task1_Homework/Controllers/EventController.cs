@@ -19,26 +19,34 @@ namespace Task1_Homework.Controllers
 {
     public class EventController : Controller
     {
+        private readonly IUserService userService;
         private readonly ITicketService ticketService;
         private readonly IEventService eventService;
         private readonly IVenueService venueService;
         private readonly ICityService cityService;
 
-        public EventController(ITicketService ticketService, IEventService eventService, IVenueService venueService, ICityService cityService)
+        public EventController(IUserService userService,ITicketService ticketService, IEventService eventService, IVenueService venueService, ICityService cityService)
         {
+            this.userService = userService;
             this.ticketService = ticketService;
             this.eventService = eventService;
             this.venueService = venueService;
             this.cityService = cityService;
         }
 
-         public async Task<IActionResult> Index(int page = 0, int pageSize = 10)
+         public IActionResult Index()
         {
             var ev = new EventsViewModel()
             {
                 Cities = cityService.GetCities().ToArray(),
                 Venues = venueService.GetVenues().ToArray()
             };
+
+            if (User.Identity.Name != null)
+            {
+                ViewBag.UserRole = userService.GetUserRole(User.Identity.Name);
+            }
+
             return View(ev);
         }
 
@@ -48,9 +56,7 @@ namespace Task1_Homework.Controllers
             {
                 var events = eventService.GetEventById(id);
 
-                var tickets = await ticketService.GetTicketsByEventIdForIdentityUser(id , User.Identity.Name);
-
-                events.Tickets = tickets;
+                events.Tickets = await ticketService.GetTicketsByEventIdForIdentityUser(id , User.Identity.Name);
 
                 return View("Buy", events);
             }
@@ -62,8 +68,9 @@ namespace Task1_Homework.Controllers
         public IActionResult Edit(int? id)
         {
             if (id != null)
-            {     
-                ViewBag.Venues = venueService.GetVenues();
+            {
+                var venues = new SelectList(venueService.GetVenues(), "Id", "Name");
+                ViewBag.Venues = venues;
                 var ev = eventService.GetEventById(id);
                 return View(ev);
             }

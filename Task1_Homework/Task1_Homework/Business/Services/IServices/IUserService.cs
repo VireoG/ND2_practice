@@ -12,5 +12,6 @@ namespace Task1_Homework.Business.Services.IServices
         Task<User> GetUserById(string id);
         Task<User> GetUserByIdentityName(string Name);
         Task<List<Ticket>> UserTickets(User model);
+        string GetUserRole(string Name);
     }
 }

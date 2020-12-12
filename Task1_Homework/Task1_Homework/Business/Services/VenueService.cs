@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Services;
 using Task1_Homework.Business.Services.IServices;
+using Task1_Homework.Business.Queries;
 
 namespace Task1_Homework.Business
 {
@@ -33,10 +34,24 @@ namespace Task1_Homework.Business
 
         public IEnumerable<Venue> GetVenuesByCity(int? id)
         {
-            var venue = from item in GetVenues()
-                        where item.City.Id == id
+            var venue = from item in context.Venues.ToArray()
+                        where item.CityId == id
                         select item;
             return venue;
+        }
+
+        public async Task<PagedResult<Venue>> GetVenuesByCities(VenueQuery query)
+        {
+            var queryable = context.Venues.AsQueryable();
+
+            if (query.cities != null)
+            {
+                queryable = queryable.Where(c => query.cities.Contains(c.CityId));
+            }
+
+            var items = await queryable.ToListAsync();
+
+            return new PagedResult<Venue> { Items = items };
         }
 
         public async Task Save(Venue model)

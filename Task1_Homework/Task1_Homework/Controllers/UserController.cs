@@ -58,9 +58,9 @@ namespace Task1_Homework.Controllers
             return LocalRedirect("/Identity/Account/Manage");
         }
 
-            public async Task<IActionResult> ChangeAvatar([FromRoute] string id)
+        public async Task<IActionResult> ChangeAvatar([FromRoute] string id)
         {
-            if(id != null)
+            if (id != null)
             {
                 var user = await userService.GetUserById(id);
 

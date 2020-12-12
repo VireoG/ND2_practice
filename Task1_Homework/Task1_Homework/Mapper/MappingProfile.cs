@@ -20,7 +20,14 @@ namespace Task1_Homework.Mapper
                 .ForMember(ev => ev.Description, opt => opt.MapFrom(er => er.Description))
                 .ForMember(ev => ev.Date, opt => opt.MapFrom(er => er.Date))
                 .ForMember(ev => ev.Tickets, opt => opt.MapFrom(er => er.Tickets))
-                .ForAllOtherMembers(opt => opt.Ignore());        
+                .ForAllOtherMembers(opt => opt.Ignore());
+
+            CreateMap<Venue, VenueResource>()
+                .ForMember(v => v.Id, opt => opt.MapFrom(vr => vr.Id))
+                .ForMember(v => v.Name, opt => opt.MapFrom(vr => vr.Name))
+                .ForMember(v => v.CityId, opt => opt.MapFrom(vr => vr.CityId))
+                .ForMember(v => v.Adress, opt => opt.MapFrom(vr => vr.Adress))
+                .ForAllOtherMembers(opt => opt.Ignore());
         }
     }
 }

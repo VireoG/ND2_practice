@@ -35,6 +35,15 @@ namespace Task1_Homework.Business
             throw new ArgumentException("User not found");
 
         }
+
+        public string GetUserRole(string Name)
+        {         
+            var user = context.Users.FirstOrDefault(u => u.UserName.Equals(Name));
+            var roleId = context.UserRoles.FirstOrDefault(r => r.UserId.Equals(user.Id)).RoleId;
+            var role = context.Roles.Find(roleId).Name;
+            return role;
+        }
+
         public async Task<IEnumerable<User>> GetUsers() => await context.Users.ToArrayAsync();
 
         public async Task<User> GetUserById(string id)

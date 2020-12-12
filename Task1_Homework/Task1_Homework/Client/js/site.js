@@ -1,16 +1,13 @@
 ﻿// JS Dependencies
 import 'bootstrap';
 import 'jquery';
-import 'bootstrap-select';
 
 // CSS Dependencies
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-select/dist/css/bootstrap-select.css';
 
 // Custom JS imports
-import 'events.index.js';
-import 'modulewindow.js';
-
+import './modulewindow.js';
 
 // Custom CSS imports
 import '../css/site.css';

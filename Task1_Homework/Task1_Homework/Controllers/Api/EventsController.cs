@@ -18,13 +18,13 @@ namespace Task1_Homework.Controllers.Api
     [ApiController]
     public class EventsController : ControllerBase
     {
-        private readonly ResaleContext context;
+        private readonly ITicketService ticketService;
         private readonly IEventService eventService;
         private readonly IMapper mapper;
 
-        public EventsController(ResaleContext context, IEventService eventService, IMapper mapper)
+        public EventsController(ITicketService ticketService, IEventService eventService, IMapper mapper)
         {
-            this.context = context;
+            this.ticketService = ticketService;
             this.eventService = eventService;
             this.mapper = mapper;
         }
@@ -47,6 +47,20 @@ namespace Task1_Homework.Controllers.Api
             {
                 return NotFound();
             }
+
+            return @event;
+        }
+
+        [HttpGet("event/{id}.{format?}")]
+        public ActionResult<Event> GetEventWithTickets(int id)
+        {
+            var @event = eventService.GetEventById(id);
+
+            if (@event == null)
+            {
+                return NotFound();
+            }
+            @event.Tickets = ticketService.GetTicketsByEventIdForIdentityUser(id, User.Identity.Name).Result;
 
             return @event;
         }

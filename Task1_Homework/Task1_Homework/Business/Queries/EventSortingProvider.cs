@@ -10,8 +10,7 @@ namespace Task1_Homework.Business.Queries
             return query.SortBy switch
             {
                 "Name" => p => p.Name,
-                "City" => p => p.Venue.City.Id,
-                "Venue" => p => p.Venue.Id,
+                "Date" => p => p.Date,
                 _ => p => p.Id
             };
         }

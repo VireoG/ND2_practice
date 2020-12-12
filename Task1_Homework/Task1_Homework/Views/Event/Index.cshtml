@@ -5,19 +5,11 @@
     ViewData["Title"] = Localizer["Events"];
 }
 
-<div class="block1">
-    <select id="cities" multiple class="selectpicker">
-        @foreach (var city in Model.Cities)
-        {
-            <option value="@city.Id">@city.Name</option>
-        }
+<div onload="getCities(); getVenues();" class="block1">
+    <select name="cities" id="cities" multiple class="selectpicker">
     </select>
 
-    <select id="venues" multiple class="selectpicker">
-        @foreach (var venue in Model.Venues)
-        {
-            <option value="@venue.Id">@venue.Name</option>
-        }
+    <select name="venues" id="venues" class="selectpicker">
     </select>
 </div>
 
@@ -27,7 +19,7 @@
         <div id="modDialog" class="modal fade">
             <div id="dialogContent" class="modal-dialog"></div>
         </div>
-        <div id="items" class="row row-cols-4">
+        <div id="items">
         </div>
         <nav aria-label="...">
             <ul class="pagination">
@@ -38,5 +30,9 @@
 
 @section Scripts
 {
-    <script src="dist/events.entry.js" type="module" defer></script>
+    <script>
+        const role = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.UserRole))
+    </script>
+    <script src="/dist/event.entry.js" type="module" defer></script>
+    <script src="/dist/modulewindow.entry.js" type="module" defer></script>    
 }

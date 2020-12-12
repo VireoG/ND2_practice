@@ -10,8 +10,8 @@ using Task1_Homework.Business.Database;
 namespace Task1_Homework.Migrations
 {
     [DbContext(typeof(ResaleContext))]
-    [Migration("20201119124435_Ticket")]
-    partial class Ticket
+    [Migration("20201210204137_Create")]
+    partial class Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -267,8 +267,8 @@ namespace Task1_Homework.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("Avatar")
-                        .HasColumnType("varbinary(max)");
+                    b.Property<string>("Avatar")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()

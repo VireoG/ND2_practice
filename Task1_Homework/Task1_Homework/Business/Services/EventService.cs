@@ -48,12 +48,20 @@ namespace Task1_Homework.Business
 
         public async Task<PagedResult<Event>> GetEvents(EventQuery query)
         {
-            var queryable = context.Events.AsQueryable();
+           
+            var queryable = context.Events
+                .Include(e => e.Venue)
+                .ThenInclude(eс => eс.City)
+                .AsQueryable();
 
             if (query.Cities != null)
             {
-                queryable = queryable.Where(c => query.Cities.Contains(c.Venue.City.Id) && query.Venues.Contains(c.Venue.Id));               
-            }
+                queryable = queryable.Where(c => query.Cities.Contains(c.Venue.CityId));  
+                if(query.Venues != null)
+                {
+                    queryable = queryable.Where(c => query.Venues.Contains(c.VenueId));
+                }
+            }           
 
             var count = await queryable.CountAsync();
 

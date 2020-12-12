@@ -36,7 +36,8 @@ namespace Task1_Homework.Controllers
 
         public IActionResult CreateEvent()
         {
-            ViewBag.Venues = venueService.GetVenues();
+            var venues = new SelectList(venueService.GetVenues(), "Id", "Name");
+            ViewBag.Venues = venues;
             return View("CreateEvent");
         }
 
@@ -135,7 +136,8 @@ namespace Task1_Homework.Controllers
 
         public IActionResult CreateVenue()
         {
-            ViewBag.Cities = cityService.GetCities();
+            var cities = new SelectList(cityService.GetCities(), "Id", "Name");
+            ViewBag.Cities = cities;
             return View("Venue/CreateVenue");
         }
 
@@ -161,7 +163,8 @@ namespace Task1_Homework.Controllers
         [Authorize(Roles = "Administrator")]
         public IActionResult EditVenue(int id)
         {
-            ViewBag.Cities = cityService.GetCities();
+            var cities = new SelectList(cityService.GetCities(), "Id", "Name");
+            ViewBag.Cities = cities;
             var venue = venueService.GetVenueById(id);
             return View("Venue/EditVenue",venue);
         }

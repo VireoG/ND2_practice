@@ -6,7 +6,6 @@
     <title>@ViewData["Title"]</title>
     <link rel="stylesheet" href="~/dist/site.css" />
     <script src="~/dist/site.entry.js" type="module" defer></script>
-    <script src="~/dist/event.entry.js" type="module" defer></script>
     @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 </head>
 <body>
@@ -40,6 +39,7 @@
             &copy; @DateTime.Now.Year <a asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer["Privacy"]</a>
         </div>
     </footer>
+   <script src="~/dist/event.entry.js" type="module" defer></script>
     @RenderSection("Scripts", false)
 </body>
 </html>

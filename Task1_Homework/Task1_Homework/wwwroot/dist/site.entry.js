@@ -61,7 +61,6 @@ __webpack_require__.r(__webpack_exports__);
 // Custom CSS imports
 
 
-
 /***/ }),
 
 /***/ "./node_modules/jquery/dist/jquery.js":
@@ -70,9 +69,6 @@ __webpack_require__.r(__webpack_exports__);
   \********************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module, top-level-this-exports, __webpack_exports__ */
-/*! CommonJS bailout: this is used directly at 40:46-50 */
-/*! CommonJS bailout: module.exports is used directly at 18:43-57 */
-/*! CommonJS bailout: module.exports is used directly at 27:2-16 */
 /***/ (function(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!

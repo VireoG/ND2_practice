@@ -6,5 +6,6 @@ namespace Task1_Homework.Business.Queries
         public int[] Cities { get; set; }
 
         public int[] Venues { get; set; }
+
     }
 }

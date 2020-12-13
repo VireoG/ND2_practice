@@ -38,6 +38,12 @@ namespace Task1_Homework.Business
             return await ev.ToArrayAsync();
         }
 
+        public async Task<IEnumerable<Event>> GetEventsWithOutDependencies()
+        {
+            var ev = await context.Events.ToListAsync();
+            return ev;
+        }
+
         public async Task<IEnumerable<Event>> GetEventByCity(int id)
         {
             var ev = from events in await GetEvents()
@@ -46,31 +52,25 @@ namespace Task1_Homework.Business
             return ev;
         }
 
-        public async Task<PagedResult<Event>> GetEvents(EventQuery query)
-        {
-           
+        public async Task<IEnumerable<Event>> GetFiltredEvents(PagedData<Event> pagedData)
+        {         
             var queryable = context.Events
                 .Include(e => e.Venue)
                 .ThenInclude(eс => eс.City)
                 .AsQueryable();
 
-            if (query.Cities != null)
+            if (pagedData.Cities != null)
             {
-                queryable = queryable.Where(c => query.Cities.Contains(c.Venue.CityId));  
-                if(query.Venues != null)
+                queryable = queryable.Where(c => pagedData.Cities.Contains(c.Venue.CityId));  
+                if(pagedData.Venues != null)
                 {
-                    queryable = queryable.Where(c => query.Venues.Contains(c.VenueId));
+                    queryable = queryable.Where(c => pagedData.Venues.Contains(c.VenueId));
                 }
             }           
-
-            var count = await queryable.CountAsync();
-
-            queryable = sortingProvider.ApplySorting(queryable, query);
-            queryable = queryable.ApplyPagination(query);
-
+            queryable = sortingProvider.ApplySorting(queryable, pagedData);
             var items = await queryable.ToListAsync();
 
-            return new PagedResult<Event> { TotalCount = count, Items = items };
+            return items;
         }
 
         public IQueryable<Event> GetEventByVenue(int id)

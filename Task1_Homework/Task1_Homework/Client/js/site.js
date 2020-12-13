@@ -1,5 +1,4 @@
 ﻿// JS Dependencies
-import 'bootstrap';
 import 'jquery';
 
 // CSS Dependencies

@@ -12,8 +12,9 @@ namespace Task1_Homework.Business.Services.IServices
         bool EventExists(int id);
         Event GetEventById(int? id);
         Task<IEnumerable<Event>> GetEvents();
-        Task<PagedResult<Event>> GetEvents(EventQuery query);
+        Task<IEnumerable<Event>> GetFiltredEvents(PagedData<Event> pagedData);
         Task<IEnumerable<Event>> GetEventByCity(int cityId);
         IQueryable<Event> GetEventByVenue(int venueId);
+        Task<IEnumerable<Event>> GetEventsWithOutDependencies();
     }
 }

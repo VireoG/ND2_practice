@@ -65,17 +65,6 @@ namespace Task1_Homework.Controllers.Api
             return @event;
         }
 
-        [HttpGet]
-        [Route("getfiltred")]
-        [ProducesResponseType(typeof(IEnumerable<EventResource>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetFiltredEvents([FromQuery]EventQuery query)
-        {
-            var pagedResult = await eventService.GetEvents(query);
-            HttpContext.Response.Headers.Add("x-total-count", pagedResult.TotalCount.ToString());
-
-            return Ok(mapper.Map<IEnumerable<EventResource>>(pagedResult.Items));
-        }
-
         // PUT: api/v1/Events/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.

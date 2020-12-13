@@ -4,6 +4,6 @@ namespace Task1_Homework.Business.Queries
 {
     public interface ISortingProvider<T>
     {
-        IOrderedQueryable<T> ApplySorting(IQueryable<T> queryable, BaseQuery query);
+        IOrderedQueryable<T> ApplySorting(IQueryable<T> queryable, PagedData<Event> pagedData);
     }
 }

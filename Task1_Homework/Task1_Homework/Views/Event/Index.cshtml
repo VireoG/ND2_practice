@@ -6,10 +6,10 @@
 }
 
 <div onload="getCities(); getVenues();" class="block1">
-    <select name="cities" id="cities" multiple class="selectpicker">
+    <select name="cities" id="cities" multiple class="">
     </select>
 
-    <select name="venues" id="venues" class="selectpicker">
+    <select name="venues" id="venues" multiple class="" disabled>
     </select>
 </div>
 
@@ -22,8 +22,8 @@
         <div id="items">
         </div>
         <nav aria-label="...">
-            <ul class="pagination">
-            </ul>
+            <div id="paged">
+            </div>
         </nav>
     </div>
 </div>
@@ -31,7 +31,7 @@
 @section Scripts
 {
     <script>
-        const role = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.UserRole))
+        const role = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.UserRole));
     </script>
     <script src="/dist/event.entry.js" type="module" defer></script>
     <script src="/dist/modulewindow.entry.js" type="module" defer></script>    

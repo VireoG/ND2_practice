@@ -5,9 +5,9 @@ namespace Task1_Homework.Business.Queries
 {
     public class EventSortingProvider: BaseSortingProvider<Event>
     {
-        protected override Expression<Func<Event, object>> GetSortExpression(BaseQuery query)
+        protected override Expression<Func<Event, object>> GetSortExpression(PagedData<Event> pagedData)
         {
-            return query.SortBy switch
+            return pagedData.SortBy switch
             {
                 "Name" => p => p.Name,
                 "Date" => p => p.Date,

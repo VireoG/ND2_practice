@@ -4,15 +4,15 @@ namespace Task1_Homework.Business.Queries
 {
     public static class QueryExtensions
     {
-        public static IQueryable<T> ApplyPagination<T>(this IQueryable<T> queryable, BaseQuery query)
+        public static IQueryable<T> ApplyPagination<T>(this IQueryable<T> queryable, PagedData<T> pagedData)
         {
-            if (query.PageSize <= 0)
-                query.PageSize = 10;
+            if (pagedData.TotalPages <= 0)
+                pagedData.TotalPages = 10;
 
-            if (query.Page <= 0)
-                query.Page = 1;
+            if (pagedData.CurrentPage <= 0)
+                pagedData.CurrentPage = 1;
 
-            return queryable.Skip(query.PageSize * (query.Page - 1)).Take(query.PageSize);
+            return queryable.Skip(pagedData.TotalPages * (pagedData.CurrentPage - 1)).Take(pagedData.TotalPages);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿import $ from 'jquery';
-import 'bootstrap';
+﻿import 'bootstrap';
 import 'bootstrap-select';
 
 const filters = {

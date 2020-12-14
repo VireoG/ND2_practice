@@ -12,9 +12,11 @@ namespace Task1_Homework.Business.Services.IServices
         bool EventExists(int id);
         Event GetEventById(int? id);
         Task<IEnumerable<Event>> GetEvents();
-        Task<IEnumerable<Event>> GetFiltredEvents(PagedData<Event> pagedData);
         Task<IEnumerable<Event>> GetEventByCity(int cityId);
         IQueryable<Event> GetEventByVenue(int venueId);
         Task<IEnumerable<Event>> GetEventsWithOutDependencies();
+        IEnumerable<string> GetEventsNameForAutocomplete(string text);
+        IEnumerable<Event> GetEventsBySearch(string text);
+        IEnumerable<Event> GetFiltredEvents(PagedData<Event> pagedData);
     }
 }

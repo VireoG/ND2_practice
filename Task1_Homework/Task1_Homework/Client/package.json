@@ -9,7 +9,7 @@
     "jquery": "3.5.1",
     "jquery-validation": "1.19.2",
     "jquery-validation-unobtrusive": "3.2.11",
-    "pagination.js": "2.1.5",
+    "paginationjs": "^2.1.5",
     "popper.js": "1.16.1"
   },
   "devDependencies": {

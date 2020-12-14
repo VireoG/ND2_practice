@@ -38,6 +38,7 @@ namespace Task1_Homework.Business
             return await ev.ToArrayAsync();
         }
 
+
         public async Task<IEnumerable<Event>> GetEventsWithOutDependencies()
         {
             var ev = await context.Events.ToListAsync();
@@ -52,12 +53,79 @@ namespace Task1_Homework.Business
             return ev;
         }
 
-        public async Task<IEnumerable<Event>> GetFiltredEvents(PagedData<Event> pagedData)
-        {         
+        public IEnumerable<Event> GetEventsBySearch(string text)
+        {
+            var list = GetEventsNameForAutocomplete(text);
+            var queryable = context.Events.AsQueryable();
+            queryable = queryable.Where(c => list.Contains(c.Name));
+            return queryable;
+        }
+
+        public IEnumerable<string> GetEventsNameForAutocomplete(string text)
+        {
+            var queryable = context.Events.AsQueryable();
+            int equalChars = 0;
+            var partiality = 1;
+            var str1 = text.ToUpper();
+            List<string> list = new List<string>();
+
+            foreach (var ev in queryable)
+            {
+                var EvName = ev.Name.ToUpper();
+                if (str1 == EvName)
+                {
+                    list.Add(ev.Name);
+                }
+                else if (EvName.StartsWith(str1) || EvName.EndsWith(str1))
+                {
+                    list.Add(ev.Name);
+                }
+                else { 
+                    for (int i = 0; i < text.Length; i++)
+                    {
+                        if (str1[i] == ' ')
+                            str1.Remove(i);
+                    }
+
+                    for (int i = 0; i < EvName.Length; i++)
+                    {
+                        if (EvName[i] == ' ')
+                            EvName.Remove(i);
+                    }
+
+                    string str2 =
+                       !String.IsNullOrWhiteSpace(ev.Name) && ev.Name.Length >= text.Length
+                       ? ev.Name.Substring(0, text.Length)
+                       : ev.Name;                  
+
+                    if (str2.Length == text.Length)
+                    {
+                        for (int i = 0; i < str1.Length; i++)
+                        {
+                            if (str1[i] == str2[i])
+                                equalChars++;
+                        }
+                        if ((double)equalChars / str1.Length >= partiality)
+                        {
+                            list.Add(ev.Name);
+                        }
+                    }
+                }
+            }
+            return list;
+        }
+
+        public IEnumerable<Event> GetFiltredEvents(PagedData<Event> pagedData)
+        {
             var queryable = context.Events
-                .Include(e => e.Venue)
-                .ThenInclude(eс => eс.City)
-                .AsQueryable();
+                    .Include(e => e.Venue)
+                    .ThenInclude(eс => eс.City)
+                    .AsQueryable();
+
+            if (pagedData.Search != null)
+            {
+                queryable = pagedData.Data.AsQueryable();
+            }
 
             if (pagedData.Cities != null)
             {
@@ -68,7 +136,7 @@ namespace Task1_Homework.Business
                 }
             }           
             queryable = sortingProvider.ApplySorting(queryable, pagedData);
-            var items = await queryable.ToListAsync();
+            var items = queryable.ToList();
 
             return items;
         }

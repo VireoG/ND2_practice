@@ -1,16 +1,23 @@
 ﻿import 'bootstrap';
 import 'bootstrap-select';
+import 'paginationjs';
+
 
 const filt = {
     cities: [],
     venues: [],
     sortBy: 'Date',
-    sortOrder: 'Ascending'
+    sortOrder: 'Ascending',
+    search: null,
 };
 
 const selects = {
     cities: [],
     venues: []
+};
+
+const events = {
+    event: []
 };
 
 function createItem(item) {
@@ -71,16 +78,15 @@ $(document).ready(function getCities() {
 });
 
 $(document).ready(function () {
-    getEvents();
     $("#cities").on('change', function () {
         filt.cities = $(this).val();
         selects.cities = filt.cities;
         getVenues();
-        getEvents();
+        pagin();
     });
     $("#venues").on('change', function () {
         filt.venues = $(this).val();
-        getEvents();
+        pagin();
     });
     $('.selectpicker').selectpicker('refresh');
 });
@@ -99,30 +105,33 @@ function getVenues() {
     });
 }
 
-function getEvents() {
-    $("#items").empty();
-    $.ajax({
-        url: `/api/v1/pagination/pagedata`,
-        data: filt,
-        traditional: true,
-        success: function (data, status, xhr) {
-            $("#items").empty().append($.map(data, createItem));
-        }
-    });
-}
+//function getEvents() {
+//    $("#items").empty();
+//    $.ajax({
+//        url: `/api/v1/filters/pagedata`,
+//        data: filt,
+//        traditional: true,
+//        success: function (data, status, xhr) {
+//            $("#items").empty().append($.map(data, createItem));
+//            events.event = data;
+//        }
+//    });
+//}
 
-$(document).ready(function () {
+$(document).ready(function pagin(data) {
     let num;
+    filt.search = data;
     $('#paged').pagination({
         dataSource: function (done) {
             $.ajax({
-                url: `/api/v1/pagination/pagedata`,
+                url: `/api/v1/filters/pagedata`,
                 type: 'GET',
                 data: filt,
                 success: function (responce, status, xhr) {
                     done(responce);
-                    const count = xhr.getResponseHeader('x-total-count');
+                    const count = xhr.getResponseHeader('x-total-count');                  
                     num = count;
+                    events.event = responce;
                 }
             });
         },
@@ -142,6 +151,7 @@ $(document).ready(function () {
             }
         },
         callback: function (data, pagination) {
+            $("#items").empty().append($.map(data, createItem));
             var dataHtml = '<ul>';
 
             $.each(data, function (index, item) {
@@ -197,3 +207,24 @@ $(document).ready(function () {
 //    });
 //}
 
+$('.basicAutoComplete').autoComplete({
+    resolverSettings: {
+        url: 'api/v1/filters/autocomplete'
+    }
+});
+
+$("#searchsubmit").click(
+    function getSeatchContent() {
+        let inp = document.getElementById('basicAutoComplete');
+        filt.search = inp.nodeValue;
+        $("#items").empty();
+        $.ajax({
+            url: `/api/v1/filters/pagedata`,
+            data: filt,
+            traditional: true,
+            success: function (data, status, xhr) {
+                $("#items").empty().append($.map(data, createItem));
+            }
+        });
+    }
+);

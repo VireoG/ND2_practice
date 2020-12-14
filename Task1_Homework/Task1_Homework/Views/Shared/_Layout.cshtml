@@ -19,9 +19,9 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
-                    <div class="md-form active-pink-2 mb-3">
-                        <input class="form-control" type="text" placeholder="Search" aria-label="Search">
-                    </div>
+                    <form method="get">
+                            <input class="form-control basicAutoComplete" type="text" autocomplete="off" placeholder="Search" aria-label="Search" id="inputsearch"/>
+                    </form>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <strong><a class="nav-link tx text-dark" asp-area="" asp-controller="Event" asp-action="Index">@Localizer["Events"]</a></strong>

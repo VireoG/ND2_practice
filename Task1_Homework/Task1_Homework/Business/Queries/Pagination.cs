@@ -11,8 +11,7 @@ namespace Task1_Homework.Business.Queries
         {   
             var result = new PagedData<T>();
             result.Data = pagedData.Data.Skip(pagedData.PageSize * (pagedData.CurrentPage - 1)).Take(pagedData.PageSize).ToList();
-            var a = pagedData.Data.ToArray().Length;
-            result.TotalPages = (int)Convert.ToDouble(Math.Ceiling((double)a / pagedData.PageSize));
+            result.TotalNumber = pagedData.Data.Count();
             result.CurrentPage = pagedData.CurrentPage;
             return result;
         }

@@ -12,23 +12,17 @@
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
-/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var bootstrap_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-select */ "./node_modules/bootstrap-select/dist/js/bootstrap-select.js");
-/* harmony import */ var bootstrap_select__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(bootstrap_select__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
+/* harmony import */ var bootstrap__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(bootstrap__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var bootstrap_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap-select */ "./node_modules/bootstrap-select/dist/js/bootstrap-select.js");
+/* harmony import */ var bootstrap_select__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(bootstrap_select__WEBPACK_IMPORTED_MODULE_1__);
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
 ﻿;
-
-
 
 
 const filt = {
     cities: [],
     venues: [],
-    page: 1,
-    pageSize: 3,
-    totalPages: 0,
     sortBy: 'Date',
     sortOrder: 'Ascending'
 };
@@ -38,7 +32,7 @@ const selects = {
     venues: []
 };
 
-function createItem     (item) {
+function createItem(item) {
     return `<div class="block1ForEvent">
                     <div class="card text-md-center">
                         <h3 align="center">${item.name}</h3>
@@ -53,23 +47,23 @@ function createItem     (item) {
                 ${roleValidation(item)}`;
 }
 
-function createSelectItem (item) {
+function createSelectItem(item) {
     return `<option value="${item.id}">${item.name}</option>`;
 }
 
-function getDate (date) {
+function getDate(date) {
     let dateFormat = __webpack_require__(/*! dateformat */ "./node_modules/dateformat/lib/dateformat.js");
     let dateform = new Date(date);
     return dateFormat(dateform, "dddd mmmm dS, yyyy");
 }
 
-function getTime (date) {
+function getTime(date) {
     let dateFormat = __webpack_require__(/*! dateformat */ "./node_modules/dateformat/lib/dateformat.js");
     let dateform = new Date(date);
     return dateFormat(dateform, "HH:MM");
 }
 
-function roleValidation (item) {
+function roleValidation(item) {
     if (role == "Administrator") {
         let stringforadmin = `<a href="/Event/Edit/${item.id}" class="btnft btn btnsg2 btn-primary"><span>Edit</span></a>
                 <a href="/Event/Delete/${item.id}" class="btn btn-danger btnsg2 compItem"><span>Delete</span></a> 
@@ -82,108 +76,146 @@ function roleValidation (item) {
     }
 }
 
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function getCities() {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+$(document).ready(function getCities() {
+    $.ajax({
         url: `/api/v1/city`,
         data: filt.cities,
         traditional: true,
         success: function (data) {
             selects.cities = data;
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cities").empty().append(jquery__WEBPACK_IMPORTED_MODULE_0___default().map(data, createSelectItem));
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()('.selectpicker').selectpicker('refresh');
+            $("#cities").empty().append($.map(data, createSelectItem));
+            $('.selectpicker').selectpicker('refresh');
         }
     });
 });
 
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(document).ready(function () {
-    GetPageData(1, 3);
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#cities").on('change', function () {
-        filt.cities = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val();
-        selects.cities = filt.cities;      
+$(document).ready(function () {
+    getEvents();
+    $("#cities").on('change', function () {
+        filt.cities = $(this).val();
+        selects.cities = filt.cities;
         getVenues();
-        GetPageData(filt.page, filt.pageSize);
+        getEvents();
     });
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#venues").on('change', function () {
-        filt.venues = jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val();
-        GetPageData(filt.page, filt.pageSize);
+    $("#venues").on('change', function () {
+        filt.venues = $(this).val();
+        getEvents();
     });
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('.selectpicker').selectpicker('refresh');
+    $('.selectpicker').selectpicker('refresh');
 });
 
 function getVenues() {
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+    $.ajax({
         url: `/api/v1/venue/getvenues`,
         data: selects,
         traditional: true,
         success: function (data) {
             selects.venues = data;
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#venues").empty().append(jquery__WEBPACK_IMPORTED_MODULE_0___default().map(data, createSelectItem));
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#venues").prop("disabled", false);
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()('#venues').selectpicker('refresh');
+            $("#venues").empty().append($.map(data, createSelectItem));
+            $("#venues").prop("disabled", false);
+            $('#venues').selectpicker('refresh');
         }
     });
 }
 
-function GetPageData(pageNum, pageSize) {
-    filt.page = pageNum;
-    filt.pageSize = pageSize;
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#tblData").empty();
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#paged").empty();
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().ajax({
+function getEvents() {
+    $("#items").empty();
+    $.ajax({
         url: `/api/v1/pagination/pagedata`,
         data: filt,
         traditional: true,
         success: function (data, status, xhr) {
-            jquery__WEBPACK_IMPORTED_MODULE_0___default()("#items").empty().append(jquery__WEBPACK_IMPORTED_MODULE_0___default().map(data, createItem));
-            const count = xhr.getResponseHeader('x-total-count');
-            const current = xhr.getResponseHeader('x-current-page');
-            console.log(count);
-            console.log(current);
-            PaggingTemplate(count, current);
+            $("#items").empty().append($.map(data, createItem));
         }
     });
 }
 
-function PaggingTemplate(totalPage, currentPage) {
-    let template = "";
-    filt.totalPages = totalPage;
-    let TotalPages = totalPage;
-    let CurrentPage = currentPage;
-    let PageNumberArray = [];
+$(document).ready(function () {
+    let num;
+    $('#paged').pagination({
+        dataSource: function (done) {
+            $.ajax({
+                url: `/api/v1/pagination/pagedata`,
+                type: 'GET',
+                data: filt,
+                success: function (responce, status, xhr) {
+                    done(responce);
+                    const count = xhr.getResponseHeader('x-total-count');
+                    num = count;
+                }
+            });
+        },
+        totalNumber: num,
+        pageSize: 2,
+        showPageNumbers: true,
+        showPrevious: true,
+        showNext: true,
+        showNavigator: true,
+        showFirstOnEllipsisShow: true,
+        showLastOnEllipsisShow: true,
+        autoHidePrevious: true,
+        autoHideNext: true,
+        ajax: {
+            beforeSend: function () {
+                container.prev().html('Loading data...');
+            }
+        },
+        callback: function (data, pagination) {
+            var dataHtml = '<ul>';
 
-    for (let i = 1; i <= totalPage; i++) {      
-        PageNumberArray[i] = i;
-    };
+            $.each(data, function (index, item) {
+                dataHtml += '<li>' + item.title + '</li>';
+            });
 
-    console.log(PageNumberArray);
-    let FirstPage = 1;
-    let LastPage = totalPage;
-    if (TotalPages != CurrentPage) {
-        var ForwardOne = CurrentPage + 1;
-    }
-    let BackwardOne = 1;
-    if (CurrentPage > 1) {
-        BackwardOne = CurrentPage - 1;
-    };
+            dataHtml += '</ul>';
 
-    template = `<p>${filt.page} of ${filt.totalPages} pages</p>`;
-    template = template + `<ul class="pagination">` +
-        `<li><select ng-model="pageSize" id="selectedId"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="5">5</option></select> </li>` +
-        `<li><a href="#" onclick="GetPageData('${FirstPage, TotalPages}')" class="page-link"><i class=""></i>First</a></li>` +       
-        `<li><a href="#" onclick="GetPageData('${BackwardOne, TotalPages}')"><i class="page-link">&#8592;</i></a></li>`;
-
-    let numberingLoop = "";
-    for (let i = 1; i < PageNumberArray.length; i++) {
-        numberingLoop = numberingLoop + `<li><a id="${i}" class="page-link" onclick="GetPageData('${PageNumberArray[i], TotalPages}')" href="#">${PageNumberArray[i]}</a></li>`
-    };
-    template = template + numberingLoop + `<li><a href="#" class="page-link" onclick="GetPageData('${ForwardOne, TotalPages}')"><i>&#8594;</i></a></li>` +
-        `<li><a href="#" class="page-link" onclick="GetPageData('${LastPage, TotalPages}')">Last<i></i></a></li></ul>`;
-
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()("#paged").append(template);
-    jquery__WEBPACK_IMPORTED_MODULE_0___default()('#selectedId').change(function () {
-        GetPageData(1, jquery__WEBPACK_IMPORTED_MODULE_0___default()(this).val());
+            $('#paged').prev().html(dataHtml);
+        }
     });
-}
+});
+
+
+//function PaggingTemplate(totalPage, currentPage) {
+//    let template = "";
+//    filt.totalPages = totalPage;
+//    let TotalPages = totalPage;
+//    let CurrentPage = currentPage;
+//    let PageNumberArray = [];
+
+//    for (let i = 1; i <= totalPage; i++) {
+//        PageNumberArray[i] = i;
+//    };
+
+//    console.log(PageNumberArray);
+//    let FirstPage = 1;
+//    let LastPage = totalPage;
+//    if (TotalPages != CurrentPage) {
+//        var ForwardOne = CurrentPage + 1;
+//    }
+//    let BackwardOne = 1;
+//    if (CurrentPage > 1) {
+//        BackwardOne = CurrentPage - 1;
+//    };
+
+//    template = `<p>${filt.page} of ${filt.totalPages} pages</p>`;
+//    template = template + `<ul class="pagination">` +
+//        `<li><select ng-model="pageSize" id="selectedId"><option value="1">1</option><option value="2">2</option><option value="3">3</option><option value="5">5</option></select> </li>` +
+//        `<li><a href="#" onclick="GetPageData('${FirstPage, TotalPages}')" class="page-link"><i class=""></i>First</a></li>` +
+//        `<li><a href="#" onclick="GetPageData('${BackwardOne, TotalPages}')"><i class="page-link">&#8592;</i></a></li>`;
+
+//    let numberingLoop = "";
+//    for (let i = 1; i < PageNumberArray.length; i++) {
+//        numberingLoop = numberingLoop + `<li><a id="${i}" class="page-link" onclick="GetPageData('${PageNumberArray[i], TotalPages}')" href="#">${PageNumberArray[i]}</a></li>`
+//    };
+//    template = template + numberingLoop + `<li><a href="#" class="page-link" onclick="GetPageData('${ForwardOne, TotalPages}')"><i>&#8594;</i></a></li>` +
+//        `<li><a href="#" class="page-link" onclick="GetPageData('${LastPage, TotalPages}')">Last<i></i></a></li></ul>`;
+
+//    $("#paged").append(template);
+//    $('#selectedId').change(function () {
+//        GetPageData(1, $(this).val());
+//    });
+//}
+
 
 
 /***/ }),
@@ -194,6 +226,7 @@ function PaggingTemplate(totalPage, currentPage) {
   \*******************************************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: top-level-this-exports, __webpack_require__, __webpack_exports__, module */
+/*! CommonJS bailout: this is used directly at 23:2-6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -3447,6 +3480,8 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
   \*****************************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: __webpack_exports__, top-level-this-exports, __webpack_require__ */
+/*! CommonJS bailout: this is used directly at 10:2-6 */
+/*! CommonJS bailout: exports is used directly at 7:73-80 */
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
 /*!
@@ -7890,6 +7925,9 @@ var __WEBPACK_AMD_DEFINE_RESULT__;function _typeof(obj){"@babel/helpers - typeof
   \********************************************/
 /*! unknown exports (runtime-defined) */
 /*! runtime requirements: module, top-level-this-exports, __webpack_exports__ */
+/*! CommonJS bailout: this is used directly at 40:46-50 */
+/*! CommonJS bailout: module.exports is used directly at 18:43-57 */
+/*! CommonJS bailout: module.exports is used directly at 27:2-16 */
 /***/ (function(module, exports) {
 
 var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!

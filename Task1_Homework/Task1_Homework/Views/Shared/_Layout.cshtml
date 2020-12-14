@@ -19,11 +19,15 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <partial name="_LoginPartial" />
+                    <div class="md-form active-pink-2 mb-3">
+                        <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+                    </div>
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
                             <strong><a class="nav-link tx text-dark" asp-area="" asp-controller="Event" asp-action="Index">@Localizer["Events"]</a></strong>
                         </li>
                     </ul>
+
                 </div>
             </div>
         </nav>
@@ -39,7 +43,6 @@
             &copy; @DateTime.Now.Year <a asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer["Privacy"]</a>
         </div>
     </footer>
-   <script src="~/dist/event.entry.js" type="module" defer></script>
     @RenderSection("Scripts", false)
 </body>
 </html>

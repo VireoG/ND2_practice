@@ -1,5 +1,6 @@
 ﻿// JS Dependencies
-import 'jquery';
+import 'pagination.js';
+import 'bootstrap-autocomplete';
 
 // CSS Dependencies
 import 'bootstrap/dist/css/bootstrap.css';

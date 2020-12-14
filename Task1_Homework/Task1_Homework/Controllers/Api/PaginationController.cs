@@ -32,11 +32,10 @@ namespace Task1_Homework.Controllers.Api
         public ActionResult GetPaggedData([FromQuery]PagedData<Event> pagedData)
         {
             pagedData.Data = eventService.GetFiltredEvents(pagedData).Result.ToList();
-            var page = Pagination.PagedResult(pagedData);
-            HttpContext.Response.Headers.Add("x-total-count", page.TotalPages.ToString());
-            HttpContext.Response.Headers.Add("x-current-page", page.CurrentPage.ToString());
-            return Ok(mapper.Map<IEnumerable<EventResource>>(page.Data));
+            pagedData.TotalNumber = pagedData.Data.Count();
+            HttpContext.Response.Headers.Add("x-total-count", pagedData.TotalNumber.ToString());
+            HttpContext.Response.Headers.Add("x-current-page", pagedData.CurrentPage.ToString());
+            return Ok(mapper.Map<IEnumerable<EventResource>>(pagedData.Data));
         }
-
     }
 }

@@ -2,6 +2,7 @@
 import "bootstrap-autocomplete";
 import "bootstrap-select";
 import "paginationjs";
+import api from "./api";
 
 export const filt = {
     cities: [],
@@ -77,17 +78,17 @@ function roleValidation(item) {
     }
 }
 
-$(document).ready(function getCities() {
-    $.ajax({
-        url: `/api/v1/city`,
-        data: filt.cities,
-        traditional: true,
-        success: function (data) {
-            selects.cities = data;
-            $("#cities").empty().append($.map(data, createSelectItem));
-            $("#cities").selectpicker('refresh');
-        }
-    });
+async function loadCitySelector () {
+    const data = await api.getCities()
+    selects.cities = data;
+    const selector =  $("#cities")
+    selector.empty().append($.map(data, createSelectItem));
+    selector.selectpicker('refresh');
+}
+
+$(document).ready(async function (){
+    await loadCitySelector();
+    // остальные вызовы тоже лучше сложить сюда. $(document).ready желательно иметь один для страницы.
 });
 
 $(document).ready(function () {

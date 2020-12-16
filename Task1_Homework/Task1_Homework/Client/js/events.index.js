@@ -1,7 +1,7 @@
-﻿require("bootstrap");
-require("bootstrap-autocomplete");
-require("bootstrap-select");
-require("paginationjs");
+﻿import "bootstrap";
+import "bootstrap-autocomplete";
+import "bootstrap-select";
+import "paginationjs";
 
 export const filt = {
     cities: [],

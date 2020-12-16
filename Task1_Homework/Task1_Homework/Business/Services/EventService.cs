@@ -159,8 +159,20 @@ namespace Task1_Homework.Business
 
         public async Task Save(Event model)
         {
-            await context.Events.AddAsync(model);
-            await context.SaveChangesAsync();
+            var a = 0;
+            foreach (var item in context.Events)
+            {
+                if (item == model)
+                {
+                    a++;
+                }
+            }
+
+            if (a == 0)
+            {
+                await context.Events.AddAsync(model);
+                await context.SaveChangesAsync();
+            }           
         }
 
         public async Task EditSave(Event model)

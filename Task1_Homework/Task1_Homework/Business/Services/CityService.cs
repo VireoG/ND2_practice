@@ -30,9 +30,22 @@ namespace Task1_Homework.Business
 
         public async Task Save(City model)
         {
-            await context.Cities.AddAsync(model);
-            await context.SaveChangesAsync();
+            var a = 0;
+            foreach(var item in context.Cities)
+            {
+                if(item == model)
+                {
+                    a++;
+                }
+            }
+
+            if (a == 0)
+            {
+                await context.Cities.AddAsync(model);
+                await context.SaveChangesAsync();
+            }
         }
+
         public async Task Delete(City model)
         {
             context.Cities.Update(model);

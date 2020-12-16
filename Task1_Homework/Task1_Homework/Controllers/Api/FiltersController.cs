@@ -31,26 +31,24 @@ namespace Task1_Homework.Controllers.Api
         [ProducesResponseType(typeof(IEnumerable<EventResource>), StatusCodes.Status200OK)]
         public ActionResult GetPaggedData([FromQuery]PagedData<Event> pagedData)
         {
-            var page = new PagedData<Event>();
-            page = pagedData;
-            if(page.Search != null)
+            if(pagedData.Search != null)
             {
-                page.Data = eventService.GetEventsBySearch(page.Search).ToList();
+                pagedData.Data = eventService.GetEventsBySearch(pagedData.Search).ToList();
             }
-            page.Data = eventService.GetFiltredEvents(page).ToList();
-            page.TotalNumber = page.Data.Count();
-            HttpContext.Response.Headers.Add("x-total-count", page.TotalNumber.ToString());
-            HttpContext.Response.Headers.Add("x-current-page", page.CurrentPage.ToString());
-            return Ok(mapper.Map<IEnumerable<EventResource>>(page.Data));
+            pagedData.Data = eventService.GetFiltredEvents(pagedData).ToList();
+            pagedData.TotalNumber = pagedData.Data.Count();
+            HttpContext.Response.Headers.Add("x-total-count", pagedData.TotalNumber.ToString());
+            HttpContext.Response.Headers.Add("x-current-page", pagedData.CurrentPage.ToString());
+            return Ok(mapper.Map<IEnumerable<EventResource>>(pagedData.Data));
         }
 
 
         [HttpGet]
         [Route("autocomplete")]
         [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status200OK)]
-        public ActionResult GetAutocompleteData([FromQuery]string text)
+        public ActionResult GetAutocompleteData([FromQuery]string q)
         {
-            var list = eventService.GetEventsNameForAutocomplete(text);
+            var list = eventService.GetEventsNameForAutocomplete(q);
             return Ok(list);
         } 
     }

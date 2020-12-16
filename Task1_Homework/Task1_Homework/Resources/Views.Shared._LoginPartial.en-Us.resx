@@ -107,12 +107,12 @@
     <value>Admin</value>
   </data>
   <data name="Logout" xml:space="preserve">
-    <value>Logout</value>
+    <value>Sign Out</value>
   </data>
   <data name="Login" xml:space="preserve">
-    <value>Login</value>
+    <value>Sign In</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>Register</value>
+    <value>Sing Up</value>
   </data>
 </root>

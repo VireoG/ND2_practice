@@ -5,24 +5,18 @@
 /*!****************************!*\
   !*** ./js/modulewindow.js ***!
   \****************************/
-/*! namespace exports */
-/*! exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/*! unknown exports (runtime-defined) */
+/*! runtime requirements: __webpack_require__ */
+/***/ ((__unused_webpack_module, __unused_webpack_exports, __webpack_require__) => {
 
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
-/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
-;
-
-jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
-  jquery__WEBPACK_IMPORTED_MODULE_0___default().ajaxSetup({cache: false});
-  jquery__WEBPACK_IMPORTED_MODULE_0___default()('.compItem').click(function(e) {
+/* provided dependency */ var $ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+$(function () {
+  $.ajaxSetup({cache: false});
+  $('.compItem').click(function(e) {
     e.preventDefault();
-    jquery__WEBPACK_IMPORTED_MODULE_0___default().get(this.href, function(data) {
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#dialogContent').html(data);
-      jquery__WEBPACK_IMPORTED_MODULE_0___default()('#modDialog').modal('show');
+    $.get(this.href, function(data) {
+      $('#dialogContent').html(data);
+      $('#modDialog').modal('show');
     });
   });
 });
@@ -37,25 +31,30 @@ jquery__WEBPACK_IMPORTED_MODULE_0___default()(function () {
   \********************/
 /*! namespace exports */
 /*! exports [not provided] [no usage info] */
-/*! runtime requirements: __webpack_require__, __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
+/*! runtime requirements: __webpack_require__, __webpack_require__.n, __webpack_require__.r, __webpack_exports__, __webpack_require__.* */
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
-/* harmony import */ var bootstrap_select_dist_css_bootstrap_select_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap-select/dist/css/bootstrap-select.css */ "./node_modules/bootstrap-select/dist/css/bootstrap-select.css");
-/* harmony import */ var _modulewindow_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modulewindow.js */ "./js/modulewindow.js");
-/* harmony import */ var _css_site_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../css/site.css */ "./css/site.css");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+/* harmony import */ var jquery__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(jquery__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var bootstrap_dist_css_bootstrap_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! bootstrap/dist/css/bootstrap.css */ "./node_modules/bootstrap/dist/css/bootstrap.css");
+/* harmony import */ var bootstrap_select_dist_css_bootstrap_select_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! bootstrap-select/dist/css/bootstrap-select.css */ "./node_modules/bootstrap-select/dist/css/bootstrap-select.css");
+/* harmony import */ var _modulewindow_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modulewindow.js */ "./js/modulewindow.js");
+/* harmony import */ var _modulewindow_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_modulewindow_js__WEBPACK_IMPORTED_MODULE_3__);
+/* harmony import */ var _css_site_css__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../css/site.css */ "./css/site.css");
 ﻿// JS Dependencies
+;
 
 // CSS Dependencies
-;
+
 
 
 // Custom JS imports
 
 
 // Custom CSS imports
+
 
 
 /***/ }),

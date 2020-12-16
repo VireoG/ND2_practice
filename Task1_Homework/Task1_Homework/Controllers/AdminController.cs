@@ -75,6 +75,7 @@ namespace Task1_Homework.Controllers
                     Name = model.Name,
                     Country = model.Country
                 };
+
                 await cityService.Save(city);
                 return RedirectToAction("City/GetCityList");
             }

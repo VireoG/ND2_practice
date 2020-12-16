@@ -1,5 +1,3 @@
-import $ from 'jquery';
-
 $(function () {
   $.ajaxSetup({cache: false});
   $('.compItem').click(function(e) {

@@ -22,7 +22,8 @@ namespace Task1_Homework.Controllers
         }
         public IActionResult Index() => View(_roleManager.Roles.ToList());
 
-        public IActionResult Create() => View();
+        public IActionResult Create() => PartialView("_Create");
+
         [HttpPost]
         public async Task<IActionResult> Create(string name)
         {

@@ -1,0 +1,18 @@
+﻿@model string
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h6>Create New Role</h6>
+        <button class="close" data-dismiss="modal" area-hidden="true">X</button>
+    </div>
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <input name="name" class="form-control" />
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+</div>
+

@@ -4,27 +4,32 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/dist/site.css" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="~/dist/site.entry.js" type="module" defer></script>
+    <script src="~/dist/search.entry.js" type="module" defer></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="~/dist/site.css" />
     @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm mb-3 headertext">
             <div class="container">
-                <a class="navbar-brand marg" asp-area="" asp-controller="Event" asp-action="Index">@Localizer["EventsPortal"]</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                <a class="buyticketheader" asp-area="" asp-controller="Event" asp-action="Index">BuyTicket</a><div class="trianglemini"></div>
+                <button class="navbar-toggler headertext" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
+                <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse headertext">
                     <partial name="_LoginPartial" />
-                    <form method="get">
-                            <input class="form-control basicAutoComplete" type="text" autocomplete="off" placeholder="Search" aria-label="Search" id="inputsearch"/>
-                    </form>
+                    <div class="d6">
+                        <form>
+                            <input id="searchinput" class="basicAutoComplete" autocomplete="off" type="search" placeholder="Search...">
+                        </form>
+                    </div>
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <strong><a class="nav-link tx text-dark" asp-area="" asp-controller="Event" asp-action="Index">@Localizer["Events"]</a></strong>
+                        <li class="nav-item headertext">
+                            <strong><a class="nav-link tx headertext" asp-area="" asp-controller="Event" asp-action="Index">@Localizer["Events"]</a></strong>
                         </li>
                     </ul>
 
@@ -38,9 +43,10 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class=" container">
-            &copy; @DateTime.Now.Year <a asp-area="" asp-controller="Home" asp-action="Privacy">@Localizer["Privacy"]</a>
+    <footer class="footer text-muted fottertext">
+        <div class="container">
+            &copy; @DateTime.Now.Year <a asp-area="" asp-controller="Home" asp-action="Privacy">Privat Policy</a>
+            <p>Made By Vireo</p>
         </div>
     </footer>
     @RenderSection("Scripts", false)

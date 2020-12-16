@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+    <link rel="stylesheet" href="~/dist/site.css" />
+    @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+        <style type="text/css">
+        .bodystartpage { 
+            background-image: url('file:///E:\.Net\TASK3\Task1_Homework\Task1_Homework\wwwroot\img\fon.png');
+            background: linear-gradient(111.41deg, #000000 0%, #AE0000 93.67%); 
+            font-family: Roboto; 
+
+        }
+        </style>
+    </head>
+<body class="bodystartpage">  
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+    @RenderSection("Scripts", false)
+</body>
+</html>

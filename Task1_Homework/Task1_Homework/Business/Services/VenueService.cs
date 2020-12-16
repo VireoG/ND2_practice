@@ -56,12 +56,25 @@ namespace Task1_Homework.Business
 
         public async Task Save(Venue model)
         {
-            await context.Venues.AddAsync(model);
-            await context.SaveChangesAsync();
+            var a = 0;
+            foreach (var item in context.Venues)
+            {
+                if (item == model)
+                {
+                    a++;
+                }
+            }
+
+            if (a == 0)
+            {
+                await context.Venues.AddAsync(model);
+                await context.SaveChangesAsync();
+            }
         }
 
         public async Task EditSave(Venue model)
         {
+
             context.Venues.Update(model);
             await context.SaveChangesAsync();
         }

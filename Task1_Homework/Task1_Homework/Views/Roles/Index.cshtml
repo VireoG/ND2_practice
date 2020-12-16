@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<Microsoft.AspNetCore.Identity.IdentityRole>
 
-<h2>Список ролей</h2>
+<h2>Role List</h2>
+
 <table class="table">
     @foreach (var role in Model)
     {
@@ -16,5 +17,8 @@
         </tr>
     }
 </table>
-<a asp-action="Create">Добавить роль</a>
-<a asp-action="UserList">Список пользователей</a>
+<div id="modDialog" class="modal fade">
+    <div id="dialogContent" class="modal-dialog"></div>
+</div>
+@Html.ActionLink("Add Role", "Create", "Roles", new { }, new { @class = "compItem" })
+<a asp-action="UserList">List of Users</a>

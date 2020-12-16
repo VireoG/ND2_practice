@@ -5,23 +5,31 @@
     ViewData["Title"] = Localizer["Events"];
 }
 
-<div class="block1">
-    <select name="cities" id="cities" multiple class="selectpicker">
-    </select>
 
-    <select name="venues" id="venues" multiple class="selectpicker" disabled>
-    </select>
-</div>
 
 <div class="block2ForEvent">
     <h1 align="center" class="h11">@Localizer["List Of Events"]</h1>
     <div class="container-fluid pt-3">
-        <div id="modDialog" class="modal fade">
-            <div id="dialogContent" class="modal-dialog"></div>
+        <div class="block1 selects">
+            <div class="selectindex">
+                <select name="cities" id="cities" multiple title="Select City" class="selectpicker">
+                </select>
+            </div>
+            <div class="selectindex">
+                <select name="venues" id="venues" multiple class="selectpicker" title="Select Venue" disabled>
+                </select>
+            </div>
+            <div class="selectindex">
+                <select name="venues" id="sortby" class="selectpicker">
+                    <option value="Date">Date</option>
+                    <option value="Name">Name</option>
+                </select>
+            </div>
         </div>
         <div id="items">
+
         </div>
-        <nav aria-label="...">
+        <nav aria-label="..." class="napag">
             <div id="paged">
             </div>
         </nav>

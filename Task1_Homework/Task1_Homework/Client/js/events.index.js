@@ -1,7 +1,7 @@
-﻿import 'paginationjs';
-import 'bootstrap';
-import 'bootstrap-select';
-import 'bootstrap-autocomplete';
+﻿require("bootstrap");
+require("bootstrap-autocomplete");
+require("bootstrap-select");
+require("paginationjs");
 
 export const filt = {
     cities: [],
@@ -85,7 +85,7 @@ $(document).ready(function getCities() {
         success: function (data) {
             selects.cities = data;
             $("#cities").empty().append($.map(data, createSelectItem));
-            $('.selectpicker').selectpicker('refresh');
+            $("#cities").selectpicker('refresh');
         }
     });
 });
@@ -106,7 +106,6 @@ $(document).ready(function () {
         filt.sortBy = $(this).val();
         pagin();
     });
-    $('.selectpicker').selectpicker('refresh');
     if (selects.cities == null) { $("#venues").prop("disabled", true); }
 });
 
@@ -168,6 +167,17 @@ function pagin(search) {
         },
         callback: function (data, pagination) {
             $("#items").empty().append($.map(data, createItem));
+            $(function () {
+                $.ajaxSetup({cache: false});
+                $('.compItem').click(function(e) {
+                    e.preventDefault();
+                    $.get(this.href, function(data) {
+                        $('#dialogContent').html(data);
+                        $('#modDialog').modal('show');
+                    });
+                });
+            });
+
             var dataHtml = '<ul class="paginationbutt">';
 
             $.each(data, function (index, item) {

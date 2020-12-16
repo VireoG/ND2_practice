@@ -12,7 +12,6 @@
   <ItemGroup>
     <Content Include="Client\css\site.css" />
     <Content Include="Client\js\events.index.js" />
-    <Content Include="Client\js\modulewindow.js" />
     <Content Include="Client\js\site.js" />
     <Content Include="Client\webpack.config.js" />
   </ItemGroup>

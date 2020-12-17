@@ -1,8 +1,4 @@
-﻿import "bootstrap";
-import "bootstrap-autocomplete";
-import "bootstrap-select";
-import "paginationjs";
-import api from "./api";
+﻿import api from "./api.js";
 
 export const filt = {
     cities: [],
@@ -54,15 +50,11 @@ function createSelectItem(item) {
 }
 
 function getDate(date) {
-    let dateFormat = require("dateformat");
-    let dateform = new Date(date);
-    return dateFormat(dateform, "dddd mmmm dS, yyyy");
+    return moment(date).format("dddd mmmm dS, yyyy");
 }
 
 function getTime(date) {
-    let dateFormat = require("dateformat");
-    let dateform = new Date(date);
-    return dateFormat(dateform, "HH:MM");
+    return moment(date).format("HH:MM");
 }
 
 function roleValidation(item) {

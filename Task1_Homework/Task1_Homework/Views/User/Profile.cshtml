@@ -1,52 +1,42 @@
-﻿@model Task1_Homework.Business.User
+﻿@model UserViewModel
+
 @inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
 
 @{
     ViewData["Title"] = Localizer["Profile"];
-
 }
 
 @if (User.Identity.IsAuthenticated)
 {
-    <h1>@Localizer["Profile"]</h1>
+    <h1 class="loginpagetext buytext">@Model.UserName's @Localizer["Profile"]</h1>
     <hr />
     <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Profile">
-                <div> <img src="~/img/@Model.Avatar" width="150" height="220" vspace="50" hspace="30" class="leftimg" /> </div>
-                <p>
-                    <strong> @Model.FirstName @Model.LastName </strong><br />
-                        <strong>Role:</strong> @Model.Role
-                </p>
-                <ul>
-                    <li> @Html.ActionLink("My sales requests", "SalesRequests", "Order", new { UserName = User.Identity.Name }, new { @class = "btn btn-primary btnpad" })</li>
-                    <li> @Html.ActionLink("Logout", "Logout", "User", new { }, new { @class = "btn btn-primary btnpad" })</li>
-                </ul>
-            </form>
+       
+        <div id="template">
+            <div id="picture ">
+                <img src="~/img/@Model.Avatar" width="230" height="330" vspace="50" hspace="30" class="picturebord" />
+            </div>
+            <div class="content">
+                <div id="header">
+                    <h3 align="center">Functions</h3>
+                </div>
+                <div class="sda ">
+                    @Html.ActionLink("My sales requests", "SalesRequests", "Order", new { }, new { @class = " btnprof btnsmarg btnmarg" })
+                    @Html.ActionLink("My Tickets", "UserTickets", "Ticket", new { }, new { @class = " btnprof  btnsmarg btnmarg" })
+                    @Html.ActionLink("My Orders", "MyOrders", "Order", new { }, new { @class = " btnprof btnsmarg btnmarg" })
+                    @Html.ActionLink("ChangeAvatar", "ChangeAvatar", "User", new { id = Model.Id }, new { @class = " btnmarg btnsmarg btnprof compItem" })
+                    @Html.ActionLink("Edit Profile", "ManageProfile", "User", new { }, new { @class = " btnprof  btnsmarg btnmarg" })
+                </div>
+                <div class="dateev">
+
+                </div>
+                <div>
+                </div>
+            </div>
+            <div id="modDialog" class="modal fade">
+                <div id="dialogContent" class="modal-dialog"></div>
+            </div>
         </div>
-    </div>        
-}
-<div class="block1">
-    <h3 align="center">@Localizer["Your Tickets"]</h3>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>@Localizer["Event"]</th>
-                <th>@Localizer["Price"]</th>
-                <th>@Localizer["Seller"]</th>
-                <th>@Localizer["Status"]</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var ticket in Model.Tickets)
-            {
-                <tr>
-                    <td>@ticket.Event.Name</td>
-                    <td>@ticket.Price</td>
-                    <td>@ticket.Seller.FirstName</td>
-                    <td>@ticket.Status</td>
-                </tr>
-            }
-        </tbody>
-    </table>
-</div>
+    </div>
+    }
+

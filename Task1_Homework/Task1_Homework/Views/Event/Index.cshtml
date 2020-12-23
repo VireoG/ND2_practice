@@ -3,29 +3,46 @@
 
 @{
     ViewData["Title"] = Localizer["Events"];
-
 }
+
+
 
 <div class="block2ForEvent">
     <h1 align="center" class="h11">@Localizer["List Of Events"]</h1>
     <div class="container-fluid pt-3">
-        <div class="row row-cols-4">
-            @foreach (var events in Model.Events)
-            {
-                <div class="block1ForEvent">            
-                        <div class="card text-md-center">
-                            <h3 align="center">@events.Name</h3>
-                            <div class="card-img">
-                                <img src="~/img/@events.Banner" width="165" height="245" vspace="50" hspace="30" class="leftimg" />@Html.Raw(events.Description)
-                                <div class="card-body">
-                                    <div><h6 class="h66">@events.Date.ToString("MM/dd/yyyy HH:mm") @Localizer["on"] @events.Venue.Name</h6></div>
-
-                                    @Html.ActionLink("Buy Ticket", "Buy", "Event", new { id = events.Id }, new { @class = "btn btn-primary btnforEvList" })
-                                </div>
-                            </div>                  
-                        </div>
-                </div>
-            }
+        <div class="input-wrapper searchindex">
+            <input id="inputsearch" type="search" class="inputsearch basicAutoComplete" placeholder="Search…">
         </div>
+        <div class="block1 selects ">
+            <div class="selectindex">
+                <select name="cities" id="cities" type="text" multiple title="Select City" class=" selectpicker">
+                </select>
+            </div>
+            <div class="selectindex">
+                <select name="venues" id="venues" type="text" multiple class=" selectpicker" title="Select Venue" disabled>
+                </select>
+            </div>
+            <div class="selectindex">
+                <select name="venues" id="sortby" type="text" class=" selectpicker">
+                    <option value="Date">Date</option>
+                    <option value="Name">Name</option>
+                </select>
+            </div>
+        </div>
+        <div id="items">
+
+        </div>
+        <nav aria-label="..." class="napag">
+            <div id="paged">
+            </div>
+        </nav>
     </div>
 </div>
+
+@section Scripts
+{
+    <script>
+        const role = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.UserRole));
+    </script>
+    <script src="~/js/events.index.js" type="module" defer></script>
+}

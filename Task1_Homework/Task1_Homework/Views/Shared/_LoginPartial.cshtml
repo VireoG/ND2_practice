@@ -1,28 +1,39 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<Task1_Homework.Business.User> SignInManager
+@inject Microsoft.AspNetCore.Identity.UserManager<Task1_Homework.Business.User> UserManager
+
 
 <ul class="navbar-nav">
     @if (User.Claims.Any())
     {
+        @*<li class="nav-item">
+                <p class="txfLoginPartial nav-link headertext">@Localizer["Hello"] @User.Identity.Name!</p>
+            </li>*@
         <li class="nav-item">
-            <p class="txfLoginPartial navbar-text">@Localizer["Hello"] @User.Identity.Name!</p>
-        </li>
-        <li class="nav-item">
-            <a class="txfLoginPartial nav-link text-dark" asp-action="Profile" asp-controller="User">@Localizer["Profile"]</a>
+            <a class=" headertext nav-link" asp-action="Profile" asp-controller="User">@Localizer["Profile"]</a>
         </li>
         @if (User.IsInRole("Administrator"))
         {
             <li class="nav-item">
-                <a class="txfLoginPartial nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Index">@Localizer["Admin"]</a>
+                <a class=" nav-link headertext" asp-area="" asp-controller="Admin" asp-action="Index">@Localizer["Admin"]</a>
             </li>
         }
+        <li class="linediv"></li>
         <li class="nav-item">
-            <a class="txfLoginPartial nav-link text-dark" asp-action="Logout" asp-controller="User">@Localizer["Logout"]</a>
+            <form class="  form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Event", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link headertext">@Localizer["Logout"]</button>
+            </form>
         </li>
     }
     else
     {
         <li class="nav-item">
-            <a class="txfLoginPartial nav-link text-dark" asp-action="Login" asp-controller="User">@Localizer["Login"]</a>
+            <a class="nav-link headertext" asp-area="Identity" asp-page="/Account/Register">@Localizer["Register"]</a>
+        </li>
+        <li class="linediv"></li>
+        <li class="nav-item">
+            <a class="nav-link headertext" asp-area="Identity" asp-page="/Account/Login">@Localizer["Login"]</a>
         </li>
     }
 </ul>

@@ -1,0 +1,31 @@
+﻿@model TicketCreateViewModel
+
+<div class="modal-content bordunset">
+    <div class="modal-header">
+        <h1 class="textcrt">Create Ticket</h1>
+        <button class="close" data-dismiss="modal" area-hidden="true">X</button>
+    </div>
+    <div class="modal-body">
+        <form asp-action="CreateTicket" action+="#" >
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @Html.HiddenFor(m => m.EventId)
+            <div class="form-group">
+                <label asp-for="EventName" class="control-label"><strong>Event:</strong></label>
+                @Model.EventName
+            </div>
+            <div class="form-group">
+                <label asp-for="Price" class="control-label">Price:</label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Sale" class="btnsend" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+ @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

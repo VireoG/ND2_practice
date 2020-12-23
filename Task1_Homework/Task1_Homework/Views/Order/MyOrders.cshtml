@@ -1,0 +1,54 @@
+﻿@model OrderViewModel
+@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
+
+@{
+    ViewData["Title"] = Localizer["Profile"];
+
+}
+
+<h3  class="loginpagetext buytext">Your Orders</h3>
+<div class="block1">
+    <div id="modDialog" class="modal fade">
+        <div id="dialogContent" class="modal-dialog"></div>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>@Localizer["Event"]</th>
+                <th>@Localizer["Price"]</th>
+                <th>@Localizer["Status"]</th>
+                <th>Track Number</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.Orders.Reverse())
+            {
+                <tr>
+                    <td>@order.Ticket.Event.Name</td>
+                    <td>@order.Ticket.Price</td>
+                    @if (order.Status == Task1_Homework.Business.TicketSaleStatus.Sold)
+                    {
+                        <td>@order.Status</td>
+                        <td>@order.TrackNumber</td>
+                    }
+                    else if (order.Status == Task1_Homework.Business.TicketSaleStatus.Rejected)
+                    {
+                        <td>@order.Status</td>
+                        <td>
+                            @Html.ActionLink("Delete Order", "CancelOrder", "Order", new { id = order.Id, }, new { @class = "btncancel" })
+                        </td>
+                    }
+                    else
+                    {
+                        <td>@order.Status</td>
+                        <td>
+                            @Html.ActionLink("Cancel the Order", "CancelOrder", "Order", new { id = order.Id, }, new { @class = "btnsendord" })
+                        </td>
+                    }
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+

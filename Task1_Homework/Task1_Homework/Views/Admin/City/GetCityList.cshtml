@@ -1,0 +1,48 @@
+﻿@model CitiesViewModel
+
+@{
+    ViewData["Title"] = "Cities List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="loginpagetext buytext">Cities</h1>
+
+<p>
+    @Html.ActionLink("Add New City", "CreateCity", "Admin", new { }, new { @class = "btnem btnsg" })
+</p>
+<div class="block1">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Country</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <div id="modDialog" class="modal fade">
+                <div id="dialogContent" class="modal-dialog"></div>
+            </div>
+            @foreach (var item in Model.Cities)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.Country
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditCity", "Admin", new { id = item.Id }, new { @class = "btnsend" }) |
+                        @Html.ActionLink("Delete", "DeleteCity", "Admin", new { id = item.Id }, new { @class = "btncancel compItem" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script src="/dist/modulewindow.entry.js" type="module" ></script>
+}

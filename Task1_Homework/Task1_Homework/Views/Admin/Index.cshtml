@@ -1,7 +1,26 @@
 ﻿@inject Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer Localizer
-
 @{
     ViewData["Title"] = Localizer["Admin Page"];
 }
 
-<h1 class="alert-warning" align="Center">!!!@Localizer["Warning, this is protected area"]!!!</h1>
+@if (User.Identity.IsAuthenticated)
+{
+<h1 class="loginpagetext buytext">Admin page</h1>
+<hr />
+<div class="row">
+    <div class="">
+        <h3 class="loginpagetext">Admin functions</h3>
+        <form asp-action="Index">
+            <div class="nav-item">
+                <div class="btn-group-vertical dispadmin">                                    
+                        @Html.ActionLink("Role Manager", "Index", "Roles", new { }, new { @class = "btnem" })
+                        @Html.ActionLink("Cities List", "GetCityList", "Admin", new { }, new { @class = "btnem" })
+                        @Html.ActionLink("Venues List", "GetVenueList", "Admin", new { }, new { @class = "btnem" })
+                        @Html.ActionLink("Create New Event", "CreateEvent", "Admin", new { }, new { @class = "btnem2" })
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+}
+

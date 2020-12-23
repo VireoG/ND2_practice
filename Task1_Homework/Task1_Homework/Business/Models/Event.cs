@@ -2,11 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Task1_Homework.Business.Database;
 using System.ComponentModel.DataAnnotations;
 
 namespace Task1_Homework.Business
 {
-    public class Event
+    public class Event : IEntity
     {
         public int Id { get; set; }
 
@@ -22,6 +23,6 @@ namespace Task1_Homework.Business
 
         public string Description { get; set; }
 
-        public List<Ticket> Tickets { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
     }
 }

@@ -4,41 +4,58 @@
     ViewData["Title"] = Localizer["Buy"];
 }
 
-<h1>@Localizer["Event Page"]</h1>
-<div class="block1">
-    <div class="block2fBuy">
-    <h3 align="center">@Model.Name</h3>
-    <h6 align="center">@Model.Date @Localizer["on"] @Model.Venue.Name</h6>
-    <div>
-        <img src="~/img/@Model.Banner" width="270" height="420" vspace="50" hspace="30" class="leftimg" />
-        @Html.Raw(Model.Description)
-    </div>
-</div>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>@Localizer["Price"]</th>
-                <th>@Localizer["Seller"]</th>
-                <th>@Localizer["Status"]</th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
+<h1 class="loginpagetext buytext">@Localizer["Event Page"]</h1>
+<div class="blockbuy">
+    <div id="template blockbuy">
+        <div id="picture">
+            <img src="~/img/@Model.Banner" width="230" height="350" vspace="50" hspace="30" class="leftimg" />
+        </div>
+        <div id="modDialog" class="modal fade">
+            <div id="dialogContent" class="modal-dialog"></div>
+        </div>
+        <div class="content">
+            <div id="header">
+                <h3 align="center">@Model.Name</h3>
+            </div>
+            <div id="description">
+                <p>@Html.Raw(Model.Description)</p>
+            </div>
+            <div class="dateev">
+                <h6 class="h66">@Model.Date <br />  @Localizer["on"] @Model.Venue.Name</h6>
+            </div>
+            <div>
+                @if(User.Claims.Any())
+                {
+                @Html.ActionLink("Sell Ticket", "CreateTicket", "Ticket", new { id = Model.Id }, new { @class = "btnsellticket compItem" })
+                }
+            </div>
+        </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>@Localizer["Price"]</th>
+                    <th>@Localizer["Seller"]</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
 
-            @foreach (var ticket in Model.Tickets)
-            {
-            <tr>
-                <td>@ticket.Price</td>
-                <td>@ticket.Seller.FirstName</td>
-                <td>@ticket.Status</td>
-                <td>
-                    @Html.ActionLink("Buy", "Index", "Order", new { id = ticket.Id, UserName = User.Identity.Name }, new { @class = "btn btn-primary" })
-                </td>
-            </tr>
-            }
-        </tbody>
-    </table>
-</div>
+                @foreach (var ticket in Model.Tickets)
+                {
+                    @if (ticket.Status == Task1_Homework.Business.TicketSaleStatus.Sale)
+                    {
+                        <tr>
+                            <td>@ticket.Price</td>
+                            <td>@ticket.Seller.UserName</td>
+                            <td>
+                                @Html.ActionLink("Buy", "Create", "Order", new { id = ticket.Id }, new { @class = "btnbuy" })
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
 
 
 

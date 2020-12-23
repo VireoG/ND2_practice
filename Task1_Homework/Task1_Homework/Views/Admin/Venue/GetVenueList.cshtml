@@ -1,0 +1,53 @@
+﻿@model VenueViewModel
+
+@{
+    ViewData["Title"] = "Venues List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="loginpagetext buytext" >Venues</h1>
+
+<p>
+    @Html.ActionLink("Add New Venue", "CreateVenue", "Admin", new { }, new { @class = "btnem btnsg" })
+</p>
+<div class="block1">
+    <table class="table">
+        <thead>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>City</th>
+                <th>Adress</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            <div id="modDialog" class="modal fade">
+                <div id="dialogContent" class="modal-dialog"></div>
+            </div>
+            @foreach (var item in Model.Venues)
+            {
+                <tr>
+                    <td>
+                        @item.Name
+                    </td>
+                    <td>
+                        @item.City.Name
+                    </td>
+                    <td>
+                        @item.Adress
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditVenue", "Admin", new { id = item.Id }, new { @class = "btnsend" }) |
+                        @Html.ActionLink("Delete", "DeleteVenue", "Admin", new { id = item.Id }, new { @class = "btncancel compItem" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts
+{
+    <script src="/dist/modulewindow.entry.js" type="module" defer></script>
+}

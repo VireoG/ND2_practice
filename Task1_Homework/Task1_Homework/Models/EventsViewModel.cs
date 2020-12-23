@@ -8,6 +8,8 @@ namespace Task1_Homework.Models
 {
     public class EventsViewModel
     {
-        public Event[] Events { get; set; }
+        public City[] Cities { get; set; }
+
+        public Venue[] Venues { get; set; }
     }
 }

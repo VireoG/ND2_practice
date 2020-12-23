@@ -4,116 +4,88 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Task1_Homework.Business;
 using Task1_Homework.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Principal;
 using Task1_Homework.Business.Models;
+using Microsoft.AspNetCore.Authorization;
+using Task1_Homework.Business.Database;
+using System.IO;
+using Microsoft.AspNetCore.Identity;
+using Task1_Homework.Business.Services.IServices;
 
 namespace Task1_Homework.Controllers
 {
+    [Authorize]
     public class UserController : Controller
     {
-        private readonly UserList userList;
-        private readonly TicketList ticketList;
+        private readonly UserManager<User> userManager;
+        private readonly IUserService userService;
 
-        public UserController(UserList userList, TicketList ticketList)
-        {
-            this.ticketList = ticketList;
-            this.userList = userList;
+        public UserController(UserManager<User> userManager, IUserService userService)
+        { 
+            this.userManager = userManager;
+            this.userService = userService;
         }
 
-
-        public IActionResult Login(string returnUrl)
+        public async Task<IActionResult> Profile()
         {
-            var headers = Request.GetTypedHeaders();
-            if (string.IsNullOrEmpty(returnUrl) && headers.Referer != null)
-                returnUrl = HttpUtility.UrlEncode(headers.Referer.PathAndQuery);
+            var model = await userService.GetUserByIdentityName(User.Identity.Name);
+            model.Tickets = await userService.UserTickets(model);
 
-            if (Url.IsLocalUrl(returnUrl) && !string.IsNullOrEmpty(returnUrl))
+            if (model != null)
             {
-                ViewBag.ReturnURL = returnUrl;
+                var uvm = new UserViewModel
+                {
+                    Id = model.Id,
+                    UserName = model.UserName,
+                    Avatar = model.Avatar,
+                    Tickets = model.Tickets
+                };
+                return View("Profile", uvm);
             }
 
-            return View();
+            return NotFound();
+        }
+
+        public IActionResult ManageProfile()
+        {
+            return LocalRedirect("/Identity/Account/Manage");
+        }
+
+        public async Task<IActionResult> ChangeAvatar([FromRoute] string id)
+        {
+            if (id != null)
+            {
+                var user = await userService.GetUserById(id);
+
+                var model = new ChangeAvatarViewModel
+                {
+                    UserName = user.UserName,
+                    Avatar = user.Avatar
+                };
+                return PartialView("_ChangeAvatar", model);
+            }
+            return RedirectToAction("Profile");
         }
 
         [HttpPost]
-        public async Task<IActionResult> LoginAsync(LoginViewModel loginModel, string returnUrl)
-        {       
-            try
+        public async Task<IActionResult> ChangeAvatar(ChangeAvatarViewModel model)
+        {
+            if (ModelState.IsValid)
             {
-                if (!userList.ValidatePassword(loginModel.UserName, loginModel.Password))
-                {
-                    ModelState.AddModelError("Password", "Wrong Password");
-                    return View();
-                }
+                var user = await userService.GetUserByIdentityName(User.Identity.Name);
+                user.Avatar = model.Avatar;
 
-                var claims = new List<Claim>
-                {
-                    new Claim(ClaimTypes.Name, loginModel.UserName),
-                    new Claim(ClaimTypes.Role, userList.GetRole(loginModel.UserName))
-                };
-
-                var claimsIdentity = new ClaimsIdentity(
-                    claims, CookieAuthenticationDefaults.AuthenticationScheme);
-
-                var authProperties = new AuthenticationProperties
-                {
-                    RedirectUri = "/"
-                };
-
-                await HttpContext.SignInAsync(
-                    CookieAuthenticationDefaults.AuthenticationScheme,
-                    new ClaimsPrincipal(claimsIdentity),
-                    authProperties);
-
-                if (!string.IsNullOrEmpty(returnUrl)) return Redirect(returnUrl);
-
-                return RedirectToAction("Index", "Event");
+                await userService.EditSave(user);
+                return RedirectToAction("Profile");
             }
-            catch (ArgumentException ex)
-            {
-                ModelState.AddModelError("UserName", ex.Message);
-                return View();
-            }
-        }
-
-        public async Task<IActionResult> LogoutAsync()
-        {
-            await HttpContext.SignOutAsync();
-            return RedirectToAction("Index", "Event");
-        }
-
-        public IActionResult Profile(User model)
-        {
-
-            var selectedUsers = from user in userList.GetUser()
-                           where user.FirstName == User.Identity.Name 
-                           select user;
-
-            model = selectedUsers.ElementAt(0);
-
-            model.Tickets = UserTickets(model);
-
-            ViewBag.Role = model.Role;
-
-            ViewBag.Avatar = model.Avatar;
-
-            return View("Profile", model);
-        }
-
-        private List<Ticket> UserTickets(User model)
-        {
-            var selectedTickets = from ticket in ticketList.GetTicket()
-                                  where ticket.Seller.FirstName == model.FirstName
-                                  select ticket;
-
-            return selectedTickets.ToList();
+            return RedirectToAction("ChangeAvatar", model);
         }
     }
 }

@@ -112,4 +112,7 @@
   <data name="Login" xml:space="preserve">
     <value>Войти</value>
   </data>
+  <data name="Register" xml:space="preserve">
+    <value>Регистрация</value>
+  </data>
 </root>

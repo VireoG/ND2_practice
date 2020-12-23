@@ -1,9 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @model Task1_Homework.Models.ChangeRoleViewModel
 
-<h2>Изменение ролей для пользователя @Model.UserEmail</h2>
+@{
+    ViewData["Title"] = "Role";
+}
 
-<form asp-action="Edit" method="post">
+<h2 class="loginpagetext">Change Role for @Model.UserEmail</h2>
+
+<form asp-action="Edit" method="post" class="buytextni22">
     <input type="hidden" name="userId" value="@Model.UserId" />
     <div class="form-group">
         @foreach (IdentityRole role in Model.AllRoles)
@@ -12,5 +16,5 @@
                    @(Model.UserRoles.Contains(role.Name) ? "checked=\"checked\"" : "") />@role.Name <br />
             }
     </div>
-    <button type="submit" class="btn btn-primary">Save</button>
+    <button type="submit" class="btnsend">Save</button>
 </form>

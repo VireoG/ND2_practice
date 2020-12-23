@@ -5,10 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Cities</h1>
+<h1 class="loginpagetext buytext">Cities</h1>
 
 <p>
-    @Html.ActionLink("Add New City", "CreateCity", "Admin", new { }, new { @class = "btn btn-primary btnsg" })
+    @Html.ActionLink("Add New City", "CreateCity", "Admin", new { }, new { @class = "btnem btnsg" })
 </p>
 <div class="block1">
     <table class="table">
@@ -33,11 +33,16 @@
                         @item.Country
                     </td>
                     <td>
-                        @Html.ActionLink("Edit", "EditCity", "Admin", new { id = item.Id }, new { @class = "btn btn-primary" }) |
-                        @Html.ActionLink("Delete", "DeleteCity", "Admin", new { id = item.Id }, new { @class = "btn btn-primary btn-danger compItem" })
+                        @Html.ActionLink("Edit", "EditCity", "Admin", new { id = item.Id }, new { @class = "btnsend" }) |
+                        @Html.ActionLink("Delete", "DeleteCity", "Admin", new { id = item.Id }, new { @class = "btncancel compItem" })
                     </td>
                 </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts
+{
+    <script src="/dist/modulewindow.entry.js" type="module" ></script>
+}

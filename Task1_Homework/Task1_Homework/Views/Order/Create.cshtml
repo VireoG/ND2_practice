@@ -5,12 +5,12 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create Order</h1>
+<h1 class="loginpagetext buytext">Create Order</h1>
 
 <div class="row">
-    <div class="col-md-4">
-        <div class="block1">
-            <form asp-action="Create" asp-controller="Order">
+    <div class="col-md-4 blockorder">
+        <div class=" ">
+            <form asp-action="Create" class="maform" asp-controller="Order">
                 @Html.HiddenFor(m => m.TicketId)
                 @Html.HiddenFor(m => m.BuyerId)
                 <div class="form-group">
@@ -25,8 +25,8 @@
                     <label class="control-label"><strong>Buyer:</strong></label>
                     @ViewData["BuyerName"]
                 </div>
-                <input type="submit" value="Sent Order" class="btn btn-primary"/>
-                <a asp-action="Index" asp-controller="Event" class="btn btn-danger">Cancel</a>
+                <input type="submit" value="Sent Order" class="btnsend btnsentorder"/>
+                <a asp-action="Index" asp-controller="Event" class="btncancel">Cancel</a>
             </form>
         </div>
     </div>

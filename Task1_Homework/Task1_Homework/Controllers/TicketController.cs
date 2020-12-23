@@ -43,7 +43,7 @@ namespace Task1_Homework.Controllers
                     EventId = @event.Id,
                     EventName = @event.Name
                 };
-                return View("CreateTicket", model);
+                return PartialView("CreateTicket", model);
             }
             return NotFound();
         }

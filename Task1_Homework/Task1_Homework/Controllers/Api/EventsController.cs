@@ -1,16 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using Task1_Homework.Business;
-using Task1_Homework.Business.Database;
 using Task1_Homework.Business.Queries;
 using Task1_Homework.Business.Services.IServices;
 using Task1_Homework.Controllers.Api.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.Http;
 
 namespace Task1_Homework.Controllers.Api
 {
@@ -18,109 +17,38 @@ namespace Task1_Homework.Controllers.Api
     [ApiController]
     public class EventsController : ControllerBase
     {
-        private readonly ITicketService ticketService;
         private readonly IEventService eventService;
         private readonly IMapper mapper;
 
-        public EventsController(ITicketService ticketService, IEventService eventService, IMapper mapper)
+        public EventsController(IEventService eventService,IMapper mapper)
         {
-            this.ticketService = ticketService;
             this.eventService = eventService;
             this.mapper = mapper;
         }
 
-        //GET: api/v1/Events
         [HttpGet]
-        [ProducesResponseType(typeof(ICollection<Event>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetEvents()
+        [ProducesResponseType(typeof(IEnumerable<EventResource>), StatusCodes.Status200OK)]
+        public ActionResult GetPaggedData([FromQuery]PagedData<Event> pagedData)
         {
-            return Ok(await eventService.GetEvents());
+            if(pagedData.Search != null)
+            {
+                pagedData.Data = eventService.GetEventsBySearch(pagedData.Search).ToList();
+            }
+            pagedData.Data = eventService.GetFiltredEvents(pagedData).ToList();
+            pagedData.TotalNumber = pagedData.Data.Count();
+            HttpContext.Response.Headers.Add("x-total-count", pagedData.TotalNumber.ToString());
+            HttpContext.Response.Headers.Add("x-current-page", pagedData.CurrentPage.ToString());
+            return Ok(mapper.Map<IEnumerable<EventResource>>(pagedData.Data));
         }
 
-        // GET: api/v1/Events/5
-        [HttpGet("{id}.{format?}")]
-        public ActionResult<Event> GetEvent(int id)
+
+        [HttpGet]
+        [Route("autocomplete")]
+        [ProducesResponseType(typeof(IEnumerable<string>), StatusCodes.Status200OK)]
+        public ActionResult GetAutocompleteData([FromQuery]string q)
         {
-            var @event = eventService.GetEventById(id);
-
-            if (@event == null)
-            {
-                return NotFound();
-            }
-
-            return @event;
-        }
-
-        [HttpGet("event/{id}.{format?}")]
-        public ActionResult<Event> GetEventWithTickets(int id)
-        {
-            var @event = eventService.GetEventById(id);
-
-            if (@event == null)
-            {
-                return NotFound();
-            }
-            @event.Tickets = ticketService.GetTicketsByEventIdForIdentityUser(id, User.Identity.Name).Result;
-
-            return @event;
-        }
-
-        // PUT: api/v1/Events/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutEvent(int id, Event @event)
-        {
-            if (id != @event.Id)
-            {
-                return BadRequest();
-            }
-
-            eventService.GetEntry(@event);          
-
-            try
-            {
-                await eventService.Save(@event);
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!eventService.EventExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/v1/Events
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for
-        // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-        [HttpPost]
-        public async Task<ActionResult<Event>> PostEvent(Event @event)
-        {
-            await eventService.Save(@event);
-
-            return CreatedAtAction("GetEvent", new { id = @event.Id }, @event);
-        }
-
-        // DELETE: api/v1/Events/5
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<Event>> DeleteEvent(int id)
-        {
-            var @event = eventService.GetEventById(id);
-            if (@event == null)
-            {
-                return NotFound();
-            }
-
-            await eventService.Delete(@event);
-
-            return @event;
-        }
+            var list = eventService.GetEventsNameForAutocomplete(q);
+            return Ok(list);
+        } 
     }
 }

@@ -1,13 +1,13 @@
 ﻿@model IEnumerable<Task1_Homework.Business.User>
 
-<h2>Список пользователей</h2>
-<table class="table">
+<h2 class="loginpagetext buytext">List of Users</h2>
+<table class="table block1">
     @foreach (var user in Model)
     {
         <tr>
             <td>@user.Email</td>
             <td>
-                <a class="btn btn-sm btn-primary" asp-action="Edit" asp-route-userid="@user.Id">Права доступа</a>
+                <a class="btnem" asp-action="Edit" asp-route-userid="@user.Id">Access rights</a>
             </td>
         </tr>
     }

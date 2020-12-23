@@ -4,7 +4,7 @@
     ViewData["Title"] = "SalesRequest";
 }
 
-<h1>@Localizer["Your requests for sale"]</h1>
+<h1 class="loginpagetext buytext">@Localizer["Your requests for sale"]</h1>
 <div class="block1">
     <table class="table">
         <thead>
@@ -22,32 +22,37 @@
         <tbody>
             @foreach (var order in Model.Orders.Reverse())
             {
-            <tr>
-                <td>@order.Ticket.Event.Name</td>
-                <td>@order.Ticket.Price</td>
-                <td>@order.Buyer.UserName</td>
-                @if (order.Status == Task1_Homework.Business.TicketSaleStatus.Rejected)
-                {
-                    <td>@order.Status</td>
-                    <td>
-                        @Html.ActionLink("Delete from List", "CancelOrder", "Order", new { id = order.Id, }, new { @class = "btn btn-danger" })
-                    </td>
-                }
-                else if (order.Status == Task1_Homework.Business.TicketSaleStatus.Sold)
-                {
-                    <td>@order.Status</td>
-                    <td>@order.TrackNumber</td>
-                }
-                else
-                {
-                    <td>@order.Status</td>
-                    <td>
-                        @Html.ActionLink("Accept", "Accept", "Order", new { id = order.Id, }, new { @class = "btn btn-primary compItem" }) |
-                        @Html.ActionLink("Reject", "Reject", "Order", new { id = order.Id, }, new { @class = "btn btn-danger" })
-                    </td>
-                }
-            </tr>
+                <tr>
+                    <td>@order.Ticket.Event.Name</td>
+                    <td>@order.Ticket.Price</td>
+                    <td>@order.Buyer.UserName</td>
+                    @if (order.Status == Task1_Homework.Business.TicketSaleStatus.Rejected)
+                    {
+                        <td>@order.Status</td>
+                        <td>
+                            @Html.ActionLink("Delete", "CancelOrder", "Order", new { id = order.Id, }, new { @class = "btncancel" })
+                        </td>
+                    }
+                    else if (order.Status == Task1_Homework.Business.TicketSaleStatus.Sold)
+                    {
+                        <td>@order.Status</td>
+                        <td>@order.TrackNumber</td>
+                    }
+                    else
+                    {
+                        <td>@order.Status</td>
+                        <td>
+                            @Html.ActionLink("Accept", "Accept", "Order", new { id = order.Id, }, new { @class = "btnsend compItem" }) |
+                            @Html.ActionLink("Reject", "Reject", "Order", new { id = order.Id, }, new { @class = "btncancel" })
+                        </td>
+                    }
+                </tr>
             }
         </tbody>
     </table>
 </div>
+
+@section Scripts
+{
+    <script src="/dist/modulewindow.entry.js" type="module" defer></script>
+}

@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Your Tickets</h1>
+<h1 class="loginpagetext buytext">Your Tickets</h1>
 <div class="block1">
     <div id="modDialog" class="modal fade">
         <div id="dialogContent" class="modal-dialog"></div>
@@ -46,8 +46,8 @@
                     else
                     {
                         <td>
-                            @Html.ActionLink("Edit", "Edit", "Ticket", new { id = item.Id }, new { @class = "btn btn-primary" }) |
-                            @Html.ActionLink("Delete", "Delete", "Ticket", new { id = item.Id }, new { @class = "btn btn-danger compItem" })
+                            @Html.ActionLink("Edit", "Edit", "Ticket", new { id = item.Id }, new { @class = "btnsend" }) |
+                            @Html.ActionLink("Delete", "Delete", "Ticket", new { id = item.Id }, new { @class = "btncancel compItem" })
                         </td>
                     }
                 </tr>

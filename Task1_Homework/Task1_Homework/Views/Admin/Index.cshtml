@@ -5,18 +5,18 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-<h1>Admin page</h1>
+<h1 class="loginpagetext buytext">Admin page</h1>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <h3>Admin functions</h3>
+    <div class="">
+        <h3 class="loginpagetext">Admin functions</h3>
         <form asp-action="Index">
             <div class="nav-item">
-                <div class="btn-group-vertical">                                    
-                        @Html.ActionLink("Role Manager", "Index", "Roles", new { }, new { @class = "btn btn-primary btnsg" })
-                        @Html.ActionLink("Cities List", "GetCityList", "Admin", new { }, new { @class = "btn btn-primary btnsg" })
-                        @Html.ActionLink("Venues List", "GetVenueList", "Admin", new { }, new { @class = "btn btn-primary btnsg" })
-                        @Html.ActionLink("Create New Event", "CreateEvent", "Admin", new { }, new { @class = "btn btn-primary btnsg" })
+                <div class="btn-group-vertical dispadmin">                                    
+                        @Html.ActionLink("Role Manager", "Index", "Roles", new { }, new { @class = "btnem" })
+                        @Html.ActionLink("Cities List", "GetCityList", "Admin", new { }, new { @class = "btnem" })
+                        @Html.ActionLink("Venues List", "GetVenueList", "Admin", new { }, new { @class = "btnem" })
+                        @Html.ActionLink("Create New Event", "CreateEvent", "Admin", new { }, new { @class = "btnem2" })
                 </div>
             </div>
         </form>

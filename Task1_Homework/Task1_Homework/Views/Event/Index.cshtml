@@ -10,17 +10,20 @@
 <div class="block2ForEvent">
     <h1 align="center" class="h11">@Localizer["List Of Events"]</h1>
     <div class="container-fluid pt-3">
-        <div class="block1 selects">
+        <div class="input-wrapper searchindex">
+            <input id="inputsearch" type="search" class="inputsearch basicAutoComplete" placeholder="Search…">
+        </div>
+        <div class="block1 selects ">
             <div class="selectindex">
-                <select name="cities" id="cities" multiple title="Select City" class="selectpicker">
+                <select name="cities" id="cities" type="text" multiple title="Select City" class=" selectpicker">
                 </select>
             </div>
             <div class="selectindex">
-                <select name="venues" id="venues" multiple class="selectpicker" title="Select Venue" disabled>
+                <select name="venues" id="venues" type="text" multiple class=" selectpicker" title="Select Venue" disabled>
                 </select>
             </div>
             <div class="selectindex">
-                <select name="venues" id="sortby" class="selectpicker">
+                <select name="venues" id="sortby" type="text" class=" selectpicker">
                     <option value="Date">Date</option>
                     <option value="Name">Name</option>
                 </select>
@@ -41,6 +44,5 @@
     <script>
         const role = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.UserRole));
     </script>
-    <script src="/dist/event.entry.js" type="module" defer></script>
-    <script src="/dist/modulewindow.entry.js" type="module" defer></script>    
+    <script src="~/js/events.index.js" type="module" defer></script>
 }

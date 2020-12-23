@@ -7,16 +7,7 @@
   <PropertyGroup>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>1591</NoWarn>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <Content Include="Client\css\site.css" />
-    <Content Include="Client\js\events.index.js" />
-    <Content Include="Client\js\modulewindow.js" />
-    <Content Include="Client\js\site.js" />
-    <Content Include="Client\webpack.config.js" />
-  </ItemGroup>
-  
+  </PropertyGroup>  
   <ItemGroup>
     <PackageReference Include="animate.css" Version="3.3.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
@@ -55,10 +46,11 @@
   </ItemGroup>
   
   <ItemGroup>
-    <Content Update="Client\package-lock.json">
-      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
-    </Content>
+    <None Include="wwwroot\css\site.css" />  
+    <None Include="wwwroot\js\api.js" />
+    <None Include="wwwroot\js\events.index.js" />
+    <None Include="wwwroot\js\items.js" />
+    <None Include="wwwroot\js\modulewindow.js" />
   </ItemGroup>
 
 </Project>

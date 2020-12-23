@@ -8,27 +8,35 @@
 
 @if (User.Identity.IsAuthenticated)
 {
-    <h1>@Localizer["Profile"]</h1>
+    <h1 class="loginpagetext buytext">@Model.UserName's @Localizer["Profile"]</h1>
     <hr />
     <div class="row">
-        <div class="col-md-4">
-            <form asp-action="Profile">
-                <div id="modDialog" class="modal fade">
-                    <div id="dialogContent" class="modal-dialog"></div>
+       
+        <div id="template">
+            <div id="picture ">
+                <img src="~/img/@Model.Avatar" width="230" height="330" vspace="50" hspace="30" class="picturebord" />
+            </div>
+            <div class="content">
+                <div id="header">
+                    <h3 align="center">Functions</h3>
                 </div>
-                <div> <img src="~/img/@Model.Avatar" width="150" height="220" vspace="50" hspace="30" class="leftimg" /> </div>
-                @Html.ActionLink("ChangeAvatar", "ChangeAvatar", "User", new { id = Model.Id }, new { @class = "btn btn-primary btnpad compItem" })
-                <p>
-                    <strong> @Model.UserName </strong><br />
-                </p>
-                <ul>
-                    <li> @Html.ActionLink("My sales requests", "SalesRequests", "Order", new { }, new { @class = "btn btn-primary btnpad" })</li>
-                    <li> @Html.ActionLink("My Tickets", "UserTickets", "Ticket", new { }, new { @class = "btn btn-primary btnpad" })</li>
-                    <li> @Html.ActionLink("My Orders", "MyOrders", "Order", new { }, new { @class = "btn btn-primary btnpad" })</li>
-                    <li> @Html.ActionLink("Edit Profile", "ManageProfile", "User", new { }, new { @class = "btn btn-primary btnpad" })</li>
-                    <li> @Html.ActionLink("Logout", "Logout", "User", new { }, new { @class = "btn btn-primary btnpad" })</li>
-                </ul>
-            </form>
+                <div class="sda ">
+                    @Html.ActionLink("My sales requests", "SalesRequests", "Order", new { }, new { @class = " btnprof btnsmarg btnmarg" })
+                    @Html.ActionLink("My Tickets", "UserTickets", "Ticket", new { }, new { @class = " btnprof  btnsmarg btnmarg" })
+                    @Html.ActionLink("My Orders", "MyOrders", "Order", new { }, new { @class = " btnprof btnsmarg btnmarg" })
+                    @Html.ActionLink("ChangeAvatar", "ChangeAvatar", "User", new { id = Model.Id }, new { @class = " btnmarg btnsmarg btnprof compItem" })
+                    @Html.ActionLink("Edit Profile", "ManageProfile", "User", new { }, new { @class = " btnprof  btnsmarg btnmarg" })
+                </div>
+                <div class="dateev">
+
+                </div>
+                <div>
+                </div>
+            </div>
+            <div id="modDialog" class="modal fade">
+                <div id="dialogContent" class="modal-dialog"></div>
+            </div>
         </div>
     </div>
-}
+    }
+
